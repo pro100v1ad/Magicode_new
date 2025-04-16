@@ -15,6 +15,13 @@ public class Layer {
     private BufferedImage imageSecond;
     private ResourceLoader resourceLoader;
 
+    private GamePanel gp;
+
+    public Layer(GamePanel gp) {
+        this.gp = gp;
+        resourceLoader = new ResourceLoader();
+    }
+
     public void setLayers(String input) {
         // Разделяем строку по символу '_'
         String[] parts = input.split(":");
@@ -37,23 +44,23 @@ public class Layer {
         } else {
             System.out.println("Строка не соответствует формату 'число_число'");
         }
-        resourceLoader = new ResourceLoader();
+
         setImage();
 
     }
 
     private void setImage() {
         if(firstLayer == 1) {
-            imageFirst = resourceLoader.loadImage("/resources/background/dirt/dirtCenter.png");
+            imageFirst = gp.textureAtlas.textures[0][0].getTexture();
         }
         if(firstLayer == 10) {
-            imageFirst = resourceLoader.loadImage("/resources/background/grass/grassCenter.png");
+            imageFirst = gp.textureAtlas.textures[1][0].getTexture();
         }
         if(secondLayer == 1) {
-            imageSecond = resourceLoader.loadImage("/resources/background/dirt/dirtCenter.png");
+            imageSecond = gp.textureAtlas.textures[0][0].getTexture();
         }
         if(secondLayer == 10) {
-            imageSecond = resourceLoader.loadImage("/resources/background/grass/grassCenter.png");
+            imageSecond = gp.textureAtlas.textures[1][0].getTexture();
         }
 
     }

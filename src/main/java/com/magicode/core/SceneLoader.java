@@ -54,7 +54,7 @@ public class SceneLoader {
             worldMap = new Layer[sceneHeight][sceneWidth];
             for (int i = 0; i < sceneHeight; i++) {
                 for (int j = 0; j < sceneWidth; j++) {
-                    worldMap[i][j] = new Layer();
+                    worldMap[i][j] = new Layer(gp);
                 }
             }
 

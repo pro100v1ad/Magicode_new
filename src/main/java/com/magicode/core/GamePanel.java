@@ -64,6 +64,7 @@ public class GamePanel extends JComponent {
 
     // Объявление классов Необходимых в процессе разработки
     public Listeners listeners;
+    public TextureAtlas textureAtlas;
     public SceneLoader sceneLoader;
     public Player player;
 
@@ -71,6 +72,7 @@ public class GamePanel extends JComponent {
         super();
 
         listeners = new Listeners(this);
+        textureAtlas = new TextureAtlas(10, 10);
         sceneLoader = new SceneLoader(this, null);
         player = new Player(this);
 
