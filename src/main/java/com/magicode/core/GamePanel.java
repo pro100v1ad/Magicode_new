@@ -71,7 +71,7 @@ public class GamePanel extends JComponent {
         super();
 
         listeners = new Listeners(this);
-        sceneLoader = new SceneLoader();
+        sceneLoader = new SceneLoader(this, null);
         player = new Player(this);
 
 

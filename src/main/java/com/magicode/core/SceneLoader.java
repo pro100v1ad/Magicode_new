@@ -14,21 +14,21 @@ public class SceneLoader {
 
     private Collision collision;
     private Interaction interaction;
+    private GamePanel gp;
     private Layer[][] worldMap;
     private static final String DEFAULT_SCENE = "/resources/levels/sceneStartGame";
     private int sceneWidth;
     private int sceneHeight;
     
 
-    public SceneLoader(String scenePath) {
+    public SceneLoader(GamePanel gp, String scenePath) {
+        this.gp = gp;
         loadScene(scenePath != null ? scenePath : DEFAULT_SCENE);
     }
 
-    public SceneLoader() {
-        this(DEFAULT_SCENE);
-    }
-
     private void loadScene(String path) {
+        System.out.println("Началась загрузка сцены!");
+        long startTime = System.nanoTime();
         try (InputStream is = getClass().getResourceAsStream(path)) {
             if (is == null) {
                 System.out.println("Ошибка: файл не найден! " + path);
@@ -58,35 +58,24 @@ public class SceneLoader {
                 }
             }
 
+            // Замените этот блок
             for(int row = 0; row < sceneHeight; row++) {
                 line = br.readLine();
-                if (line == null && row != sceneHeight - 1) {
-                    System.out.println("Сцена не до конца загрузилась!");
-                    return;// Если файл закончился раньше, чем ожидалось
-                }
+
+                // Оптимизированная обработка строки
                 parts = line.split(" ");
                 for(int col = 0; col < sceneWidth; col++) {
-
-                    String elements[] = parts[col].split("_");
-                    if(elements.length < 3) {
-                        System.out.println("Данный фрагмент: <x:" + col + " y:" + row + ">, несоответствует формату: numberCollision_interactionCode:radius:fileName_layer1:layerN");
-                        break;
-                    }
-                    worldMap[row][col].setCollision(Integer.parseInt(elements[0]) == 1);
-
-                    worldMap[row][col].setLayers(elements[2]);
-
-                    worldMap[row][col].setInteractionZone(elements[1]);
-
+                    String elements = parts[col];
+                    // Упрощенная обработка
+                    worldMap[row][col].setLayers(elements);
                 }
-
             }
 
             collision.loadMap(worldMap);
-            interaction.loadMap(worldMap);
+//            interaction.loadMap(worldMap);
 
             System.out.println("Успешная загрузка сцены: " + path);
-
+            System.out.println("Сцена загрузилась за: " + ((System.nanoTime()-startTime)/1000000000) + " секунд!");
         }// Вместо общего Exception лучше ловить конкретные исключения
         catch (IOException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
             System.err.println("Ошибка загрузки сцены: " + e.getMessage());
@@ -119,7 +108,38 @@ public class SceneLoader {
     }
 
     public void draw(Graphics2D g) {
+        int worldCol = 0;
+        int worldRow = 0;
 
+
+
+        while (worldCol < gp.getWorldWidth() && worldRow < gp.getWorldHeight()) {
+
+
+            int worldX = worldCol * GamePanel.tileSize;
+            int worldY = worldRow * GamePanel.tileSize;
+            int screenX = (int) (worldX - gp.player.getWorldX() + gp.player.getScreenX());
+            int screenY = (int) (worldY - gp.player.getWorldY() + gp.player.getScreenY());
+
+            if (worldX + GamePanel.tileSize > gp.player.getWorldX() - gp.player.getScreenX() &&
+                    worldX - GamePanel.tileSize * 3 < gp.player.getWorldX() + gp.player.getScreenX() &&
+                    worldY + GamePanel.tileSize > gp.player.getWorldY() - gp.player.getScreenY() &&
+                    worldY - GamePanel.tileSize * 4 < gp.player.getWorldY() + gp.player.getScreenY()) {
+                try {
+
+                    worldMap[worldRow][worldCol].draw(g, screenX, screenY, GamePanel.tileSize, GamePanel.tileSize);
+
+                } catch (Exception e) {
+                    System.out.println("BackGround: Не удалось загрузить на позицию " + screenX + " и " + screenY);
+                }
+            }
+
+            worldCol++;
+            if (worldCol == gp.getWorldWidth()) {
+                worldCol = 0;
+                worldRow++;
+            }
+        }
     }
 
 }

@@ -1,12 +1,19 @@
 package main.java.com.magicode.gameplay.world;
 
 import main.java.com.magicode.core.GamePanel;
+import main.java.com.magicode.core.utils.ResourceLoader;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Layer {
     private int firstLayer;
     private int secondLayer;
     private boolean collision = false;
     private String interactionZone;
+    private BufferedImage imageFirst;
+    private BufferedImage imageSecond;
+    private ResourceLoader resourceLoader;
 
     public void setLayers(String input) {
         // Разделяем строку по символу '_'
@@ -30,6 +37,25 @@ public class Layer {
         } else {
             System.out.println("Строка не соответствует формату 'число_число'");
         }
+        resourceLoader = new ResourceLoader();
+        setImage();
+
+    }
+
+    private void setImage() {
+        if(firstLayer == 1) {
+            imageFirst = resourceLoader.loadImage("/resources/background/dirt/dirtCenter.png");
+        }
+        if(firstLayer == 10) {
+            imageFirst = resourceLoader.loadImage("/resources/background/grass/grassCenter.png");
+        }
+        if(secondLayer == 1) {
+            imageSecond = resourceLoader.loadImage("/resources/background/dirt/dirtCenter.png");
+        }
+        if(secondLayer == 10) {
+            imageSecond = resourceLoader.loadImage("/resources/background/grass/grassCenter.png");
+        }
+
     }
 
     public int getLayer(int number) {
@@ -48,5 +74,10 @@ public class Layer {
     }
     public String getInteractionZone() {
         return interactionZone;
+    }
+
+    public void draw(Graphics2D g, int x, int y, int w, int h) {
+        g.drawImage(imageFirst, x, y, w, h, null);
+        g.drawImage(imageSecond, x, y, w, h, null);
     }
 }

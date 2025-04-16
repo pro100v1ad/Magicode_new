@@ -30,7 +30,7 @@ public class Player extends Entity {
         collisionCode = 2;
 
         loadAnimation();
-
+        setDefaultValues();
     }
 
     public void loadAnimation() {
@@ -70,17 +70,25 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {
-//        worldX = 10;
-//        worldY = 10;
+        worldX = 10;
+        worldY = 10;
 
-        worldX = GamePanel.tileSize*120;
-        worldY = GamePanel.tileSize*120;
+//        worldX = GamePanel.tileSize*120;
+//        worldY = GamePanel.tileSize*120;
 
         speed = (4*GamePanel.scale)/(GamePanel.UPDATE_RATE_Speed); // scale минимум 1/4 и максимум 2.
     }
 
-    public void update() {
+    public int getScreenX() {
+        return screenX;
+    }
 
+    public int getScreenY() {
+        return screenY;
+    }
+
+    public void update() {
+//        System.out.println("Pos: " + worldX + " : " + worldY);
         // Определяет направление движения все 8
         if (GamePanel.keys[0] && GamePanel.keys[3]) {
             direction = "up_right";
@@ -99,7 +107,6 @@ public class Player extends Entity {
         } else if(GamePanel.keys[3]) {
             direction = "right";
         } else direction = "null";
-
         //Проверка коллизии
         if(direction.equals("up_right")) {
             for(int i = 0; i < speed/sqrt(2); i++) {// Обработка движения вверх
@@ -149,15 +156,15 @@ public class Player extends Entity {
             for(int i = 0; i < speed/sqrt(2); i++) if(gp.getCollision().checkCollisionRight(this) && worldX < gp.getWorldWidth()*GamePanel.tileSize-GamePanel.tileSize*2-1) worldX += 1;
         }
 
-        if (!direction.equals(lastDirection)) {
-            switch (direction) {
-                case "up": animations[1].reset(); break;
-                case "down": animations[0].reset(); break;
-                case "left": case "up_left": case "down_left": animations[2].reset(); break;
-                case "right": case "up_right": case "down_right": animations[3].reset(); break;
-            }
-            lastDirection = direction;
-        }
+//        if (!direction.equals(lastDirection)) {
+//            switch (direction) {
+//                case "up": animations[1].reset(); break;
+//                case "down": animations[0].reset(); break;
+//                case "left": case "up_left": case "down_left": animations[2].reset(); break;
+//                case "right": case "up_right": case "down_right": animations[3].reset(); break;
+//            }
+//            lastDirection = direction;
+//        }
 
         switch (direction) {
             case "up": animations[1].update(); break;
