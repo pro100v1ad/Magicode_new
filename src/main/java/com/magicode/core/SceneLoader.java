@@ -6,6 +6,7 @@ import main.java.com.magicode.gameplay.world.Layer;
 
 import java.awt.*;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -14,9 +15,17 @@ public class SceneLoader {
     private Collision collision;
     private Interaction interaction;
     private Layer[][] worldMap;
+    private static final String DEFAULT_SCENE = "/resources/levels/sceneStartGame";
+    private int sceneWidth;
+    private int sceneHeight;
+    
+
+    public SceneLoader(String scenePath) {
+        loadScene(scenePath != null ? scenePath : DEFAULT_SCENE);
+    }
 
     public SceneLoader() {
-        loadScene("/resources/levels/sceneStartGame");
+        this(DEFAULT_SCENE);
     }
 
     private void loadScene(String path) {
@@ -38,25 +47,25 @@ public class SceneLoader {
                 System.out.println("При загрузке сцены, первая строка не соответствует формату \"число число\"");
                 return;
             }
-            int SceneWidth = Integer.parseInt(parts[0]);
-            int SceneHeight = Integer.parseInt(parts[1]);
-            collision = new Collision(SceneWidth*GamePanel.tileSize, SceneHeight*GamePanel.tileSize);
-            interaction = new Interaction(SceneWidth*GamePanel.tileSize, SceneHeight*GamePanel.tileSize);
-            worldMap = new Layer[SceneHeight][SceneWidth];
-            for (int i = 0; i < SceneHeight; i++) {
-                for (int j = 0; j < SceneWidth; j++) {
+            sceneWidth = Integer.parseInt(parts[0]);
+            sceneHeight = Integer.parseInt(parts[1]);
+            collision = new Collision(sceneWidth*GamePanel.tileSize, sceneHeight*GamePanel.tileSize);
+            interaction = new Interaction(sceneWidth*GamePanel.tileSize, sceneHeight*GamePanel.tileSize);
+            worldMap = new Layer[sceneHeight][sceneWidth];
+            for (int i = 0; i < sceneHeight; i++) {
+                for (int j = 0; j < sceneWidth; j++) {
                     worldMap[i][j] = new Layer();
                 }
             }
 
-            for(int row = 0; row < SceneHeight; row++) {
+            for(int row = 0; row < sceneHeight; row++) {
                 line = br.readLine();
-                if (line == null && row != SceneHeight - 1) {
+                if (line == null && row != sceneHeight - 1) {
                     System.out.println("Сцена не до конца загрузилась!");
                     return;// Если файл закончился раньше, чем ожидалось
                 }
                 parts = line.split(" ");
-                for(int col = 0; col < SceneWidth; col++) {
+                for(int col = 0; col < sceneWidth; col++) {
 
                     String elements[] = parts[col].split("_");
                     if(elements.length < 3) {
@@ -78,13 +87,31 @@ public class SceneLoader {
 
             System.out.println("Успешная загрузка сцены: " + path);
 
-        } catch (Exception e) {
-            System.out.println("Ошибка в загрузке сцены");
+        }// Вместо общего Exception лучше ловить конкретные исключения
+        catch (IOException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            System.err.println("Ошибка загрузки сцены: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     private void loadMap() {
 
+    }
+    
+    public int getSceneWidth() {
+        return sceneWidth;
+    }
+
+    public int getSceneHeight() {
+        return sceneHeight;
+    }
+
+    public Collision getCollision() {
+        return collision;
+    }
+
+    public Layer[][] getWorldMap() {
+        return worldMap;
     }
 
     public void update() {

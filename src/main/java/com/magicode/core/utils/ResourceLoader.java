@@ -7,8 +7,6 @@ import java.io.InputStream;
 
 public class ResourceLoader {
 
-    public static final String PATH = "src/res/";
-
     public BufferedImage loadImage(String path) {
         try {
             InputStream inputStream = getClass().getResourceAsStream(path);

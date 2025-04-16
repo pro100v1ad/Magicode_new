@@ -2,9 +2,7 @@ package main.java.com.magicode.core;
 
 
 import main.java.com.magicode.Main;
-import main.java.com.magicode.core.utils.Listeners;
-import main.java.com.magicode.core.utils.Sound;
-import main.java.com.magicode.core.utils.Time;
+import main.java.com.magicode.core.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -65,12 +63,16 @@ public class GamePanel extends JComponent {
 // Конец объявления классов необходимых для работы игры
 
     // Объявление классов Необходимых в процессе разработки
-    public Listeners listeners = new Listeners(this);
-    public SceneLoader sceneLoader = new SceneLoader();
+    public Listeners listeners;
+    public SceneLoader sceneLoader;
+    public Player player;
 
     public GamePanel() { // Конструктор (что-то делает)
         super();
 
+        listeners = new Listeners(this);
+        sceneLoader = new SceneLoader();
+        player = new Player(this);
 
 
         setPreferredSize(new Dimension(WIDTH, HEIGHT)); // устанавливает размеры окна приложения
@@ -167,10 +169,6 @@ public class GamePanel extends JComponent {
         // Интервалы для update и draw
         final float UPDATE_INTERVAL = (float)Time.SECOND / UPDATE_RATE; // 20 раз в секунду
 
-        image = new BufferedImage(WIDTH, HEIGHT, 1);
-        g = (Graphics2D) image.getGraphics();
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
         while(running) {
             long now = Time.get();
             long elapsedTime = now - lastTime;
@@ -208,18 +206,31 @@ public class GamePanel extends JComponent {
         thread2.start();
     }
 
-    public void update1() {
 
+    public int getWorldWidth() {
+        return sceneLoader.getSceneWidth();
+    }
+
+    public int getWorldHeight() {
+        return sceneLoader.getSceneHeight();
+    }
+
+    public Collision getCollision() {
+        return sceneLoader.getCollision();
+    }
+
+    public void update1() {
+        player.update();
     }
 
     public void update2() {
-
+        sceneLoader.update();
     }
     public void render1(){
-        g.setColor(Color.BLACK);
+        g.setColor(Color.BLUE);
         g.fillRect(0, 0, WIDTH, HEIGHT);
-
-
+        sceneLoader.draw(g);
+        player.draw(g);
         draw();
     }
 
