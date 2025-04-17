@@ -11,7 +11,7 @@ public class Collision {
     public Collision(int mapX, int mapY) {
         this.mapX = mapX;
         this.mapY = mapY;
-        collisionMap = new int[mapY][mapX];
+        collisionMap = new int[mapY][mapX];/////////////////////////////////Решить проблему коллизии при пустой карте
 
         for(int i = 0; i < mapY; i++) {
             for(int j = 0; j < mapX; j++) {
@@ -21,31 +21,40 @@ public class Collision {
 
     }
 
-
     public void loadMap(Layer[][] worldMap) {
-        int row = worldMap.length;
-        int col = worldMap[0].length;
-        for(int i = 0; i < row; i++) {
-            for(int j = 0; j < col; j++) {
-                if(worldMap[i][j].getCollision()) {
+        if(worldMap == null) {
+            System.out.println("Карта коллизии не загрузилась!");
+            return;
+        }
+        try {
+            int row = worldMap.length;
+            int col = worldMap[0].length;
+            for(int i = 0; i < row; i++) {
+                for(int j = 0; j < col; j++) {
+                    if(worldMap[i][j].getCollision()) {
 
-                    for(int i2 = i*GamePanel.tileSize; i2 < (i+1)*GamePanel.tileSize; i2++) {
-                        for(int j2 = j*GamePanel.tileSize; j2 < (j+1)*GamePanel.tileSize; j2++) {
-                            try {
-                                if(collisionMap[i2][j2] != 0) {
-                                    System.out.println("Почему-то там уже стоит 1");
+                        for(int i2 = i*GamePanel.tileSize; i2 < (i+1)*GamePanel.tileSize; i2++) {
+                            for(int j2 = j*GamePanel.tileSize; j2 < (j+1)*GamePanel.tileSize; j2++) {
+                                try {
+                                    if(collisionMap[i2][j2] != 0) {
+                                        System.out.println("Почему-то там уже стоит 1");
+                                    }
+                                    collisionMap[i2][j2] = 1;
+                                } catch (Exception e) {
+                                    System.out.println("Выход за массив: " + i + " and " + j);
                                 }
-                                collisionMap[i2][j2] = 1;
-                            } catch (Exception e) {
-                                System.out.println("Выход за массив: " + i + " and " + j);
+
                             }
-
                         }
-                    }
 
+                    }
                 }
             }
+        } catch (Exception e) {
+            System.out.println("Ошибка загрузи карты Коллизии!");
         }
+
+
 
 
     }

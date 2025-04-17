@@ -34,6 +34,8 @@ public class Layer {
             // Преобразуем вторую часть в число
             secondLayer = Integer.parseInt(parts[1]);
 
+
+
             for(int i = 0; i < GamePanel.whoHaveCollision.length; i++) {
                 if(GamePanel.whoHaveCollision[i] != 0 && (GamePanel.whoHaveCollision[i] == firstLayer || GamePanel.whoHaveCollision[i] == secondLayer)) {
                     setCollision(true);
@@ -50,17 +52,26 @@ public class Layer {
     }
 
     private void setImage() {
-        if(firstLayer == 1) {
-            imageFirst = gp.textureAtlas.textures[0][0].getTexture();
+        if(firstLayer > 0 && firstLayer < 10) {
+            imageFirst = gp.textureAtlas.textures[0][firstLayer-1].getTexture();
         }
         if(firstLayer == 10) {
             imageFirst = gp.textureAtlas.textures[1][0].getTexture();
         }
-        if(secondLayer == 1) {
-            imageSecond = gp.textureAtlas.textures[0][0].getTexture();
+        if(firstLayer == 20) {
+            imageFirst = gp.textureAtlas.textures[2][0].getTexture();
+        }
+
+
+
+        if(secondLayer > 0 && secondLayer < 10) {
+            imageSecond = gp.textureAtlas.textures[0][secondLayer-1].getTexture();
         }
         if(secondLayer == 10) {
             imageSecond = gp.textureAtlas.textures[1][0].getTexture();
+        }
+        if(secondLayer == 20) {
+            imageSecond = gp.textureAtlas.textures[2][0].getTexture();
         }
 
     }

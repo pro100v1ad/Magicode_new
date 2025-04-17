@@ -39,7 +39,7 @@ public class GamePanel extends JComponent {
     public static final int MAS_WIDTH = 72;
 
     public static final int originalTileSize = 16;
-    public static double scale = 1;
+    public static double scale = 2;
     public static int tileSize = (int)(originalTileSize*scale);
     public static int WIDTH = MAS_WIDTH*originalTileSize;
     public static int HEIGHT = MAS_HEIGHT*originalTileSize;
@@ -68,14 +68,16 @@ public class GamePanel extends JComponent {
     public SceneLoader sceneLoader;
     public Player player;
 
+
     public GamePanel() { // Конструктор (что-то делает)
         super();
 
         listeners = new Listeners(this);
-        textureAtlas = new TextureAtlas(10, 10);
-        sceneLoader = new SceneLoader(this, null);
-        player = new Player(this);
+        textureAtlas = new TextureAtlas(20, 20);
+        setWhoHaveCollision();
 
+        sceneLoader = new SceneLoader(this, null, null);
+        player = new Player(this);
 
         setPreferredSize(new Dimension(WIDTH, HEIGHT)); // устанавливает размеры окна приложения
         setFocusable(true);
@@ -86,6 +88,17 @@ public class GamePanel extends JComponent {
         addMouseWheelListener(listeners);
 
 
+
+    }
+    public void setWhoHaveCollision() {
+        whoHaveCollision[0] = 1;
+        whoHaveCollision[1] = 2;
+        whoHaveCollision[2] = 3;
+        whoHaveCollision[3] = 4;
+        whoHaveCollision[4] = 5;
+        whoHaveCollision[5] = 6;
+        whoHaveCollision[6] = 7;
+        whoHaveCollision[7] = 8;
     }
 
     public void setupGame() {
@@ -223,16 +236,19 @@ public class GamePanel extends JComponent {
 
     public void update1() {
         player.update();
+
     }
 
     public void update2() {
         sceneLoader.update();
+
     }
     public void render1(){
-        g.setColor(Color.BLUE);
+        g.setColor(Color.BLACK);
         g.fillRect(0, 0, WIDTH, HEIGHT);
         sceneLoader.draw(g);
         player.draw(g);
+
         draw();
     }
 

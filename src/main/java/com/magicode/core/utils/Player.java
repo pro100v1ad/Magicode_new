@@ -25,8 +25,8 @@ public class Player extends Entity {
         screenX = GamePanel.WIDTH/2 - GamePanel.tileSize;
         screenY = GamePanel.HEIGHT/2 - GamePanel.tileSize*2;
 
-        collisionWidth = GamePanel.tileSize*2;
-        collisionHeight = GamePanel.tileSize*3;
+        collisionWidth = GamePanel.tileSize*2/2;
+        collisionHeight = GamePanel.tileSize*3/2;
         collisionCode = 2;
 
         loadAnimation();
@@ -70,13 +70,13 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {
-        worldX = 10;
-        worldY = 10;
+//        worldX = 10;
+//        worldY = 10;
 
-//        worldX = GamePanel.tileSize*120;
-//        worldY = GamePanel.tileSize*120;
-
-        speed = (4*GamePanel.scale)/(GamePanel.UPDATE_RATE_Speed); // scale минимум 1/4 и максимум 2.
+        worldX = GamePanel.tileSize*35;
+        worldY = GamePanel.tileSize*17;
+        float pixelsPerSecond = 200f;
+        speed = (pixelsPerSecond * GamePanel.scale) / GamePanel.UPDATE_RATE; // scale минимум 1/4 и максимум 2.
     }
 
     public int getScreenX() {
@@ -86,6 +86,7 @@ public class Player extends Entity {
     public int getScreenY() {
         return screenY;
     }
+
 
     public void update() {
 //        System.out.println("Pos: " + worldX + " : " + worldY);
@@ -176,12 +177,14 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics2D g) {
+        int playerWidth = (int)(GamePanel.tileSize*2/2);
+        int playerHeight = (int)(GamePanel.tileSize*4/2);
         switch (direction) { // Анимирует движение по направлениям
-            case "up": animations[1].draw(g, screenX, screenY, GamePanel.tileSize*2, GamePanel.tileSize*4); break;
-            case "down": animations[0].draw(g, screenX, screenY, GamePanel.tileSize*2, GamePanel.tileSize*4); break;
-            case "left", "up_left", "down_left": animations[2].draw(g, screenX, screenY, GamePanel.tileSize*2, GamePanel.tileSize*4); break;
-            case "right", "up_right", "down_right": animations[3].draw(g, screenX, screenY, GamePanel.tileSize*2, GamePanel.tileSize*4); break;
-            case "null": animations[0].draw(g, screenX, screenY, GamePanel.tileSize*2, GamePanel.tileSize*4);
+            case "up": animations[1].draw(g, screenX, screenY, playerWidth, playerHeight); break;
+            case "down": animations[0].draw(g, screenX, screenY, playerWidth, playerHeight); break;
+            case "left", "up_left", "down_left": animations[2].draw(g, screenX, screenY, playerWidth, playerHeight); break;
+            case "right", "up_right", "down_right": animations[3].draw(g, screenX, screenY, playerWidth, playerHeight); break;
+            case "null": animations[0].draw(g, screenX, screenY, playerWidth, playerHeight);
         }
 
     }
