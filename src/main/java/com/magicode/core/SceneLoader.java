@@ -5,6 +5,7 @@ import main.java.com.magicode.core.utils.CutScene;
 import main.java.com.magicode.core.utils.Interaction;
 import main.java.com.magicode.gameplay.world.Layer;
 import main.java.com.magicode.gameplay.world.Structure;
+import main.java.com.magicode.gameplay.world.structures.Chest;
 import main.java.com.magicode.gameplay.world.structures.Door;
 import main.java.com.magicode.gameplay.world.structures.Hatch;
 
@@ -125,6 +126,13 @@ public class SceneLoader {
                             structure[5], structure[6].equals("true"),
                             structure[7].split(";"));
                 }
+
+                if(structure[0].equals("chest")) {
+                    //Формат: name_x_y_w_h_code:radius_isLock_direction_state - для сундука
+                    structures[i] = new Chest(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
+                            Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
+                            structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7]);
+                }
             }
 
 
@@ -195,11 +203,13 @@ public class SceneLoader {
                     if(structure.getName().equals("door")) {
                         Door door = (Door) structure;
                         door.changeLock();
-                    }
-                    if(structure.getName().equals("hatch")) {
+                    } else if(structure.getName().equals("hatch")) {
                         Hatch hatch = (Hatch) structure;
                         scene = new CutScene(gp, hatch.getRoute());
                         isCutScene = true;
+                    } else if(structure.getName().equals("chest")) {
+                        Chest chest = (Chest) structure;
+                        chest.openChest();
                     }
 
                     collision.reloadMap(worldMap, structures);

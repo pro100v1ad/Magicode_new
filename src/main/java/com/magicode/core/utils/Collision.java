@@ -4,6 +4,7 @@ import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.gameplay.entity.Entity;
 import main.java.com.magicode.gameplay.world.Layer;
 import main.java.com.magicode.gameplay.world.Structure;
+import main.java.com.magicode.gameplay.world.structures.Chest;
 import main.java.com.magicode.gameplay.world.structures.Door;
 
 
@@ -90,6 +91,19 @@ public class Collision {
                             }
                         }
 
+                    }
+
+                } else if(structures[i].getName().equals("chest")) {
+                    Chest chest = (Chest) structures[i];
+                    int x = chest.getX();
+                    int y = chest.getY();
+                    int w = chest.getW();
+                    int h = chest.getH();
+
+                    for(int row = y; row < y+h; row++) {
+                        for(int col = x; col < x+w; col++) {
+                            collisionMap[row][col] = 1;
+                        }
                     }
 
                 }
