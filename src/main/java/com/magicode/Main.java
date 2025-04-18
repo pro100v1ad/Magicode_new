@@ -5,7 +5,7 @@ import main.java.com.magicode.core.GamePanel;
 
 import javax.swing.*;
 
-public class Main {
+public class Main { // Я ПРОСТО ТАК ЗАКОМИТЕЛ
     public static JFrame f = new JFrame("");
     public static void main(String[] args) {
         GamePanel panel = new GamePanel();
