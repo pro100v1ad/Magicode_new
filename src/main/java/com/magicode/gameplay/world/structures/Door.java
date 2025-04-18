@@ -7,11 +7,12 @@ import java.awt.*;
 
 public class Door extends Structure {
 
-    private boolean isLock, state;
+    private boolean isLock;
     private GamePanel gp;
-    public Door(GamePanel gp, int x, int y, int w, int h, int code, boolean isLock, boolean state, String direction) {
+    public Door(GamePanel gp, int x, int y, int w, int h, String code, boolean isLock, boolean state, String direction) {
         this.name = "door";
-        this.code = code;
+        this.code = Integer.parseInt(code.split(":")[0]);
+        this.radius = Integer.parseInt(code.split(":")[1]);
         this.x = x;
         this.y = y;
         this.w = w;
@@ -26,10 +27,47 @@ public class Door extends Structure {
     }
 
     private void loadImage() {
-        if(direction.equals("up")) image = gp.textureAtlas.textures[10][0].getTexture();
-        if(direction.equals("down")) image = gp.textureAtlas.textures[10][1].getTexture();
-        if(direction.equals("right")) image = gp.textureAtlas.textures[10][2].getTexture();
-        if(direction.equals("left")) image = gp.textureAtlas.textures[10][3].getTexture();
+        if(direction.equals("up")) {
+            if(isLock) {
+                if(state) image = gp.textureAtlas.textures[10][0].getTexture();
+                else image = gp.textureAtlas.textures[10][8].getTexture();
+            }
+            else image = gp.textureAtlas.textures[10][4].getTexture();
+        }
+        if(direction.equals("down")) {
+            if(isLock) {
+                if(state) image = gp.textureAtlas.textures[10][1].getTexture();
+                else image = gp.textureAtlas.textures[10][9].getTexture();
+            }
+            else image = gp.textureAtlas.textures[10][5].getTexture();
+        }
+        if(direction.equals("right")) {
+            if(isLock) {
+                if(state) image = gp.textureAtlas.textures[10][2].getTexture();
+                else image = gp.textureAtlas.textures[10][10].getTexture();
+            }
+            else image = gp.textureAtlas.textures[10][6].getTexture();
+        }
+        if(direction.equals("left")) {
+            if(isLock) {
+                if(state) image = gp.textureAtlas.textures[10][3].getTexture();
+                else image = gp.textureAtlas.textures[10][11].getTexture();
+            }
+            else image = gp.textureAtlas.textures[10][7].getTexture();
+        }
+    }
+
+    public boolean getLock() {
+        return isLock;
+    }
+
+    public void setLock(boolean lock) {
+        isLock = lock;
+    }
+
+    public void changeLock() {
+        isLock = !isLock;
+        loadImage();
     }
 
 

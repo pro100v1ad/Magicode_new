@@ -2,15 +2,18 @@ package main.java.com.magicode.core.utils;
 
 import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.gameplay.world.Layer;
+import main.java.com.magicode.gameplay.world.Structure;
+
+import java.awt.*;
 
 public class Interaction {
 
     private int[][] interactionMap; // true - есть коллизия
-
+    private GamePanel gp;
     private int mapX, mapY;
 
-    public Interaction(int mapX, int mapY) {
-
+    public Interaction(GamePanel gp, int mapX, int mapY) {
+        this.gp = gp;
         this.mapX = mapX;
         this.mapY = mapY;
         interactionMap = new int[mapY][mapX];
@@ -23,6 +26,14 @@ public class Interaction {
 
     }
 
+    public void reloadMap(Structure[] structures) {
+        for(int i = 0; i < mapY; i++) {
+            for(int j = 0; j < mapX; j++) {
+                interactionMap[i][j] = 0;
+            }
+        }
+        loadStructure(structures);
+    }
 //    public void loadInteractionMapFromObjects(SuperObject[] object) {
 //
 //        for(int i = 0; i < object.length; i++) {
@@ -51,24 +62,21 @@ public class Interaction {
 //        }
 //    }
 
-    public void loadMap(Layer[][] worldMap) {
-        int row = worldMap.length;
-        int col = worldMap[0].length;
-
-        for(int i = 0; i < row; i++) {
-            for(int j = 0; j < col; j++) {
-                String elements[] = worldMap[i][j].getInteractionZone().split(":");
-                if(elements.length != 3) {
-                    System.out.println("Ошибка чтения кода и радиуса взаимодействия " + i + " and " + j);
-                }
-                int code = Integer.parseInt(elements[0]);
-                int radius = Integer.parseInt(elements[1]);
-                fillCircleOptimized(j*GamePanel.tileSize, i*GamePanel.tileSize, radius, code);
-
-
-            }
+    public void loadStructure(Structure[] structures) {
+        if(structures == null) {
+            System.out.println("Структуры пусты для интеракции!");
+            return;
         }
+        for(int i = 0; i < structures.length; i++) {
 
+            if(structures[i] != null) {
+                if(structures[i].getCode() > 1) {
+                    fillCircleOptimized(structures[i].getX() + structures[i].getW()/2,
+                            structures[i].getY() + structures[i].getH()/2, structures[i].getRadius(), structures[i].getCode());
+                }
+            }
+
+        }
 
     }
 
@@ -95,52 +103,52 @@ public class Interaction {
             }
         }
     }
-//
-//
-//    public SuperObject isPlayerInInteractionZone() {
-//        int playerX = (int)gp.player.worldX;
-//        int playerY = (int)gp.player.worldY;
-//        int playerW = gp.player.collisionWidth;
-//        int playerH = gp.player.collisionHeight;
-//
-//        // Определяем область вокруг игрока для проверки
-//        int startX = Math.max(0, playerX - 50);
-//        int endX = Math.min(mapX - 1, playerX + playerW + 50);
-//        int startY = Math.max(0, playerY - 50);
-//        int endY = Math.min(mapY - 1, playerY + playerH + 50);
-//
-//        for(int y = startY; y <= endY; y++) {
-//            for(int x = startX; x <= endX; x++) {
-//                if(interactionMap[y][x] > 0) {
-//                    // Проверяем пересечение
-//                    if(x >= playerX && x <= playerX + playerW && y >= playerY && y <= playerY + playerH) {
-//                        for(SuperObject obj : gp.oSetter.obj) {
-//                            if(obj != null) {
-//                                if(obj.getInteractionCode() == interactionMap[y][x]) return obj;
-//                            }
-//
-//                        }
-//                    }
-//
-//                }
-//            }
-//        }
-//        return null;
-//    }
+
+
+    public Structure isPlayerInInteractionZone(Structure[] structures) {
+        int playerX = (int)gp.player.getWorldX();
+        int playerY = (int)gp.player.getWorldY();
+        int playerW = gp.player.getCollisionWidth();
+        int playerH = gp.player.getCollisionHeight();
+
+        // Определяем область вокруг игрока для проверки
+        int startX = Math.max(0, playerX - 50);
+        int endX = Math.min(mapX - 1, playerX + playerW + 50);
+        int startY = Math.max(0, playerY - 50);
+        int endY = Math.min(mapY - 1, playerY + playerH + 50);
+
+        for(int y = startY; y <= endY; y++) {
+            for(int x = startX; x <= endX; x++) {
+                if(interactionMap[y][x] > 0) {
+                    // Проверяем пересечение
+                    if(x >= playerX && x <= playerX + playerW && y >= playerY && y <= playerY + playerH) {
+                        for(Structure structure : structures) {
+                            if(structure != null) {
+                                if(structure.getCode() == interactionMap[y][x]) return structure;
+                            }
+
+                        }
+                    }
+
+                }
+            }
+        }
+        return null;
+    }
 
     // Добавить для отладки желтые полупрозрачные круги зоны интеракции
-//    public void drawInteractionZones(Graphics2D g) {
-//        g.setColor(new Color(255, 255, 0, 100)); // Желтый полупрозрачный
-//
-//        for(int y = 0; y < mapY; y++) {
-//            for(int x = 0; x < mapX; x++) {
-//                if(interactionMap[y][x] > 0) {
-//                    int screenX = x - (int)gp.player.worldX + gp.player.screenX;
-//                    int screenY = y - (int)gp.player.worldY + gp.player.screenY;
-//                    g.fillRect(screenX, screenY, 1, 1);
-////                    System.out.println("Круг загружен на позицию " + screenX + " and " + screenY);
-//                }
-//            }
-//        }
-//    }
+    public void drawInteractionZones(Graphics2D g) {
+        g.setColor(new Color(255, 255, 0, 100)); // Желтый полупрозрачный
+
+        for(int y = 0; y < mapY; y++) {
+            for(int x = 0; x < mapX; x++) {
+                if(interactionMap[y][x] > 0) {
+                    int screenX = x - (int)gp.player.getWorldX() + gp.player.getScreenX();
+                    int screenY = y - (int)gp.player.getWorldY() + gp.player.getScreenY();
+                    g.fillRect(screenX, screenY, 1, 1);
+//                    System.out.println("Круг загружен на позицию " + screenX + " and " + screenY);
+                }
+            }
+        }
+    }
 }

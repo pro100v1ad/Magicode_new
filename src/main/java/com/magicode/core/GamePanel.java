@@ -249,6 +249,8 @@ public class GamePanel extends JComponent {
         sceneLoader.draw(g);
         player.draw(g);
 
+//        sceneLoader.getInteraction().drawInteractionZones(g);
+
         draw();
     }
 

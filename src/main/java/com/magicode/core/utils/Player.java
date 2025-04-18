@@ -25,7 +25,7 @@ public class Player extends Entity {
         screenX = GamePanel.WIDTH/2 - GamePanel.tileSize;
         screenY = GamePanel.HEIGHT/2 - GamePanel.tileSize*2;
 
-        collisionWidth = GamePanel.tileSize*2/2;
+        collisionWidth = (int)(GamePanel.tileSize*1.7/2);
         collisionHeight = GamePanel.tileSize*3/2;
         collisionCode = 2;
 

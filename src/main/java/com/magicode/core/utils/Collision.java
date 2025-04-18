@@ -3,6 +3,8 @@ package main.java.com.magicode.core.utils;
 import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.gameplay.entity.Entity;
 import main.java.com.magicode.gameplay.world.Layer;
+import main.java.com.magicode.gameplay.world.Structure;
+import main.java.com.magicode.gameplay.world.structures.Door;
 
 
 public class Collision {
@@ -19,6 +21,16 @@ public class Collision {
             }
         }
 
+    }
+
+    public void reloadMap(Layer[][] worldMap, Structure[] structures) {
+        for(int i = 0; i < mapY; i++) {
+            for(int j = 0; j < mapX; j++) {
+                collisionMap[i][j] = 0;
+            }
+        }
+        loadMap(worldMap);
+        loadStructure(structures);
     }
 
     public void loadMap(Layer[][] worldMap) {
@@ -59,40 +71,33 @@ public class Collision {
 
     }
 
-//    public void loadStructure(Structure[] structures) {
-//
-//        for(int i = 0; i < structures.length; i++) {
-//            if(structures[i] != null) {
-//                if(structures[i].getName().equals("bridge")) {
-//                    Bridge bridge = (Bridge) structures[i];
-//
-//                    if(bridge.getBreak()) {
-//                        for(int row = bridge.getWorldY(); row < bridge.getWorldY()+ bridge.getH(); row++) {
-//                            for(int col = bridge.getWorldX(); col < bridge.getWorldX() + bridge.getW(); col++) {
-//                                collisionMap[row][col] = 1;
-//                            }
-//                        }
-//                    } else {
-//                        for(int row = bridge.getWorldY(); row < bridge.getWorldY()+ bridge.getH(); row++) {
-//                            for(int col = bridge.getWorldX(); col < bridge.getWorldX() + bridge.getW(); col++) {
-//                                if(bridge.getDirection().equals("left") || bridge.getDirection().equals("right")) {
-//                                    collisionMap[row][col] = 0;
-//                                    if (row <= bridge.getWorldY() + GamePanel.tileSize / 2) collisionMap[row][col] = 1;
-//                                    if (row >= bridge.getWorldY() + bridge.getH() - GamePanel.tileSize * 2 - 1) collisionMap[row][col] = 1;
-//                                } else {
-//                                    collisionMap[row][col] = 0;
-//                                    if (col <= bridge.getWorldX() + GamePanel.tileSize / 2) collisionMap[row][col] = 1;
-//                                    if (col >= bridge.getWorldX() + bridge.getW() - GamePanel.tileSize - 1) collisionMap[row][col] = 1;
-//                                }
-//                            }
-//                        }
-//                    }
-//
-//                }
-//            }
-//        }
-//
-//    }
+    public void loadStructure(Structure[] structures) {
+
+        for(int i = 0; i < structures.length; i++) {
+
+            if(structures[i] != null) {
+                if(structures[i].getName().equals("door")) {
+                    Door door = (Door) structures[i];
+                    if(door.getLock()) {
+                        int x = door.getX();
+                        int y = door.getY();
+                        int w = door.getW();
+                        int h = door.getH();
+
+                        for(int row = y; row < y+h; row++) {
+                            for(int col = x; col < x+w; col++) {
+                                collisionMap[row][col] = 1;
+                            }
+                        }
+
+                    }
+
+                }
+            }//end if
+
+        }//end for
+
+    }
 
 //    public void loadObject(SuperObject[] object) {
 //

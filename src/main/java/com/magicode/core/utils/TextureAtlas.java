@@ -30,6 +30,14 @@ public class TextureAtlas {
         textures[10][1].loadTexture("/resources/structures/door/doorDown.png");
         textures[10][2].loadTexture("/resources/structures/door/doorRight.png");
         textures[10][3].loadTexture("/resources/structures/door/doorLeft.png");
+        textures[10][4].loadTexture("/resources/structures/door/doorOpenUp.png");
+        textures[10][5].loadTexture("/resources/structures/door/doorOpenDown.png");
+        textures[10][6].loadTexture("/resources/structures/door/doorOpenRight.png");
+        textures[10][7].loadTexture("/resources/structures/door/doorOpenLeft.png");
+        textures[10][8].loadTexture("/resources/structures/door/doorLockUp.png");
+        textures[10][9].loadTexture("/resources/structures/door/doorLockDown.png");
+        textures[10][10].loadTexture("/resources/structures/door/doorLockRight.png");
+        textures[10][11].loadTexture("/resources/structures/door/doorLockLeft.png");
 
 
     }

@@ -23,11 +23,17 @@ public class SceneLoader {
     private static final String DEFAULT_STRUCTURE = "/resources/levels/parts1/structure";
     private int sceneWidth;
     private int sceneHeight;
+
+    private int cooldown;
+    private boolean isCooldown;
     
 
     public SceneLoader(GamePanel gp, String backgroundPath, String structurePath) {
         this.gp = gp;
         loadScene(backgroundPath != null ? backgroundPath : DEFAULT_BACKGROUND, structurePath != null ? structurePath : DEFAULT_STRUCTURE);
+
+        cooldown = 0;
+        isCooldown = false;
     }
 
     private void loadScene(String backgroundPath, String structurePath) {
@@ -54,7 +60,7 @@ public class SceneLoader {
             sceneWidth = Integer.parseInt(parts[0]);
             sceneHeight = Integer.parseInt(parts[1]);
             collision = new Collision(sceneWidth*GamePanel.tileSize, sceneHeight*GamePanel.tileSize);
-            interaction = new Interaction(sceneWidth*GamePanel.tileSize, sceneHeight*GamePanel.tileSize);
+            interaction = new Interaction(gp, sceneWidth*GamePanel.tileSize, sceneHeight*GamePanel.tileSize);
             worldMap = new Layer[sceneHeight][sceneWidth];
             for (int i = 0; i < sceneHeight; i++) {
                 for (int j = 0; j < sceneWidth; j++) {
@@ -65,7 +71,6 @@ public class SceneLoader {
             // Замените этот блок
             for(int row = 0; row < sceneHeight; row++) {
                 line = br.readLine();
-
                 // Оптимизированная обработка строки
                 parts = line.split(" ");
                 for(int col = 0; col < sceneWidth; col++) {
@@ -104,14 +109,24 @@ public class SceneLoader {
             for(int i = 0; i < parts.length; i++) {
                 String structure[] = parts[i].split("_");
                 if(structure[0].equals("door")) {
-                    //Формат: name_x_y_w_h_code_isLock_direction - для двери
+                    //Формат: name_x_y_w_h_code:radius_isLock_direction_state - для двери
                     System.out.println("Дверь создана!!!");
-                    structures[i] = new Door(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]), Integer.parseInt(structure[3]), Integer.parseInt(structure[4]), Integer.parseInt(structure[5]), structure[6].equals("true"), true, structure[7]);
+                    structures[i] = new Door(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
+                            Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
+                            structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7]);
                 }
             }
 
 
+            if(structures != null) {
+                if(collision != null) {
+                    collision.loadStructure(structures);
+                }
+                if(interaction != null) {
+                    interaction.loadStructure(structures);
+                }
 
+            }
 
             System.out.println("Успешная загрузка структур: " + backgroundPath);
 //            System.out.println("Структуры загрузились за: " + ((System.nanoTime()-startTime)/1000000) + " миллисекунд!");
@@ -136,11 +151,38 @@ public class SceneLoader {
         return collision;
     }
 
+    public Interaction getInteraction() {
+        return interaction;
+    }
+
     public Layer[][] getWorldMap() {
         return worldMap;
     }
 
     public void update() {
+
+        if(cooldown == 40) {
+            cooldown = 0;
+            isCooldown = false;
+        }
+        if(isCooldown) cooldown++;
+
+        if(cooldown == 0) {
+            Structure structure = interaction.isPlayerInInteractionZone(structures);
+            if(structure != null && structure.getState()) {
+                if(GamePanel.keys[5]) { // Если открыть-закрыть дверь
+                    isCooldown = true;
+                    if(structure.getName().equals("door")) {
+                        Door door = (Door) structure;
+                        door.changeLock();
+                    }
+
+                    collision.reloadMap(worldMap, structures);
+                    interaction.reloadMap(structures);
+                }
+            }
+        }
+
 
     }
 
