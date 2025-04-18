@@ -3,6 +3,7 @@ package main.java.com.magicode.core;
 
 import main.java.com.magicode.Main;
 import main.java.com.magicode.core.utils.*;
+import main.java.com.magicode.gameplay.entity.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +21,7 @@ public class GamePanel extends JComponent {
     public static enum GameState {
         StartMenu,
         Game,
+        CutScene,
         GameMenu;
     }
     public enum CodeCompilerState {

@@ -1,10 +1,12 @@
 package main.java.com.magicode.core;
 
 import main.java.com.magicode.core.utils.Collision;
+import main.java.com.magicode.core.utils.CutScene;
 import main.java.com.magicode.core.utils.Interaction;
 import main.java.com.magicode.gameplay.world.Layer;
 import main.java.com.magicode.gameplay.world.Structure;
 import main.java.com.magicode.gameplay.world.structures.Door;
+import main.java.com.magicode.gameplay.world.structures.Hatch;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -23,9 +25,10 @@ public class SceneLoader {
     private static final String DEFAULT_STRUCTURE = "/resources/levels/parts1/structure";
     private int sceneWidth;
     private int sceneHeight;
-
+    private CutScene scene;
     private int cooldown;
     private boolean isCooldown;
+    private boolean isCutScene;
     
 
     public SceneLoader(GamePanel gp, String backgroundPath, String structurePath) {
@@ -110,10 +113,17 @@ public class SceneLoader {
                 String structure[] = parts[i].split("_");
                 if(structure[0].equals("door")) {
                     //Формат: name_x_y_w_h_code:radius_isLock_direction_state - для двери
-                    System.out.println("Дверь создана!!!");
                     structures[i] = new Door(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
                             Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
                             structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7]);
+                }
+
+                if(structure[0].equals("hatch")) {
+                    //Формат: name_x_y_w_h_code:radius_state_nextX_nextY - для люка
+                    structures[i] = new Hatch(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
+                            Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
+                            structure[5], structure[6].equals("true"),
+                            structure[7].split(";"));
                 }
             }
 
@@ -159,7 +169,16 @@ public class SceneLoader {
         return worldMap;
     }
 
+    public boolean getCutScene() {
+        return isCutScene;
+    }
+
     public void update() {
+
+        if(isCutScene) {
+            isCutScene = !scene.update();
+            return;
+        }
 
         if(cooldown == 40) {
             cooldown = 0;
@@ -171,10 +190,16 @@ public class SceneLoader {
             Structure structure = interaction.isPlayerInInteractionZone(structures);
             if(structure != null && structure.getState()) {
                 if(GamePanel.keys[5]) { // Если открыть-закрыть дверь
+
                     isCooldown = true;
                     if(structure.getName().equals("door")) {
                         Door door = (Door) structure;
                         door.changeLock();
+                    }
+                    if(structure.getName().equals("hatch")) {
+                        Hatch hatch = (Hatch) structure;
+                        scene = new CutScene(gp, hatch.getRoute());
+                        isCutScene = true;
                     }
 
                     collision.reloadMap(worldMap, structures);

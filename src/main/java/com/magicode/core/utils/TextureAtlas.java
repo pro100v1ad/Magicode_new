@@ -39,6 +39,8 @@ public class TextureAtlas {
         textures[10][10].loadTexture("/resources/structures/door/doorLockRight.png");
         textures[10][11].loadTexture("/resources/structures/door/doorLockLeft.png");
 
+        textures[11][0].loadTexture("/resources/structures/hatch/hatch.png");
+
 
     }
 

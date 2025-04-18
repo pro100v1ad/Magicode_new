@@ -1,7 +1,8 @@
-package main.java.com.magicode.core.utils;
+package main.java.com.magicode.gameplay.entity;
 
 import main.java.com.magicode.core.GamePanel;
-import main.java.com.magicode.gameplay.entity.Entity;
+import main.java.com.magicode.core.utils.Animation;
+import main.java.com.magicode.core.utils.ResourceLoader;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -87,9 +88,20 @@ public class Player extends Entity {
         return screenY;
     }
 
+    public void setWorldX(int worldX) {
+        this.worldX = worldX;
+    }
+
+    public void setWorldY(int worldY) {
+        this.worldY = worldY;
+    }
+
 
     public void update() {
 //        System.out.println("Pos: " + worldX + " : " + worldY);
+        if(gp.sceneLoader.getCutScene()) {
+            return;
+        }
         // Определяет направление движения все 8
         if (GamePanel.keys[0] && GamePanel.keys[3]) {
             direction = "up_right";
@@ -157,15 +169,6 @@ public class Player extends Entity {
             for(int i = 0; i < speed/sqrt(2); i++) if(gp.getCollision().checkCollisionRight(this) && worldX < gp.getWorldWidth()*GamePanel.tileSize-GamePanel.tileSize*2-1) worldX += 1;
         }
 
-//        if (!direction.equals(lastDirection)) {
-//            switch (direction) {
-//                case "up": animations[1].reset(); break;
-//                case "down": animations[0].reset(); break;
-//                case "left": case "up_left": case "down_left": animations[2].reset(); break;
-//                case "right": case "up_right": case "down_right": animations[3].reset(); break;
-//            }
-//            lastDirection = direction;
-//        }
 
         switch (direction) {
             case "up": animations[1].update(); break;
@@ -176,7 +179,11 @@ public class Player extends Entity {
 
     }
 
+
     public void draw(Graphics2D g) {
+        if(gp.sceneLoader.getCutScene()) {
+            return;
+        }
         int playerWidth = (int)(GamePanel.tileSize*2/2);
         int playerHeight = (int)(GamePanel.tileSize*4/2);
         switch (direction) { // Анимирует движение по направлениям

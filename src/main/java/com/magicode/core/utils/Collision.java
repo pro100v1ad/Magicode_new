@@ -155,8 +155,7 @@ public class Collision {
         int code = entity.getCollisionCode();
         boolean flag = false;
         for(int i = x; i < x + w; i++) {
-//            if(collisionMap[y][i] != entity.collisionCode) System.out.println(" Разберись почему нет кода сущности тут " + entity.collisionCode);
-            if(collisionMap[y + h - h/3+1][i] != entity.getCollisionCode()) System.out.println(" Разберись почему нет кода сущности тут up" + entity.getCollisionCode());
+//            if(collisionMap[y + h - h/3+1][i] != entity.getCollisionCode()) System.out.println(" Разберись почему нет кода сущности тут up" + entity.getCollisionCode());
             try{
 //                if(collisionMap[y-1][i] == 1) flag = true;
                 if(collisionMap[y + h - h/3-1][i] == 1) flag = true;
@@ -178,7 +177,7 @@ public class Collision {
         int code = entity.getCollisionCode();
         boolean flag = false;
         for(int i = x; i < x + w; i++) {
-            if(collisionMap[y+h-1][i] != entity.getCollisionCode()) System.out.println(" Разберись почему нет кода сущности тут down" + entity.getCollisionCode());
+//            if(collisionMap[y+h-1][i] != entity.getCollisionCode()) System.out.println(" Разберись почему нет кода сущности тут down" + entity.getCollisionCode());
             try{
                 if(collisionMap[y+h][i] == 1) flag = true;
             }catch (Exception e) {
@@ -200,8 +199,8 @@ public class Collision {
         boolean flag = false;
         for(int i = y; i < y + h; i++) {
             if(i > y + h - h/3) {
-                if (collisionMap[i][x + w - 1] != entity.getCollisionCode())
-                    System.out.println(" Разберись почему нет кода сущности тут right" + entity.getCollisionCode());
+//                if (collisionMap[i][x + w - 1] != entity.getCollisionCode())
+//                    System.out.println(" Разберись почему нет кода сущности тут right" + entity.getCollisionCode());
                 try {
                     if (collisionMap[i][x + w] == 1) flag = true;
                 } catch (Exception e) {
@@ -225,8 +224,8 @@ public class Collision {
         boolean flag = false;
         for(int i = y; i < y + h; i++) {
             if(i > y + h - h/3) {
-                if (collisionMap[i][x] != entity.getCollisionCode())
-                    System.out.println(" Разберись почему нет кода сущности тут left" + entity.getCollisionCode());
+//                if (collisionMap[i][x] != entity.getCollisionCode())
+//                    System.out.println(" Разберись почему нет кода сущности тут left" + entity.getCollisionCode());
                 try {
                     if (collisionMap[i][x - 1] == 1) flag = true;
                 } catch (Exception e) {
