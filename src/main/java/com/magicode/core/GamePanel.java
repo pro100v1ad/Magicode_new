@@ -4,6 +4,7 @@ package main.java.com.magicode.core;
 import main.java.com.magicode.Main;
 import main.java.com.magicode.core.utils.*;
 import main.java.com.magicode.gameplay.entity.Player;
+import main.java.com.magicode.ui.gamestate.StartMenu;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,15 +22,12 @@ public class GamePanel extends JComponent {
     public static enum GameState {
         StartMenu,
         Game,
-        CutScene,
+        GameOpenTablet,
+        GameOpenDirectory,
         GameMenu;
     }
-    public enum CodeCompilerState {
-        Open,
-        Close;
-    }
+
     public GameState state = GameState.StartMenu;
-    public CodeCompilerState stateCompiler = CodeCompilerState.Close;
 
     public static boolean[] keys = new boolean[256]; // Содержит список состояния нажатия всех необходимых клавиш
     public static boolean[] mouseButtons = new boolean[3]; // Для левой, средней и правой кнопок
@@ -64,6 +62,8 @@ public class GamePanel extends JComponent {
     private Sound sound = new Sound();
 // Конец объявления классов необходимых для работы игры
 
+    public StartMenu startMenu;
+
     // Объявление классов Необходимых в процессе разработки
     public Listeners listeners;
     public TextureAtlas textureAtlas;
@@ -73,6 +73,8 @@ public class GamePanel extends JComponent {
 
     public GamePanel() { // Конструктор (что-то делает)
         super();
+
+        startMenu = new StartMenu(this);
 
         listeners = new Listeners(this);
         textureAtlas = new TextureAtlas(20, 20);
@@ -246,8 +248,10 @@ public class GamePanel extends JComponent {
 
     }
     public void render1(){
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, WIDTH, HEIGHT);
+
+        startMenu.draw(g);
+        // Game
+
         sceneLoader.draw(g);
         player.draw(g);
 

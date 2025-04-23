@@ -107,9 +107,7 @@ public class Listeners implements MouseListener, MouseMotionListener, KeyListene
             GamePanel.keys[5] = true;
         }
 
-        if(key == KeyEvent.VK_F6) {
-            gp.stateCompiler = GamePanel.CodeCompilerState.Open; // TEMPPP
-        }
+
 
 
     }

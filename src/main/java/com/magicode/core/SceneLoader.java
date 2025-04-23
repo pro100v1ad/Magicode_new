@@ -183,10 +183,15 @@ public class SceneLoader {
 
     public void update() {
 
+        if(gp.state.equals(GamePanel.GameState.StartMenu)) {
+            return;
+        }
+
         if(isCutScene) {
             isCutScene = !scene.update();
             return;
         }
+
 
         if(cooldown == 40) {
             cooldown = 0;
@@ -266,6 +271,11 @@ public class SceneLoader {
     }
 
     public void draw(Graphics2D g) {
+        if(gp.state.equals(GamePanel.GameState.StartMenu)) {
+            return;
+        }
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
         drawBackground(g);
         drawStructure(g);
     }

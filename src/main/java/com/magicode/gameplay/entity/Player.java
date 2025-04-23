@@ -102,6 +102,9 @@ public class Player extends Entity {
         if(gp.sceneLoader.getCutScene()) {
             return;
         }
+        if(gp.state.equals(GamePanel.GameState.StartMenu)) {
+            return;
+        }
         // Определяет направление движения все 8
         if (GamePanel.keys[0] && GamePanel.keys[3]) {
             direction = "up_right";
@@ -182,6 +185,9 @@ public class Player extends Entity {
 
     public void draw(Graphics2D g) {
         if(gp.sceneLoader.getCutScene()) {
+            return;
+        }
+        if(gp.state.equals(GamePanel.GameState.StartMenu)) {
             return;
         }
         int playerWidth = (int)(GamePanel.tileSize*2/2);
