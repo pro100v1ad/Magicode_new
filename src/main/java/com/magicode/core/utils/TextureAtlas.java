@@ -54,7 +54,8 @@ public class TextureAtlas {
         textures[12][10].loadTexture("/resources/structures/chest/chestLockRight.png");
         textures[12][11].loadTexture("/resources/structures/chest/chestLockLeft.png");
 
-
+        textures[13][0].loadTexture("/resources/objects/key.png"); // Текстура Ключа
+        textures[13][1].loadTexture("/resources/objects/book.png"); // Текстура Книги
 
 
     }

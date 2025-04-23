@@ -104,7 +104,7 @@ public class GamePanel extends JComponent {
     }
 
     public void setupGame() {
-        playMusic(0);
+        //playMusic(0);
     }
 
     public void checkClick() {
@@ -251,7 +251,7 @@ public class GamePanel extends JComponent {
         sceneLoader.draw(g);
         player.draw(g);
 
-//        sceneLoader.getInteraction().drawInteractionZones(g);
+        sceneLoader.getInteraction().drawInteractionZones(g);
 
         draw();
     }
