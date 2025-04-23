@@ -4,18 +4,45 @@ import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.gameplay.world.GameObject;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.IOException;
 
 public class Key extends GameObject {
     private GamePanel gp;
-    public Key(GamePanel gp) {
-        name = "Key";
-        code = 1;
+
+
+    public Key(GamePanel gp, int posX, int posY, int code) {
+
+        name = "key";
         this.gp = gp;
-        image = gp.textureAtlas.textures[13][0].getTexture();
-        w = 32;
-        h = 32;
+        this.image = gp.textureAtlas.textures[13][0].getTexture();
+        this.posX = posX;
+        this.posY = posY;
+        this.wight = 32;
+        this.height = 32;
+        this.code = code;
+        this.radius = 16;
+
     }
+
+    public void draw(Graphics2D g) {
+
+
+        int screenX = (int) (posX - gp.player.getWorldX() + gp.player.getScreenX());
+        int screenY = (int) (posY - gp.player.getWorldY() + gp.player.getScreenY());
+
+        if (posX + GamePanel.tileSize > gp.player.getWorldX() - gp.player.getScreenX() &&
+                posX - GamePanel.tileSize * 3 < gp.player.getWorldX() + gp.player.getScreenX() &&
+                posY + GamePanel.tileSize > gp.player.getWorldY() - gp.player.getScreenY() &&
+                posY - GamePanel.tileSize * 4 < gp.player.getWorldY() + gp.player.getScreenY())
+        {
+            g.drawImage(image, screenX, screenY, wight, height, null);
+        }
+
+    }
+
+
+
 
 }
 

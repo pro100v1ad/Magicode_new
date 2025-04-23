@@ -11,26 +11,24 @@ public class Chest extends Structure {
 
     private boolean isLock;
     private GamePanel gp;
-    private GameObject storedObject; // Добавил Объект
+    private int objectCode;
+    private String objectName;
 
     public Chest(GamePanel gp, int x, int y, int w, int h, String code, boolean isLock, boolean state, String direction) {
+        this.gp = gp;
         this.name = "chest";
-
         String[] parts = code.split(":"); // Немного изменил парсинг (для работы третьего опционального параметра)
         this.code = Integer.parseInt(parts[0]);
         this.radius = Integer.parseInt(parts[1]);
-
-        if (parts.length > 2) { // Мы парсим parts[2] как код объекта и вызываем метод setObjectByCode, чтобы положить в сундук конкретный объект
-            int objectCode = Integer.parseInt(parts[2]);
-            setObjectByCode(objectCode);
-        }
+        this.objectCode = Integer.parseInt(parts[0]); // Сундук не может быть пустым теперь
+        this.objectName = parts[2];
 
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
 
-        this.gp = gp;
+
         this.isLock = isLock;
         this.state = state;
         this.direction = direction;
@@ -73,31 +71,28 @@ public class Chest extends Structure {
         return isLock;
     }
 
-    public void openChest() {
+
+    public GameObject openChest(GameObject object) {
         isLock = false;
         code = 0;
         radius = 0;
         loadImage();
-        if (storedObject != null) {  // Добавил для Object
-            storedObject.setVisible(true); //  Если в сундуке есть объект (storedObject не null), то показать его
-        }
+        return setObjectByCode(object, objectName);
     }
 
-    private void setObjectByCode(int objectCode) { // Добавил функцию
-        switch (objectCode) {
-            case 1:
-                storedObject = new Key(gp);
+    private GameObject setObjectByCode(GameObject object, String objectName) { // Добавил функцию
+        switch (objectName) {
+            case "key":
+                object = new Key(gp, x, y, this.objectCode);
                 break;
             //case 2:
                 //storedObject = new Book(gp);
                 //break;
             default:
                 System.out.println("Error = NULL");
-                storedObject = null;
+                object = null;
         }
-        if (storedObject != null) {
-            storedObject.setPosition(this.x, this.y);
-        }
+        return object;
     }
 
     @Override
@@ -112,9 +107,6 @@ public class Chest extends Structure {
                 y - GamePanel.tileSize * 4 < gp.player.getWorldY() + gp.player.getScreenY())
         {
             g.drawImage(image, screenX, screenY, w, h, null);
-            if (storedObject != null) { // Если объект есть, отрисовать его в нужном месте (поверх сундука)
-                storedObject.draw(g, screenX, screenY);
-            }
         }
 
     }

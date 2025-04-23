@@ -3,8 +3,10 @@ package main.java.com.magicode.core;
 import main.java.com.magicode.core.utils.Collision;
 import main.java.com.magicode.core.utils.CutScene;
 import main.java.com.magicode.core.utils.Interaction;
+import main.java.com.magicode.gameplay.world.GameObject;
 import main.java.com.magicode.gameplay.world.Layer;
 import main.java.com.magicode.gameplay.world.Structure;
+import main.java.com.magicode.gameplay.world.objects.Key;
 import main.java.com.magicode.gameplay.world.structures.Chest;
 import main.java.com.magicode.gameplay.world.structures.Door;
 import main.java.com.magicode.gameplay.world.structures.Hatch;
@@ -22,6 +24,7 @@ public class SceneLoader {
     private GamePanel gp;
     private Layer[][] worldMap;
     private Structure[] structures;
+    private GameObject[] objects;
     private static final String DEFAULT_BACKGROUND = "/resources/levels/parts1/background";
     private static final String DEFAULT_STRUCTURE = "/resources/levels/parts1/structure";
     private int sceneWidth;
@@ -110,6 +113,7 @@ public class SceneLoader {
             }
             String parts[] = line.split(" ");
             structures = new Structure[parts.length];
+            objects = new GameObject[parts.length];
             for(int i = 0; i < parts.length; i++) {
                 String structure[] = parts[i].split("_");
                 if(structure[0].equals("door")) {
@@ -208,13 +212,46 @@ public class SceneLoader {
                         scene = new CutScene(gp, hatch.getRoute());
                         isCutScene = true;
                     } else if(structure.getName().equals("chest")) {
+                        int index = 0;
+                        for(int i = 0; i < structures.length; i++) { // Это я пытался придумать как мне несколько объектов загружать в массив объектов
+                            // Додумался лишь до того, что если массив структур и объектов одного размера. То и по индексу объекты будут равны со структурой которая их создает
+                            // Эт не сильно оптимально, т.к. те структуры что не создают объект есть, а в массиве объектов место под это выделено, и получается что оно всегда пустует
+                            // Нужно что-то более умное придумать для этого. Чтобы каждый новый объект добавлялся в конец массива. И при удалении одного объекта его места в массиве мог занять другой.
+                            // Коммент сотри когда прочитаешь.
+                            if(structures[i].equals(structure)) {
+                                index = i;
+                                break;
+                            }
+                        }
                         Chest chest = (Chest) structure;
-                        chest.openChest();
+                        objects[index] = chest.openChest(objects[index]);
                     }
 
                     collision.reloadMap(worldMap, structures);
-                    interaction.reloadMap(structures);
+                    interaction.reloadMap(structures, objects);
                 }
+            }
+            if(!isCooldown) {
+                GameObject object = interaction.isPlayerInInteractionZone(objects);
+                if (object != null) {
+                    if (GamePanel.keys[5]) { // Если открыть-закрыть дверь
+
+                        isCooldown = true;
+                        if (object.getName().equals("key")) {
+                            for (int i = 0; i < objects.length; i++) {
+                                if(objects[i] != null) {
+                                    if (objects[i].equals(object)) {
+                                        objects[i] = null;
+                                        break;
+                                    }
+                                }
+
+                            }
+                        }
+                        interaction.reloadMap(structures, objects);
+                    }
+                }
+
             }
         }
 
@@ -265,8 +302,17 @@ public class SceneLoader {
         }
     }
 
+    public void drawObjects(Graphics2D g) {
+        for(GameObject o: objects) {
+            if(o != null) {
+                o.draw(g);
+            }
+        }
+    }
+
     public void draw(Graphics2D g) {
         drawBackground(g);
         drawStructure(g);
+        drawObjects(g);
     }
 }
