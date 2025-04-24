@@ -15,8 +15,17 @@ public class MenuInGame {
     private String text2;
 
     private boolean state;
-    private BufferedImage buttonImage;
-    private int posButtonX, posButtonY;
+
+    private BufferedImage buttonMenuImage;
+    private int posButtonMenuX, posButtonMenuY;
+
+    private BufferedImage buttonDirectoryImage;
+    private BufferedImage directory;
+    private int posButtonDirectoryX, posButtonDirectoryY;
+
+    private BufferedImage buttonTabletImage;
+    private BufferedImage tablet;
+    private int posButtonTabletX, posButtonTabletY;
 
     private int fontSize;
 
@@ -33,9 +42,19 @@ public class MenuInGame {
                 GamePanel.HEIGHT/2-fontSize/2 + 100, text2, fontSize, true);
 
         this.state = false;
-        buttonImage = gp.textureAtlas.textures[14][0].getTexture();
-        posButtonX = 10;
-        posButtonY = 10;
+        buttonMenuImage = gp.textureAtlas.textures[14][0].getTexture();
+        posButtonMenuX = 10;
+        posButtonMenuY = 10;
+
+        buttonDirectoryImage = gp.textureAtlas.textures[14][2].getTexture();
+        directory = gp.textureAtlas.textures[14][4].getTexture();
+        posButtonDirectoryX = 10;
+        posButtonDirectoryY = 96;
+
+        buttonTabletImage = gp.textureAtlas.textures[14][2].getTexture();
+        tablet = gp.textureAtlas.textures[14][5].getTexture();
+        posButtonTabletX = 10;
+        posButtonTabletY = 232;
 
     }
 
@@ -64,17 +83,43 @@ public class MenuInGame {
         } else {
             int mX = GamePanel.mouseX;
             int mY = GamePanel.mouseY;
-            if(mX >= posButtonX && mX <= posButtonX + GamePanel.tileSize*2
-                    && mY >= posButtonY && mY <= posButtonY + GamePanel.tileSize*2) {
-                buttonImage = gp.textureAtlas.textures[14][1].getTexture();
+            if(mX >= posButtonMenuX && mX <= posButtonMenuX + GamePanel.tileSize*2
+                    && mY >= posButtonMenuY && mY <= posButtonMenuY + GamePanel.tileSize*2) {
+                buttonMenuImage = gp.textureAtlas.textures[14][1].getTexture();
                 if(click) {
                     click = false;
                     gp.state = GamePanel.GameState.GameMenu;
                     state = true;
                 }
             } else {
-                buttonImage = gp.textureAtlas.textures[14][0].getTexture();
+                buttonMenuImage = gp.textureAtlas.textures[14][0].getTexture();
             }
+
+            if(mX >= posButtonDirectoryX && mX <= posButtonDirectoryX + GamePanel.tileSize*3.5
+                    && mY >= posButtonDirectoryY && mY <= posButtonDirectoryY + GamePanel.tileSize*3.5) {
+                buttonDirectoryImage = gp.textureAtlas.textures[14][3].getTexture();
+                if(click) {
+                    click = false;
+                    gp.state = GamePanel.GameState.GameMenu;
+                    state = true;
+                }
+            } else {
+                buttonDirectoryImage = gp.textureAtlas.textures[14][2].getTexture();
+            }
+
+            if(mX >= posButtonTabletX && mX <= posButtonTabletX + GamePanel.tileSize*3.5
+                    && mY >= posButtonTabletY && mY <= posButtonTabletY + GamePanel.tileSize*3.5) {
+                buttonTabletImage = gp.textureAtlas.textures[14][3].getTexture();
+                if(click) {
+                    click = false;
+                    gp.state = GamePanel.GameState.GameMenu;
+                    state = true;
+                }
+            } else {
+                buttonTabletImage = gp.textureAtlas.textures[14][2].getTexture();
+            }
+
+
         }
 
 
@@ -91,7 +136,16 @@ public class MenuInGame {
             button[1].draw(g);
         } else {
 
-            g.drawImage(buttonImage, posButtonX, posButtonY, GamePanel.tileSize*2, GamePanel.tileSize*2, null);
+            g.drawImage(buttonMenuImage, posButtonMenuX, posButtonMenuY, GamePanel.tileSize*2, GamePanel.tileSize*2, null);
+
+            g.drawImage(buttonDirectoryImage, posButtonDirectoryX, posButtonDirectoryY, (int)(GamePanel.tileSize*3.5), (int)(GamePanel.tileSize*3.5), null);
+            g.drawImage(directory, posButtonDirectoryX + GamePanel.tileSize/2, posButtonDirectoryY + GamePanel.tileSize/2
+                    , (int)(GamePanel.tileSize*2.5), (int)(GamePanel.tileSize*2.5), null);
+
+            g.drawImage(buttonTabletImage, posButtonTabletX, posButtonTabletY, (int)(GamePanel.tileSize*3.5), (int)(GamePanel.tileSize*3.5), null);
+            g.drawImage(tablet, posButtonTabletX + GamePanel.tileSize/2, posButtonTabletY + GamePanel.tileSize/2
+                    , (int)(GamePanel.tileSize*2.5), (int)(GamePanel.tileSize*2.5), null);
+
 
         }
 

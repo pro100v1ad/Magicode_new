@@ -341,13 +341,14 @@ public class GamePanel extends JComponent {
         if(state.equals(GameState.Game)) { // Так как оно может быть еще не создано
             sceneLoader.draw(g);
             player.draw(g);
+//            sceneLoader.getInteraction().drawInteractionZones(g);
         }
 
         if(state.equals(GameState.GameMenu) || state.equals(GameState.Game)) { // так как оно может быть еще не создано
             menuInGame.draw(g);
         }
 
-//        sceneLoader.getInteraction().drawInteractionZones(g);
+
 
         draw();
     }
