@@ -28,4 +28,8 @@ public class Main {
     public static void setTitle(String name) {
         f.setTitle(name);
     }
+
+    public static String getTitle() {
+        return f.getTitle();
+    }
 }

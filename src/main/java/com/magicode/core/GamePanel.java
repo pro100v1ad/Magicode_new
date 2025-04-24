@@ -10,6 +10,7 @@ import main.java.com.magicode.ui.gamestate.StartMenu;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.*;
 
 /*
 В этом классе происходят все моменты
@@ -45,6 +46,14 @@ public class GamePanel extends JComponent {
     public static int WIDTH = MAS_WIDTH*originalTileSize;
     public static int HEIGHT = MAS_HEIGHT*originalTileSize;
 
+    private volatile long thread1WorkTime = 0;
+    private volatile long thread2WorkTime = 0;
+    private volatile long thread1LastCycle = 0;
+    private volatile long thread2LastCycle = 0;
+    private volatile long thread1WorkNanos = 0;
+    private volatile long thread2WorkNanos = 0;
+    private long lastTitleUpdateTime = System.nanoTime();
+
     // Настройка FPS UPS
     public static final float UPDATE_RATE = 40.0f;
     public static final float DRAW_RATE = 60.0f;
@@ -62,6 +71,7 @@ public class GamePanel extends JComponent {
     private Graphics2D g;
     private Sound sound = new Sound();
 // Конец объявления классов необходимых для работы игры
+    public GameSaveManager saveManager;
 
     public StartMenu startMenu;
     public MenuInGame menuInGame;
@@ -76,7 +86,10 @@ public class GamePanel extends JComponent {
     public GamePanel() { // Конструктор (что-то делает)
         super();
 
-        startMenu = new StartMenu(this);
+        saveManager = new GameSaveManager();
+        saveManager.ensureSaveDirectoryExists(); // проверка наличия папки.
+
+        startMenu = new StartMenu(this, saveManager.checkIfFilesExist());
 
         listeners = new Listeners(this);
         textureAtlas = new TextureAtlas(20, 20);
@@ -111,26 +124,24 @@ public class GamePanel extends JComponent {
     }
 
 
-    public void run1() { // Тут вся логика FPS и UPS, в подробности лучше не вдаваться
-
+    public void run1() {
         int fps = 0;
         int upd = 0;
         int updl = 0;
-
         long count = 0;
         float deltaUpdate = 0;
         float deltaDraw = 0;
         long lastTime = Time.get();
 
-        // Интервалы для update и draw
-        final float UPDATE_INTERVAL = (float)Time.SECOND / UPDATE_RATE; // 20 раз в секунду
-        final float DRAW_INTERVAL = Time.SECOND / DRAW_RATE; // 60 раз в секунду
-
-        image = new BufferedImage(WIDTH, HEIGHT, 1);
+        image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         g = (Graphics2D) image.getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        final float UPDATE_INTERVAL = (float)Time.SECOND / UPDATE_RATE;
+        final float DRAW_INTERVAL = Time.SECOND / DRAW_RATE;
+
         while (running) {
+            long cycleStart = Time.get();
             long now = Time.get();
             long elapsedTime = now - lastTime;
             lastTime = now;
@@ -153,41 +164,54 @@ public class GamePanel extends JComponent {
                 deltaDraw--;
             }
 
-            // Если не нужно ничего обновлять или отрисовывать, спим
-            if (deltaUpdate <= 1 && deltaDraw <= 1) {
+            // Измеряем время работы цикла
+            thread1WorkNanos += Time.get() - cycleStart;
+
+            // Обновляем заголовок раз в секунду
+            if (count >= Time.SECOND) {
+                double secondsPassed = count / 1e9;
+                double thread1Load = (thread1WorkNanos / 1e7) / secondsPassed;
+                double thread2Load = (thread2WorkNanos / 1e7) / secondsPassed;
+
+                // Ограничиваем максимум 999% и округляем
+                thread1Load = Math.min(Math.round(thread1Load * 10) / 10.0, 999.9);
+                thread2Load = Math.min(Math.round(thread2Load * 10) / 10.0, 999.9);
+
+                Main.setTitle(String.format("%s || Fps: %d | Upd: %d | Updl: %d | T1: %.1f%% | T2: %.1f%%",
+                        TITLE, fps, upd, updl, thread1Load, thread2Load));
+
+                // Сбрасываем счетчики
+                fps = 0;
+                upd = 0;
+                updl = 0;
+                count = 0;
+                thread1WorkNanos = 0;
+                thread2WorkNanos = 0;
+            }
+
+            // Регулируем FPS
+            long cycleTime = Time.get() - cycleStart;
+            long sleepTime = (long)(DRAW_INTERVAL - cycleTime) / 1000000;
+            if (sleepTime > 0) {
                 try {
-                    Thread.sleep(IDLE_TIME);
+                    Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-
-            // Обновление заголовка окна
-            if (count >= Time.SECOND) {
-                Main.setTitle(TITLE + " || Fps: " + fps + " | Upd: " + upd + " | Updl: " + updl);
-                upd = 0;
-                fps = 0;
-                updl = 0;
-                count = 0;
-            }
-
-        } // end while
-
+        }
     }
 
     public void run2() {
-
         int upd = 0;
-        int updl = 0;
-
         long count = 0;
         float deltaUpdate = 0;
         long lastTime = Time.get();
 
-        // Интервалы для update и draw
-        final float UPDATE_INTERVAL = (float)Time.SECOND / UPDATE_RATE; // 20 раз в секунду
+        final float UPDATE_INTERVAL = (float)Time.SECOND / UPDATE_RATE;
 
-        while(running) {
+        while (running) {
+            long cycleStart = Time.get();
             long now = Time.get();
             long elapsedTime = now - lastTime;
             lastTime = now;
@@ -202,15 +226,36 @@ public class GamePanel extends JComponent {
                 deltaUpdate--;
             }
 
-            // Если не нужно ничего обновлять, спим
-            if (deltaUpdate <= 1) {
+            // Измеряем время работы цикла
+            thread2WorkNanos += Time.get() - cycleStart;
+
+            // Сбрасываем счетчики при обновлении заголовка (в run1)
+            if (count >= Time.SECOND) {
+                count = 0;
+            }
+
+            // Регулируем частоту обновлений
+            long cycleTime = Time.get() - cycleStart;
+            long sleepTime = (long)(UPDATE_INTERVAL - cycleTime) / 1000000;
+            if (sleepTime > 0) {
                 try {
-                    Thread.sleep(IDLE_TIME);
+                    Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-        } // end while
+        }
+    }
+
+    public synchronized String getWindowTitle(int fps, int upd, int updl) {
+        double thread1Load = (double)thread1WorkTime / (Time.SECOND / 1000);
+        double thread2Load = (double)thread2WorkTime / (Time.SECOND / 1000);
+
+        return TITLE + " || Fps: " + fps +
+                " | Upd: " + upd +
+                " | Updl: " + updl +
+                " | Thread1: " + String.format("%.1f", thread1Load * 100) + "%" +
+                " | Thread2: " + String.format("%.1f", thread2Load * 100) + "%";
     }
 
 
@@ -227,13 +272,14 @@ public class GamePanel extends JComponent {
     public void startNewGame() {
         sceneLoader = new SceneLoader(this, null, null);
         player = new Player(this);
-
         menuInGame = new MenuInGame(this);
     }
 
     public void continueGame() {
-        sceneLoader = new SceneLoader(this, null, null); // Указать от куда грузить
-        player = new Player(this); // Затем позиция игрока, его характеристики
+        sceneLoader = new SceneLoader(this, saveManager.getSaveFilePathBackground(), saveManager.getSaveFilePathStructure());
+        player = new Player(this);
+        menuInGame = new MenuInGame(this);
+
     }
 
     public void exitGame() {
@@ -241,8 +287,10 @@ public class GamePanel extends JComponent {
     }
 
     public void saveGame() {
-        System.out.println("Игра сохранена");
+        saveManager.saveGame(sceneLoader.getWorldMap(), sceneLoader.getStructures());
+        startMenu.setState(true);
     }
+
 
     public void click() {
         if(state.equals(GameState.StartMenu)) startMenu.click();
