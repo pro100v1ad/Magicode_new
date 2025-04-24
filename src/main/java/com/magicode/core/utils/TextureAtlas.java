@@ -54,6 +54,9 @@ public class TextureAtlas {
         textures[12][10].loadTexture("/resources/structures/chest/chestLockRight.png");
         textures[12][11].loadTexture("/resources/structures/chest/chestLockLeft.png");
 
+        textures[14][0].loadTexture("/resources/gui/button/menuButtonPassive.png");
+        textures[14][1].loadTexture("/resources/gui/button/menuButtonActive.png");
+
 
 
 

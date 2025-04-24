@@ -8,19 +8,54 @@ public class StartMenu {
 
     private GamePanel gp;
     private Button[] button;
+    private boolean click;
+
+    private String text1;
+    private String text2;
+    private String text3;
+
+    private int fontSize;
 
     public StartMenu(GamePanel gp) {
         this.gp = gp;
+        this.text1 = "Продолжить";
+        this.text2 = "Новая игра";
+        this.text3 = "Выход";
 
+        this.fontSize = 48;
         button = new Button[3];
-        button[0] = new Button(100, 100, "Продолжить", 128, new Color(88, 88, 88), false);
+        button[0] = new Button(gp, GamePanel.WIDTH/2-(int)(text1.length()*fontSize/1.55)/2,
+                GamePanel.HEIGHT/2-fontSize/2, text1, fontSize, false);
+        button[1] = new Button(gp, GamePanel.WIDTH/2-(int)(text2.length()*fontSize/1.55)/2,
+                GamePanel.HEIGHT/2-fontSize/2 + 100, text2, fontSize, true);
+        button[2] = new Button(gp, GamePanel.WIDTH/2-(int)(text3.length()*fontSize/1.55)/2,
+                GamePanel.HEIGHT/2-fontSize/2 + 200, text3, fontSize, true);
+    }
+
+    public void click() {
+        click = true;
     }
 
     public void update() {
-
+        if(click) {
+            button[0].click();
+            button[1].click();
+            button[2].click();
+            click = false;
+        }
         if(button[0].update()) {
+            gp.startNewGame();
             gp.state = GamePanel.GameState.Game;
         }
+        if(button[1].update()) {
+            gp.startNewGame();
+            gp.state = GamePanel.GameState.Game;
+        }
+        if(button[2].update()) {
+            gp.exitGame();
+        }
+
+
 
     }
 
@@ -30,6 +65,8 @@ public class StartMenu {
         g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 
         button[0].draw(g);
+        button[1].draw(g);
+        button[2].draw(g);
     }
 
 }

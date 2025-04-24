@@ -4,6 +4,7 @@ package main.java.com.magicode.core;
 import main.java.com.magicode.Main;
 import main.java.com.magicode.core.utils.*;
 import main.java.com.magicode.gameplay.entity.Player;
+import main.java.com.magicode.ui.gamestate.MenuInGame;
 import main.java.com.magicode.ui.gamestate.StartMenu;
 
 import javax.swing.*;
@@ -63,6 +64,7 @@ public class GamePanel extends JComponent {
 // Конец объявления классов необходимых для работы игры
 
     public StartMenu startMenu;
+    public MenuInGame menuInGame;
 
     // Объявление классов Необходимых в процессе разработки
     public Listeners listeners;
@@ -80,8 +82,7 @@ public class GamePanel extends JComponent {
         textureAtlas = new TextureAtlas(20, 20);
         setWhoHaveCollision();
 
-        sceneLoader = new SceneLoader(this, null, null);
-        player = new Player(this);
+
 
         setPreferredSize(new Dimension(WIDTH, HEIGHT)); // устанавливает размеры окна приложения
         setFocusable(true);
@@ -109,8 +110,6 @@ public class GamePanel extends JComponent {
         playMusic(0);
     }
 
-    public void checkClick() {
-    }
 
     public void run1() { // Тут вся логика FPS и UPS, в подробности лучше не вдаваться
 
@@ -225,6 +224,30 @@ public class GamePanel extends JComponent {
         thread2.start();
     }
 
+    public void startNewGame() {
+        sceneLoader = new SceneLoader(this, null, null);
+        player = new Player(this);
+
+        menuInGame = new MenuInGame(this);
+    }
+
+    public void continueGame() {
+        sceneLoader = new SceneLoader(this, null, null); // Указать от куда грузить
+        player = new Player(this); // Затем позиция игрока, его характеристики
+    }
+
+    public void exitGame() {
+        System.out.println("Выход из игры!");
+    }
+
+    public void saveGame() {
+        System.out.println("Игра сохранена");
+    }
+
+    public void click() {
+        if(state.equals(GameState.StartMenu)) startMenu.click();
+        if(state.equals(GameState.GameMenu) || state.equals(GameState.Game)) menuInGame.click();
+    }
 
     public int getWorldWidth() {
         return sceneLoader.getSceneWidth();
@@ -239,21 +262,42 @@ public class GamePanel extends JComponent {
     }
 
     public void update1() {
-        player.update();
+        if(state.equals(GameState.Game)) {
+            player.update();
+        }
+
 
     }
 
     public void update2() {
-        sceneLoader.update();
+        if(state.equals(GameState.StartMenu)) {
+            startMenu.update();
+        }
+
+        if(state.equals(GameState.GameMenu) || state.equals(GameState.Game)) {
+            menuInGame.update();
+        }
+
+        if(state.equals(GameState.Game)) {
+            sceneLoader.update();
+        }
 
     }
     public void render1(){
+        if(state.equals(GamePanel.GameState.StartMenu)) {
+            startMenu.draw(g);
+        }
 
-        startMenu.draw(g);
+
         // Game
+        if(state.equals(GameState.Game)) { // Так как оно может быть еще не создано
+            sceneLoader.draw(g);
+            player.draw(g);
+        }
 
-        sceneLoader.draw(g);
-        player.draw(g);
+        if(state.equals(GameState.GameMenu) || state.equals(GameState.Game)) { // так как оно может быть еще не создано
+            menuInGame.draw(g);
+        }
 
 //        sceneLoader.getInteraction().drawInteractionZones(g);
 

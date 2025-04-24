@@ -22,15 +22,13 @@ public class Listeners implements MouseListener, MouseMotionListener, KeyListene
         // MouseEvent.BUTTON3 - правая кнопка
 
         if (e.getButton() == MouseEvent.BUTTON1) {
-//            System.out.println("Левый клик на координатах: (" + e.getX() + ", " + e.getY() + ")");
-            gp.checkClick();
+            gp.click();
             // Можно передать событие в GamePanel или Player
-
         }
 
-//        if (e.getButton() == MouseEvent.BUTTON3) {
-//            System.out.println("Правый клик!");
-//        }
+        if (e.getButton() == MouseEvent.BUTTON3) {
+            System.out.println("Правый клик!");
+        }
     }
 
     @Override
