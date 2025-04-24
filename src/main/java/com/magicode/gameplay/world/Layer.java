@@ -5,8 +5,10 @@ import main.java.com.magicode.core.utils.ResourceLoader;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
-public class Layer {
+public class Layer implements Serializable {
+    private static final long serialVersionUID = 1L;
     private int firstLayer;
     private int secondLayer;
     private boolean collision = false;

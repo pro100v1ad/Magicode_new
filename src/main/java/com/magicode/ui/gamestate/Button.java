@@ -35,6 +35,14 @@ public class Button extends GUI {
         click = true;
     }
 
+    public void setState(boolean state) {
+        this.state = state;
+    }
+
+    public boolean getState() {
+        return state;
+    }
+
     public boolean update() {
         if(!state) {
             return false;

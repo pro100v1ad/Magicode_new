@@ -10,10 +10,7 @@ import main.java.com.magicode.gameplay.world.structures.Door;
 import main.java.com.magicode.gameplay.world.structures.Hatch;
 
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class SceneLoader {
 
@@ -22,8 +19,8 @@ public class SceneLoader {
     private GamePanel gp;
     private Layer[][] worldMap;
     private Structure[] structures;
-    private static final String DEFAULT_BACKGROUND = "/resources/levels/parts1/background";
-    private static final String DEFAULT_STRUCTURE = "/resources/levels/parts1/structure";
+    public static final String DEFAULT_BACKGROUND = "/resources/levels/parts1/background";
+    public static final String DEFAULT_STRUCTURE = "/resources/levels/parts1/structure";
     private int sceneWidth;
     private int sceneHeight;
     private CutScene scene;
@@ -34,10 +31,121 @@ public class SceneLoader {
 
     public SceneLoader(GamePanel gp, String backgroundPath, String structurePath) {
         this.gp = gp;
-        loadScene(backgroundPath != null ? backgroundPath : DEFAULT_BACKGROUND, structurePath != null ? structurePath : DEFAULT_STRUCTURE);
+        if(backgroundPath != null || structurePath != null) {
+            loadSaveScene(backgroundPath, structurePath); // Продолжить игру
+        } else {
+            loadScene(DEFAULT_BACKGROUND, DEFAULT_STRUCTURE); // Новая игра
+        }
+
 
         cooldown = 0;
         isCooldown = false;
+    }
+
+    private void loadSaveScene(String backgroundPath, String structurePath) {
+
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(backgroundPath))) {
+            String line;
+            line = reader.readLine();
+            if (line == null) {
+                System.out.println("Файл пуст");
+                return;// Если файл закончился раньше, чем ожидалось
+            }
+
+            String parts[] = line.split(" ");
+
+            if(parts.length != 2) {
+                System.out.println("При загрузке сцены, первая строка не соответствует формату \"число число\"");
+                return;
+            }
+            sceneWidth = Integer.parseInt(parts[0]);
+            sceneHeight = Integer.parseInt(parts[1]);
+            collision = new Collision(sceneWidth*GamePanel.tileSize, sceneHeight*GamePanel.tileSize);
+            interaction = new Interaction(gp, sceneWidth*GamePanel.tileSize, sceneHeight*GamePanel.tileSize);
+            worldMap = new Layer[sceneHeight][sceneWidth];
+            for (int i = 0; i < sceneHeight; i++) {
+                for (int j = 0; j < sceneWidth; j++) {
+                    worldMap[i][j] = new Layer(gp);
+                }
+            }
+
+            for(int row = 0; row < sceneHeight; row++) {
+                line = reader.readLine();
+                if(line == null) {
+                    break;
+                }
+                // Оптимизированная обработка строки
+                parts = line.split(" ");
+                for(int col = 0; col < sceneWidth; col++) {
+                    String elements = parts[col];
+                    // Упрощенная обработка
+                    worldMap[row][col].setLayers(elements);
+                }
+            }
+
+            collision.loadMap(worldMap);
+
+
+            System.out.println("Задний фон загружен из файла: " + backgroundPath);
+        } catch (IOException e) {
+            System.err.println("Ошибка при загрузке заднего фона: " + e.getMessage());
+        }
+        // STRUCTURE
+        try (BufferedReader reader = new BufferedReader(new FileReader(structurePath))) {
+            String line;
+            line = reader.readLine();
+            if (line == null) {
+                System.out.println("Файл пуст");
+                return;// Если файл закончился раньше, чем ожидалось
+            }
+
+            String parts[] = line.split(" ");
+            structures = new Structure[parts.length];
+            for(int i = 0; i < parts.length; i++) {
+                String structure[] = parts[i].split("_");
+                if(structure[0].equals("door")) {
+                    //Формат: name_x_y_w_h_code:radius_isLock_direction_state - для двери
+                    structures[i] = new Door(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
+                            Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
+                            structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7]);
+                }
+
+                if(structure[0].equals("hatch")) {
+                    //Формат: name_x_y_w_h_code:radius_state_nextX_nextY - для люка
+                    structures[i] = new Hatch(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
+                            Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
+                            structure[5], structure[6].equals("true"),
+                            structure[7]);
+                }
+
+                if(structure[0].equals("chest")) {
+                    //Формат: name_x_y_w_h_code:radius_isLock_direction_state - для сундука
+                    structures[i] = new Chest(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
+                            Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
+                            structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7]);
+                }
+            }
+
+
+            if(structures != null) {
+                if(collision != null) {
+                    collision.loadStructure(structures);
+                }
+                if(interaction != null) {
+                    interaction.loadStructure(structures);
+                }
+
+            }
+
+
+
+            System.out.println("Структуры загружены из файла: " + structurePath);
+        } catch (IOException e) {
+            System.err.println("Ошибка при загрузке структур: " + e.getMessage());
+        }
+
+
     }
 
     private void loadScene(String backgroundPath, String structurePath) {
@@ -124,7 +232,7 @@ public class SceneLoader {
                     structures[i] = new Hatch(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
                             Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
                             structure[5], structure[6].equals("true"),
-                            structure[7].split(";"));
+                            structure[7]);
                 }
 
                 if(structure[0].equals("chest")) {
@@ -179,6 +287,27 @@ public class SceneLoader {
 
     public boolean getCutScene() {
         return isCutScene;
+    }
+
+    public void setWorldMap(Layer[][] worldMap) {
+        this.worldMap = worldMap;
+        if (collision != null) {
+            collision.loadMap(worldMap);
+        }
+    }
+
+    public void setStructures(Structure[] structures) {
+        this.structures = structures;
+        if (collision != null) {
+            collision.loadStructure(structures);
+        }
+        if (interaction != null) {
+            interaction.loadStructure(structures);
+        }
+    }
+
+    public Structure[] getStructures() {
+        return structures;
     }
 
     public void update() {

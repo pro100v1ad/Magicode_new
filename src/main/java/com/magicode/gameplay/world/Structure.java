@@ -2,9 +2,10 @@ package main.java.com.magicode.gameplay.world;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
-public abstract class Structure {
-
+public abstract class Structure implements Serializable {
+    private static final long serialVersionUID = 1L;
     protected String name;
     protected BufferedImage image;
     protected int code;

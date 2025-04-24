@@ -9,9 +9,10 @@ public class Hatch extends Structure {
 
 
     private String[] route;
+    private String defoultRoute;
     private GamePanel gp;
 
-    public Hatch(GamePanel gp, int x, int y, int w, int h, String code, boolean state, String[] route) {
+    public Hatch(GamePanel gp, int x, int y, int w, int h, String code, boolean state, String route) {
         this.name = "hatch";
         this.code = Integer.parseInt(code.split(":")[0]);
         this.radius = Integer.parseInt(code.split(":")[1]);
@@ -20,7 +21,8 @@ public class Hatch extends Structure {
         this.w = w;
         this.h = h;
 
-        this.route = route;
+        this.route = route.split(";");
+        this.defoultRoute = route;
 
         this.gp = gp;
         this.state = state;
@@ -35,6 +37,10 @@ public class Hatch extends Structure {
     @Override
     public boolean getState() {
         return state;
+    }
+
+    public String getDefaultRoute() {
+        return defoultRoute;
     }
 
     public String[] getRoute() {

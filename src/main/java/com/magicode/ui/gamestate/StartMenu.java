@@ -15,17 +15,18 @@ public class StartMenu {
     private String text3;
 
     private int fontSize;
+    private boolean button1State;
 
-    public StartMenu(GamePanel gp) {
+    public StartMenu(GamePanel gp, boolean isSave) {
         this.gp = gp;
         this.text1 = "Продолжить";
         this.text2 = "Новая игра";
         this.text3 = "Выход";
-
+        this.button1State = isSave;
         this.fontSize = 48;
         button = new Button[3];
         button[0] = new Button(gp, GamePanel.WIDTH/2-(int)(text1.length()*fontSize/1.55)/2,
-                GamePanel.HEIGHT/2-fontSize/2, text1, fontSize, false);
+                GamePanel.HEIGHT/2-fontSize/2, text1, fontSize, button1State);
         button[1] = new Button(gp, GamePanel.WIDTH/2-(int)(text2.length()*fontSize/1.55)/2,
                 GamePanel.HEIGHT/2-fontSize/2 + 100, text2, fontSize, true);
         button[2] = new Button(gp, GamePanel.WIDTH/2-(int)(text3.length()*fontSize/1.55)/2,
@@ -36,6 +37,12 @@ public class StartMenu {
         click = true;
     }
 
+    public void setState(boolean state) {
+        this.button1State = state;
+        button[0].setState(state);
+    }
+
+
     public void update() {
         if(click) {
             button[0].click();
@@ -44,7 +51,7 @@ public class StartMenu {
             click = false;
         }
         if(button[0].update()) {
-            gp.startNewGame();
+            gp.continueGame();
             gp.state = GamePanel.GameState.Game;
         }
         if(button[1].update()) {

@@ -6,10 +6,12 @@ import main.java.com.magicode.core.utils.ResourceLoader;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 import static java.lang.Math.sqrt;
 
-public class Player extends Entity {
+public class Player extends Entity implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private GamePanel gp;
     private Animation[] animations;
@@ -94,6 +96,10 @@ public class Player extends Entity {
 
     public void setWorldY(int worldY) {
         this.worldY = worldY;
+    }
+
+    public void setHealth(double health) {
+        this.health = health;
     }
 
 
