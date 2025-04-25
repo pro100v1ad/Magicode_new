@@ -6,6 +6,7 @@ import main.java.com.magicode.core.utils.*;
 import main.java.com.magicode.gameplay.entity.Player;
 import main.java.com.magicode.ui.gamestate.MenuInGame;
 import main.java.com.magicode.ui.gamestate.StartMenu;
+import main.java.com.magicode.ui.gamestate.Tablet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -75,6 +76,7 @@ public class GamePanel extends JComponent {
 
     public StartMenu startMenu;
     public MenuInGame menuInGame;
+    public Tablet tablet;
 
     // Объявление классов Необходимых в процессе разработки
     public Listeners listeners;
@@ -88,11 +90,13 @@ public class GamePanel extends JComponent {
 
         saveManager = new GameSaveManager();
         saveManager.ensureSaveDirectoryExists(); // проверка наличия папки.
+        textureAtlas = new TextureAtlas(20, 20);
 
         startMenu = new StartMenu(this, saveManager.checkIfFilesExist());
+        tablet = new Tablet(this);
 
         listeners = new Listeners(this);
-        textureAtlas = new TextureAtlas(20, 20);
+
         setWhoHaveCollision();
 
 
@@ -120,7 +124,7 @@ public class GamePanel extends JComponent {
     }
 
     public void setupGame() {
-        playMusic(0);
+//        playMusic(0);
     }
 
 
@@ -295,6 +299,7 @@ public class GamePanel extends JComponent {
     public void click() {
         if(state.equals(GameState.StartMenu)) startMenu.click();
         if(state.equals(GameState.GameMenu) || state.equals(GameState.Game)) menuInGame.click();
+        if(state.equals(GameState.GameOpenTablet)) tablet.click();
     }
 
     public int getWorldWidth() {
@@ -330,6 +335,10 @@ public class GamePanel extends JComponent {
             sceneLoader.update();
         }
 
+        if(state.equals(GameState.GameOpenTablet)) {
+            tablet.update();
+        }
+
     }
     public void render1(){
         if(state.equals(GamePanel.GameState.StartMenu)) {
@@ -348,6 +357,9 @@ public class GamePanel extends JComponent {
             menuInGame.draw(g);
         }
 
+        if(state.equals(GameState.GameOpenTablet)) {
+            tablet.draw(g);
+        }
 
 
         draw();

@@ -112,8 +112,8 @@ public class MenuInGame {
                 buttonTabletImage = gp.textureAtlas.textures[14][3].getTexture();
                 if(click) {
                     click = false;
-                    gp.state = GamePanel.GameState.GameMenu;
-                    state = true;
+                    gp.state = GamePanel.GameState.GameOpenTablet;
+                    state = false;
                 }
             } else {
                 buttonTabletImage = gp.textureAtlas.textures[14][2].getTexture();

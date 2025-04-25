@@ -61,6 +61,10 @@ public class TextureAtlas {
         textures[14][4].loadTexture("/resources/gui/button/directory.png");
         textures[14][5].loadTexture("/resources/gui/button/tablet.png");
 
+        textures[15][0].loadTexture("/resources/gui/tablet/tabletOpen.png");
+        textures[15][1].loadTexture("/resources/gui/tablet/buttonExitPassive.png");
+        textures[15][2].loadTexture("/resources/gui/tablet/buttonExitActive.png");
+
 
 
 
