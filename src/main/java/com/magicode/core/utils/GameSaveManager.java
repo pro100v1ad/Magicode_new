@@ -1,5 +1,6 @@
 package main.java.com.magicode.core.utils;
 
+import main.java.com.magicode.gameplay.entity.Player;
 import main.java.com.magicode.gameplay.world.Layer;
 import main.java.com.magicode.gameplay.world.Structure;
 import main.java.com.magicode.gameplay.world.structures.Chest;
@@ -11,8 +12,9 @@ import java.io.*;
 public class GameSaveManager {
     private String saveFilePathBackground = "saves/backgroundSave.txt";
     private String saveFilePathStructure = "saves/structureSave.txt";
+    private String saveFilePathPlayer = "saves/playerSave.txt";
     // Сохранение игры
-    public void saveGame(Layer[][] worldMap, Structure[] structures) {
+    public void saveGame(Layer[][] worldMap, Structure[] structures, Player player) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFilePathBackground))) {
             writer.write(worldMap[0].length + " " + worldMap.length + "\n");
             for(int i = 0; i < worldMap.length; i++) {
@@ -61,6 +63,17 @@ public class GameSaveManager {
         } catch (IOException e) {
             System.err.println("Ошибка при сохранении структур: " + e.getMessage());
         }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFilePathPlayer))) {
+
+            writer.write((int)(player.getWorldX()) + "_" + (int)(player.getWorldY()));
+
+
+            System.out.println("Player сохранен в файл: " + saveFilePathStructure);
+        } catch (IOException e) {
+            System.err.println("Ошибка при сохранении игрока: " + e.getMessage());
+        }
+
     }
 
     // Загрузка игры
@@ -69,6 +82,9 @@ public class GameSaveManager {
     }
     public String getSaveFilePathStructure() {
         return saveFilePathStructure;
+    }
+    public String getSaveFilePathPlayer() {
+        return saveFilePathPlayer;
     }
 
     // Проверка и создание папки для сохранений
@@ -84,9 +100,10 @@ public class GameSaveManager {
         // Создаем объекты File для файлов
         File file1 = new File(saveFilePathBackground);
         File file2 = new File(saveFilePathStructure);
+        File file3 = new File(saveFilePathPlayer);
 
         // Проверяем, существуют ли оба файла
-        return file1.exists() && file2.exists();
+        return file1.exists() && file2.exists() && file3.exists();
     }
 
 

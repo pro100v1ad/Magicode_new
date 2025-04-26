@@ -275,13 +275,13 @@ public class GamePanel extends JComponent {
 
     public void startNewGame() {
         sceneLoader = new SceneLoader(this, null, null);
-        player = new Player(this);
+        player = new Player(this, null);
         menuInGame = new MenuInGame(this);
     }
 
     public void continueGame() {
         sceneLoader = new SceneLoader(this, saveManager.getSaveFilePathBackground(), saveManager.getSaveFilePathStructure());
-        player = new Player(this);
+        player = new Player(this, saveManager.getSaveFilePathPlayer());
         menuInGame = new MenuInGame(this);
 
     }
@@ -291,7 +291,7 @@ public class GamePanel extends JComponent {
     }
 
     public void saveGame() {
-        saveManager.saveGame(sceneLoader.getWorldMap(), sceneLoader.getStructures());
+        saveManager.saveGame(sceneLoader.getWorldMap(), sceneLoader.getStructures(), player);
         startMenu.setState(true);
     }
 

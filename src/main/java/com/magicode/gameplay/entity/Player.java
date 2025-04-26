@@ -6,6 +6,8 @@ import main.java.com.magicode.core.utils.ResourceLoader;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.Serializable;
 
 import static java.lang.Math.sqrt;
@@ -21,7 +23,7 @@ public class Player extends Entity implements Serializable {
     private final int screenY;
     private String lastDirection = "";
 
-    public Player(GamePanel gp){
+    public Player(GamePanel gp, String filePath){
         this.gp = gp;
         resourceLoader = new ResourceLoader();
 
@@ -33,7 +35,13 @@ public class Player extends Entity implements Serializable {
         collisionCode = 2;
 
         loadAnimation();
-        setDefaultValues();
+
+        if(filePath != null) {
+            loadPlayerFromFile(filePath);
+        } else {
+            setDefaultValues();
+        }
+
     }
 
     public void loadAnimation() {
@@ -100,6 +108,33 @@ public class Player extends Entity implements Serializable {
 
     public void setHealth(double health) {
         this.health = health;
+    }
+
+    public boolean loadPlayerFromFile(String filePath) {
+        try(BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            line = reader.readLine();
+            if (line == null) {
+                System.out.println("Файл пуст");
+                return false;// Если файл закончился раньше, чем ожидалось
+            }
+
+            String parts[] = line.split("_");
+            worldX = Integer.parseInt(parts[0]);
+            worldY = Integer.parseInt(parts[1]);
+            // Потом поменяю //////////
+            float pixelsPerSecond = 200f;
+            speed = (pixelsPerSecond * GamePanel.scale) / GamePanel.UPDATE_RATE; // scale минимум 1/4 и максимум 2.
+            ///////////////////
+
+            System.out.println("Игрок успешно загружен!");
+        } catch (Exception e) {
+            System.out.println("Ошибка загрузки игрока!");
+            return false;
+        }
+
+
+        return true;
     }
 
 
