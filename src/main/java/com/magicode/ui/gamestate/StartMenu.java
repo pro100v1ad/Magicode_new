@@ -3,12 +3,15 @@ package main.java.com.magicode.ui.gamestate;
 import main.java.com.magicode.core.GamePanel;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class StartMenu {
 
     private GamePanel gp;
     private Button[] button;
     private boolean click;
+
+    private BufferedImage gameName;
 
     private String text1;
     private String text2;
@@ -31,6 +34,8 @@ public class StartMenu {
                 GamePanel.HEIGHT/2-fontSize/2 + 100, text2, fontSize, true);
         button[2] = new Button(gp, GamePanel.WIDTH/2-(int)(text3.length()*fontSize/1.55)/2,
                 GamePanel.HEIGHT/2-fontSize/2 + 200, text3, fontSize, true);
+
+        gameName = gp.textureAtlas.textures[15][3].getTexture();
     }
 
     public void click() {
@@ -70,6 +75,8 @@ public class StartMenu {
 
         g.setColor(new Color(0xFF1C1C1C, true));
         g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
+
+        g.drawImage(gameName, 100, 100, 960, 128, null);
 
         button[0].draw(g);
         button[1].draw(g);
