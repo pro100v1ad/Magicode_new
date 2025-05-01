@@ -283,7 +283,6 @@ public class GamePanel extends JComponent {
         sceneLoader = new SceneLoader(this, saveManager.getSaveFilePathBackground(), saveManager.getSaveFilePathStructure());
         player = new Player(this, saveManager.getSaveFilePathPlayer());
         menuInGame = new MenuInGame(this);
-
     }
 
     public void exitGame() {

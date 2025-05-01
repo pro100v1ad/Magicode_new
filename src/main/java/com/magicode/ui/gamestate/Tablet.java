@@ -5,6 +5,10 @@ import main.java.com.magicode.ui.GUI;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Tablet extends GUI {
 
@@ -24,14 +28,18 @@ public class Tablet extends GUI {
     private int countRowsVisible;
     private int textPosX, textPosY;
     private Color textColor;
-    private int percent;
-
     private float scrollPosition; // Вместо percent
     // Вместо фиксированной скорости
     private static final float SCROLL_SPEED = 0.05f * GamePanel.UPDATE_RATE_Speed;  // Скорость скролла
 
     private GamePanel gp;
     private boolean click;
+
+    private List<TextHighlight> textHighlights = new ArrayList<>();
+
+    private static final float SCROLL_SENSITIVITY = 0.5f; // Чувствительность прокрутки
+    private static final float MAX_SCROLL_SPEED = 2.0f;   // Максимальная скорость прокрутки
+
 
     public Tablet(GamePanel gp) {
         this.gp = gp;
@@ -49,7 +57,7 @@ public class Tablet extends GUI {
 
         //text
         countRowsVisible = 27;
-        text = new String[40 + 1];
+        text = new String[400 + 1];
         text[0] = "1 Hello WOrld!";
         text[1] = "2 Hi brooo";
         text[2] = "3 GoodBy -_+";
@@ -95,7 +103,14 @@ public class Tablet extends GUI {
         textPosX = 336 + fontSize;
         textPosY = 56 + (int)(fontSize*2.2);
         textColor = Color.WHITE;
-        percent = 1000;
+
+        addTextHighlight(2, 3, 5, Color.RED);
+
+        // Подсветить первые 2 символа в строке 5 синим цветом
+        addTextHighlight(5, 4, 2, Color.BLUE);
+
+        // Очистить все подсветки
+        clearTextHighlights();
 
     }
 
@@ -103,34 +118,35 @@ public class Tablet extends GUI {
         click = true;
     }
 
-//    private void drawText(Graphics2D g) {
-//        g.setColor(textColor);
-//        g.setFont(my_font.deriveFont((float)fontSize));
-//
-//        int countRows = text.length - countRowsVisible;
-//        int startRow;
-//        int indent;
-//        if(countRows <= 0) {
-//            startRow = 0;
-//            indent = fontSize;
-//        } else {
-//            startRow = countRows*(percent/10)/100;
-//            indent = (int)((fontSize)*((float)percent%10/10));
-//        }
-//
-//        for(int i = startRow, j = 0; i < countRowsVisible; i++, j++) {
-//            if(text[i] != null) {
-//
-//                g.drawString(text[i], textPosX, textPosY - indent + j*lineSpace);
-//            }
-//        }
-//
-//        g.setColor(new Color(30, 31, 34));
-//        g.setColor(Color.white);
-//        g.fillRect(351, 56, 300, fontSize);
-//        g.fillRect(351, 48 + 600, 300, fontSize);
-//
-//    }
+
+    // Класс для хранения информации о подсветке
+    private static class TextHighlight {
+        int line;     // Номер строки
+        int start;    // Начальный индекс символа
+        int length;   // Длина подсвечиваемого текста
+        Color color;  // Цвет подсветки
+
+        TextHighlight(int line, int start, int length, Color color) {
+            this.line = line;
+            this.start = start;
+            this.length = length;
+            this.color = color;
+        }
+    }
+
+    // Метод для добавления подсветки
+    public void addTextHighlight(int line, int start, int length, Color color) {
+        if (line >= 0 && line < text.length && text[line] != null) {
+            start = Math.min(start, text[line].length());
+            length = Math.min(length, text[line].length() - start);
+            textHighlights.add(new TextHighlight(line, start, length, color));
+        }
+    }
+
+    // Метод для очистки всех подсветок
+    public void clearTextHighlights() {
+        textHighlights.clear();
+    }
 
     private void drawText(Graphics2D g) {
         g.setColor(textColor);
@@ -138,6 +154,7 @@ public class Tablet extends GUI {
 
         TextDrawingContext context = calculateTextPositionContext();
         drawVisibleTextLines(g, context);
+        drawRectangleMarker(g, context);
         drawScrollIndicators(g);
     }
 
@@ -159,12 +176,79 @@ public class Tablet extends GUI {
         return context;
     }
 
+    // Новый метод для отрисовки прямоугольника
+    private void drawRectangleMarker(Graphics2D g, TextDrawingContext context) {
+        // Параметры прямоугольника (можно вынести в поля класса)
+        int markerLine = 2;       // Какая строка текста (индекс в массиве text[])
+        int markerPos = 3;        // Позиция в строке (примерно 3-й символ)
+        int markerWidth = 5;      // Ширина в символах
+        int markerHeight = lineSpace; // Высота как у строки
+
+        // Проверяем, видна ли строка с маркером
+        if (markerLine >= context.startRow && markerLine < context.startRow + countRowsVisible) {
+            // Вычисляем позицию прямоугольника
+            int x = textPosX + g.getFontMetrics().charWidth('A') * markerPos; // Примерная ширина символа
+            int y = textPosY + context.verticalOffset + (markerLine - context.startRow) * lineSpace;
+
+            // Рисуем прямоугольник
+            g.setColor(new Color(255, 0, 0, 100)); // Полупрозрачный красный
+            g.fillRect(x, y - g.getFontMetrics().getAscent(),
+                    g.getFontMetrics().charWidth('A') * markerWidth,
+                    markerHeight);
+        }
+    }
+
     private void drawVisibleTextLines(Graphics2D g, TextDrawingContext context) {
+        FontMetrics fm = g.getFontMetrics();
+
         for (int i = 0; i < countRowsVisible; i++) {
             int textIndex = context.startRow + i;
-            if (textIndex < text.length && text[textIndex] != null) {
-                int yPos = textPosY + context.verticalOffset + i * lineSpace;
-                g.drawString(text[textIndex], textPosX, yPos);
+            if (textIndex >= text.length || text[textIndex] == null) continue;
+
+            int yPos = textPosY + context.verticalOffset + i * lineSpace;
+            String line = text[textIndex];
+
+            // Получаем подсветки для текущей строки
+            List<TextHighlight> lineHighlights = textHighlights.stream()
+                    .filter(h -> h.line == textIndex)
+                    .sorted(Comparator.comparingInt(h -> h.start))
+                    .collect(Collectors.toList());
+
+            if (lineHighlights.isEmpty()) {
+                // Нет подсветок - рисуем строку целиком
+                g.setColor(textColor);
+                g.drawString(line, textPosX, yPos);
+            } else {
+                // Рисуем строку по частям с подсветками
+                int xPos = textPosX;
+                int currentPos = 0;
+
+                for (TextHighlight hl : lineHighlights) {
+                    // Текст до подсветки
+                    if (currentPos < hl.start) {
+                        String part = line.substring(currentPos, hl.start);
+                        g.setColor(textColor);
+                        g.drawString(part, xPos, yPos);
+                        xPos += fm.stringWidth(part);
+                        currentPos = hl.start;
+                    }
+
+                    // Подсвеченный текст
+                    if (currentPos == hl.start) {
+                        int end = Math.min(hl.start + hl.length, line.length());
+                        String part = line.substring(hl.start, end);
+                        g.setColor(hl.color);
+                        g.drawString(part, xPos, yPos);
+                        xPos += fm.stringWidth(part);
+                        currentPos = end;
+                    }
+                }
+
+                // Остаток строки после последней подсветки
+                if (currentPos < line.length()) {
+                    g.setColor(textColor);
+                    g.drawString(line.substring(currentPos), xPos, yPos);
+                }
             }
         }
     }
@@ -173,6 +257,7 @@ public class Tablet extends GUI {
         // Верхний индикатор скролла
         g.setColor(new Color(30, 31, 34));
         g.fillRect(350, 54, 300, fontSize + 2);
+
         g.setColor(new Color(49, 52, 56));
         g.drawLine(350, 56 + fontSize, 651, 56 + fontSize);
 
@@ -189,6 +274,46 @@ public class Tablet extends GUI {
     private static class TextDrawingContext {
         int startRow;
         int verticalOffset;
+    }
+
+    public void handleMouseWheel(int wheelRotation) {
+        if (text.length <= countRowsVisible) return; // Прокрутка не нужна
+
+        // Фиксированный шаг прокрутки (не зависящий от количества строк)
+        float scrollStep = wheelRotation * SCROLL_SENSITIVITY;
+
+        // Применяем шаг к текущей позиции
+        scrollPosition -= scrollStep;
+
+        // Ограничение диапазона
+        float maxScroll = text.length - countRowsVisible;
+        scrollPosition = Math.max(0, Math.min(scrollPosition, maxScroll));
+    }
+
+    /**
+     * Получает текущую позицию прокрутки в процентах (0-100)
+     * @return процент прокрутки (0 - начало, 100 - конец)
+     */
+    public float getScrollPercent() {
+        if (text.length <= countRowsVisible) {
+            return 0; // Весь текст виден, прокрутки нет
+        }
+        float maxScroll = text.length - countRowsVisible;
+        return (scrollPosition / maxScroll) * 100f;
+    }
+
+    /**
+     * Устанавливает позицию прокрутки в процентах
+     * @param percent значение от 0 до 100
+     */
+    public void setScrollPercent(float percent) {
+        percent = Math.max(0, Math.min(100, percent)); // Ограничиваем 0-100
+        if (text.length > countRowsVisible) {
+            float maxScroll = text.length - countRowsVisible;
+            scrollPosition = (percent / 100f) * maxScroll;
+        } else {
+            scrollPosition = 0;
+        }
     }
 
     public void update() {
@@ -213,10 +338,16 @@ public class Tablet extends GUI {
         }
         click = false;
 
-        scrollPosition += SCROLL_SPEED;
-        if (scrollPosition > text.length - countRowsVisible) {
+        // Ограничиваем позицию прокрутки
+        if (text.length > countRowsVisible) {
+            scrollPosition = Math.max(0, Math.min(scrollPosition, text.length - countRowsVisible));
+        } else {
             scrollPosition = 0;
         }
+
+//        float currentScroll = getScrollPercent();
+//        System.out.println("Прокручено: " + currentScroll + "%");
+
     }
 
     public void draw(Graphics2D g) {
@@ -228,10 +359,19 @@ public class Tablet extends GUI {
         buttonSave.draw(g);
 
         drawText(g);
+        drawSlider(g, getScrollPercent());
 
     }
 
+    public void drawSlider(Graphics2D g, float percent) {
+
+        int distanse = 524;
 
 
+        g.setColor(Color.YELLOW);
+
+        g.fillRect(791, 86 + (int)(distanse*percent/100), 12, 32);
+
+    }
 
 }

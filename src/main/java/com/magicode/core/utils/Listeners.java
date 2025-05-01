@@ -142,6 +142,8 @@ public class Listeners implements MouseListener, MouseMotionListener, KeyListene
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        GamePanel.scroll = e.getWheelRotation(); // 1 вниз, -1 вверх
+        if (gp.state == GamePanel.GameState.GameOpenTablet) {
+            gp.tablet.handleMouseWheel(e.getWheelRotation());
+        }
     }
 }
