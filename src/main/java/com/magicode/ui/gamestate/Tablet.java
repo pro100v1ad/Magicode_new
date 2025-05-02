@@ -19,7 +19,8 @@ public class Tablet extends GUI {
     private Button buttonSave;
     private int posButtonSaveX, posButtonSaveY;
 
-
+    private EditArea hoveredEditArea = null;
+    private EditArea activeEditArea = null;
     //Text
     private String[] text;
     private static int lineSpace;
@@ -107,11 +108,12 @@ public class Tablet extends GUI {
         TextDrawingContext context = calculateTextPositionContext();
         drawVisibleTextLines(g, context);
         drawScrollIndicators(g);
-        for(EditArea editArea: editAreas) {
-            if(editArea != null) {
-                editArea.draw(g, context.startRow, context.verticalOffset);
+        for (EditArea editArea : editAreas) {
+            if (editArea != null) {
+                // Передаем информацию о том, является ли эта область текущей hovered
+                editArea.draw(g, context.startRow, context.verticalOffset,
+                        editArea == hoveredEditArea);
             }
-
         }
     }
 
@@ -170,7 +172,7 @@ public class Tablet extends GUI {
         if (text.length <= countRowsVisible) return; // Прокрутка не нужна
 
         // Фиксированный шаг прокрутки (не зависящий от количества строк)
-        float scrollStep = wheelRotation * SCROLL_SENSITIVITY;
+        float scrollStep = -wheelRotation * SCROLL_SENSITIVITY;
 
         // Применяем шаг к текущей позиции
         scrollPosition -= scrollStep;
@@ -203,6 +205,39 @@ public class Tablet extends GUI {
             scrollPosition = (percent / 100f) * maxScroll;
         } else {
             scrollPosition = 0;
+        }
+    }
+
+    private void handleTextInput() {
+        char[] chars = gp.getTypedChars();
+        for (char c : chars) {
+            if (c == '\b') {
+                activeEditArea.backspace();
+            }
+            else if (c == '\n') {
+                activeEditArea.stopEditing();
+                activeEditArea = null;
+                gp.listeners.setShouldCaptureInput(false);
+            }
+            else {
+                activeEditArea.appendChar(c);
+            }
+        }
+    }
+
+    public void click2() {
+        if (hoveredEditArea != null) {
+            if (activeEditArea != null) {
+                activeEditArea.stopEditing();
+            }
+            activeEditArea = hoveredEditArea;
+            activeEditArea.startEditing();
+            gp.listeners.setShouldCaptureInput(true);
+        }
+        else if (activeEditArea != null) {
+            activeEditArea.stopEditing();
+            activeEditArea = null;
+            gp.listeners.setShouldCaptureInput(false);
         }
     }
 
@@ -245,6 +280,29 @@ public class Tablet extends GUI {
 
         }
 
+        // Включаем/выключаем захват ввода в зависимости от наличия активной области
+        gp.listeners.setShouldCaptureInput(activeEditArea != null);
+
+        // Обработка текстового ввода
+        if (activeEditArea != null && activeEditArea.isEditing()) {
+            handleTextInput();
+        }
+
+        hoveredEditArea = null;
+
+        TextDrawingContext context = calculateTextPositionContext();
+        FontMetrics metrics = gp.getGraphics().getFontMetrics(my_font.deriveFont((float)fontSize));
+
+        for (EditArea editArea : editAreas) {
+            if (editArea != null &&
+                    editArea.isMouseOver(mX, mY, context.startRow, context.verticalOffset, metrics)) {
+                hoveredEditArea = editArea;
+                break;
+            }
+        }
+
+
+
     }
 
     public void draw(Graphics2D g) {
@@ -265,7 +323,6 @@ public class Tablet extends GUI {
     public void drawSlider(Graphics2D g, float percent) {
 
         int distanse = 524;
-
 
         g.setColor(Color.YELLOW);
 

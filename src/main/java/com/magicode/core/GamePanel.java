@@ -298,7 +298,10 @@ public class GamePanel extends JComponent {
     public void click() {
         if(state.equals(GameState.StartMenu)) startMenu.click();
         if(state.equals(GameState.GameMenu) || state.equals(GameState.Game)) menuInGame.click();
-        if(state.equals(GameState.GameOpenTablet)) tablet.click();
+        if(state.equals(GameState.GameOpenTablet)) {
+            tablet.click();
+            tablet.click2();
+        }
     }
 
     public int getWorldWidth() {
@@ -311,6 +314,10 @@ public class GamePanel extends JComponent {
 
     public Collision getCollision() {
         return sceneLoader.getCollision();
+    }
+
+    public char[] getTypedChars() {
+        return listeners.getTypedChars();
     }
 
     public void update1() {

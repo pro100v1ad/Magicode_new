@@ -10,6 +10,11 @@ import java.awt.event.*;
  */
 public class Listeners implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
     GamePanel gp;
+
+    private StringBuilder typedChars = new StringBuilder();
+    private boolean shouldCaptureInput = false;
+
+
     public Listeners(GamePanel gp) {
         this.gp = gp;
     }
@@ -80,6 +85,12 @@ public class Listeners implements MouseListener, MouseMotionListener, KeyListene
 
     @Override
     public void keyTyped(KeyEvent e) {
+        if (shouldCaptureInput) {
+            char c = e.getKeyChar();
+            if (c != KeyEvent.CHAR_UNDEFINED && !Character.isISOControl(c)) {
+                typedChars.append(c);
+            }
+        }
     }
 
     @Override
@@ -105,6 +116,14 @@ public class Listeners implements MouseListener, MouseMotionListener, KeyListene
             GamePanel.keys[5] = true;
         }
 
+        if (shouldCaptureInput) {
+            if (key == KeyEvent.VK_BACK_SPACE) {
+                typedChars.append('\b');
+            }
+            else if (key == KeyEvent.VK_ENTER) {
+                typedChars.append('\n');
+            }
+        }
 
 
 
@@ -144,6 +163,19 @@ public class Listeners implements MouseListener, MouseMotionListener, KeyListene
     public void mouseWheelMoved(MouseWheelEvent e) {
         if (gp.state == GamePanel.GameState.GameOpenTablet) {
             gp.tablet.handleMouseWheel(e.getWheelRotation());
+        }
+    }
+
+    public char[] getTypedChars() {
+        char[] chars = typedChars.toString().toCharArray();
+        typedChars.setLength(0);
+        return chars;
+    }
+
+    public void setShouldCaptureInput(boolean shouldCapture) {
+        this.shouldCaptureInput = shouldCapture;
+        if (!shouldCapture) {
+            typedChars.setLength(0); // Очищаем буфер при отключении
         }
     }
 }
