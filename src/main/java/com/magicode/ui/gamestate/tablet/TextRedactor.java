@@ -28,9 +28,7 @@ public class TextRedactor {
 
         startRowsForSpell = 2;
 
-        addSpell("src/resources/spells/key");
-        addSpell("src/resources/spells/repair");
-        addSpell("src/resources/spells/gun");
+
 
     }
 
@@ -74,6 +72,8 @@ public class TextRedactor {
                 text[countRowsAgo + countRows] = "} ";
                 tablet.setText(text);
             }
+
+            tablet.addButton(filePath.split("/")[filePath.split("/").length-1] + "()");
 
             System.out.println("Функция-заклинание загружено из файла: " + filePath);
         } catch (IOException e) {

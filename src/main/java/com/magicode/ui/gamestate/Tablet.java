@@ -41,6 +41,9 @@ public class Tablet extends GUI {
     private TextRedactor textRedactor;
     private EditArea[] editAreas;
 
+    private Button[] buttons;
+    private int countButton;
+
 
     public Tablet(GamePanel gp) {
         this.gp = gp;
@@ -67,6 +70,24 @@ public class Tablet extends GUI {
         textRedactor = new TextRedactor(this);
         editAreas = textRedactor.getEditAreas();
 
+        //Левая часть планшета
+
+        buttons = new Button[5];
+        countButton = 1;
+        buttons[0] = new Button(gp, 128, 96, "Spells", 24, false);
+        buttons[0].setBackgroundColor(new Color(0, 0, 0, 0));
+        buttons[0].setStaticLineColor(new Color(88, 88, 88));
+
+
+        textRedactor.addSpell("src/resources/spells/key");
+        textRedactor.addSpell("src/resources/spells/repair");
+        textRedactor.addSpell("src/resources/spells/gun");
+    }
+
+    public void addButton(String name) {
+        buttons[countButton] = new Button(gp, 160, 96 + countButton*64, name, 24, false);
+        buttons[countButton].setBackgroundColor(new Color(0, 0, 0, 0));
+        buttons[countButton++].setStaticLineColor(new Color(88, 88, 88));
     }
 
     public String[] getText() {
@@ -301,8 +322,17 @@ public class Tablet extends GUI {
             }
         }
 
+        updateLeftPartsTablet();
 
+    }
 
+    public void updateLeftPartsTablet() {
+        for(Button button: buttons) {
+            if(button != null) {
+                button.update();
+            }
+
+        }
     }
 
     public void draw(Graphics2D g) {
@@ -316,7 +346,8 @@ public class Tablet extends GUI {
         drawText(g);
         drawSlider(g, getScrollPercent());
 
-
+        drawRightPartsTablet(g);
+        drawLeftPartsTablet(g);
 
     }
 
@@ -328,6 +359,86 @@ public class Tablet extends GUI {
 
         g.fillRect(791, 86 + (int)(distanse*percent/100), 12, 32);
 
+
+
+    }
+
+    public void drawRightPartsTablet(Graphics2D g) {
+
+        int N = gp.player.getN();
+        int plus = gp.player.getPlus();
+        int minus = gp.player.getMinus();
+        int exclamationMark = gp.player.getExclamationMark();
+
+        g.setColor(Color.WHITE);
+        g.setFont(my_font.deriveFont(32f));
+
+        g.drawString("N: ", 864, 256);
+        if(N == 0) {
+            g.setColor(Color.YELLOW);
+            g.drawString(N + "", 900, 256);
+        } else if(N > 0) {
+            g.setColor(Color.GREEN);
+            g.drawString(N + "", 900, 256);
+        } else {
+            g.setColor(Color.RED);
+            g.drawString(N + "", 900, 256);
+        }
+        g.setColor(Color.white);
+
+
+        g.drawString("+: ", 864, 333);
+        if(plus == 0) {
+            g.setColor(Color.YELLOW);
+            g.drawString(plus + "", 900, 333);
+        } else if(plus > 0) {
+            g.setColor(Color.GREEN);
+            g.drawString(plus + "", 900, 333);
+        } else {
+            g.setColor(Color.RED);
+            g.drawString(plus + "", 900, 333);
+        }
+        g.setColor(Color.white);
+
+
+        g.drawString("-: ", 864, 410);
+        if(minus == 0) {
+            g.setColor(Color.YELLOW);
+            g.drawString(minus + "", 900, 410);
+        } else if(minus > 0) {
+            g.setColor(Color.GREEN);
+            g.drawString(minus + "", 900, 410);
+        } else {
+            g.setColor(Color.RED);
+            g.drawString(minus + "", 900, 410);
+        }
+        g.setColor(Color.white);
+
+
+        g.drawString("!: ", 864, 487);
+        if(exclamationMark == 0) {
+            g.setColor(Color.YELLOW);
+            g.drawString(exclamationMark + "", 900, 487);
+        } else if(exclamationMark > 0) {
+            g.setColor(Color.GREEN);
+            g.drawString(exclamationMark + "", 900, 487);
+        } else {
+            g.setColor(Color.RED);
+            g.drawString(exclamationMark + "", 900, 487);
+        }
+        g.setColor(Color.white);
+
+
+
+    }
+
+    public void drawLeftPartsTablet(Graphics2D g) {
+        for(Button button: buttons) {
+            if(button != null) {
+                button.draw(g);
+            }
+
+        }
     }
 
 }

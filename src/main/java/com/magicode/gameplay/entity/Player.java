@@ -23,6 +23,11 @@ public class Player extends Entity implements Serializable {
     private final int screenY;
     private String lastDirection = "";
 
+    private int N = 0;
+    private int plus = 0;
+    private int minus = 0;
+    private int exclamationMark = 0;
+
     public Player(GamePanel gp, String filePath){
         this.gp = gp;
         resourceLoader = new ResourceLoader();
@@ -108,6 +113,22 @@ public class Player extends Entity implements Serializable {
 
     public void setHealth(double health) {
         this.health = health;
+    }
+
+    public int getN() {
+        return N;
+    }
+
+    public int getPlus() {
+        return plus;
+    }
+
+    public int getMinus() {
+        return minus;
+    }
+
+    public int getExclamationMark() {
+        return exclamationMark;
     }
 
     public boolean loadPlayerFromFile(String filePath) {
