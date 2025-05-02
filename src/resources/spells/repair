@@ -1,0 +1,18 @@
+4
+3_24_2_repairArg1
+4_25_2_repairArg2
+5_27_2_repairArg3
+6_22_1_repairArg4
+13
+
+    public void repair() {
+
+        int arg1 = first  ;
+        int arg2 = second  ;
+        String arg3 = third  ;
+        boolean arg4 = fourth;
+
+        castRepair(arg1, arg2,
+        arg3, arg4);
+
+    }

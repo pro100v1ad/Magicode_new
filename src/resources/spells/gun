@@ -1,0 +1,13 @@
+2
+3_22_2_gunArg1
+4_22_2_gunArg2
+10
+
+    public void gun() {
+
+        int damage = 5  ;
+        int reload = 3  ;
+
+        takeAShoot(damage, reload);
+
+    }
