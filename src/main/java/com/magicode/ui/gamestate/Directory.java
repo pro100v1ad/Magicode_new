@@ -59,14 +59,14 @@ public class Directory extends GUI {
         posButtonExitX = 1049;
         posButtonExitY = 15;
 
-        spellButtons = new Button[5];
+        spellButtons = new Button[4];
 
         posButtonX = 128;
         posButtonY = 128;
         buttonCount = 0;
-        buttonNames =  new String[] {"Переменные()","Операторы()","Символы()","Условия()","Циклы()"};
+        buttonNames =  new String[] {"Переменные()","Операторы()","Условия()","Циклы()"};
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
 
             addInfo();
 
@@ -128,9 +128,6 @@ public class Directory extends GUI {
             case "Операторы()":
                 filePath = filePath + "operators.txt";
                 break;
-            case "Символы()":
-                filePath = filePath + "symbols.txt";
-                break;
             case "Условия()":
                 filePath = filePath + "conditions.txt";
                 break;
@@ -146,6 +143,8 @@ public class Directory extends GUI {
                 System.out.println("Файл пуст");
                 return;
             }
+            currentText = null;
+            currentText = new String[100];
             currentText[0] = line;
             int linecounter = 1;
             while (line != null) {
