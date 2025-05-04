@@ -2,28 +2,18 @@ package main.java.com.magicode.ui.gamestate;
 
 import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.ui.GUI;
-import main.java.com.magicode.ui.gamestate.tablet.EditArea;
+
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class Directory extends GUI {
-
-    private int directoryStance;
 
     private BufferedImage directoryImage;
 
     private BufferedImage directoryExit;
     private int posButtonExitX, posButtonExitY;
-
-    private BufferedImage directoryButtonLeft;
-    private int posButtonLeftX, posButtonLeftY;
-
-    private BufferedImage directoryButtonRight;
-    private int posButtonRightX, posButtonRightY;
 
     private Button[] spellButtons;
     private int buttonCount;
@@ -47,8 +37,7 @@ public class Directory extends GUI {
 
         directoryImage = gp.textureAtlas.textures[16][0].getTexture();
         directoryExit = gp.textureAtlas.textures[15][1].getTexture();
-        directoryButtonLeft = gp.textureAtlas.textures[16][1].getTexture();
-        directoryButtonRight = gp.textureAtlas.textures[16][2].getTexture();
+
 
         currentText = new String[100];
         fontSize = 15;
@@ -119,7 +108,7 @@ public class Directory extends GUI {
 
     public void textOut(String name) {
 
-        String filePath = "src/resources/gui/directory/codeInfo/";
+        String filePath = "/resources/gui/directory/codeInfo/";
 
         switch (name) {
             case "Переменные()":
@@ -136,9 +125,13 @@ public class Directory extends GUI {
                 break;
         }
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            line = reader.readLine();
+        try (InputStream is = getClass().getResourceAsStream(filePath)) {
+            if (is == null) {
+                System.out.println("Ошибка: файл не найден! " + filePath);
+                return;
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String line = br.readLine();
             if (line == null) {
                 System.out.println("Файл пуст");
                 return;
@@ -148,7 +141,7 @@ public class Directory extends GUI {
             currentText[0] = line;
             int linecounter = 1;
             while (line != null) {
-                line = reader.readLine();
+                line = br.readLine();
                 currentText[linecounter] = line;
                 linecounter++;
             }

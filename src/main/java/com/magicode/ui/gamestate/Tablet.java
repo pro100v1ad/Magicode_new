@@ -79,9 +79,9 @@ public class Tablet extends GUI {
         buttons[0].setStaticLineColor(new Color(88, 88, 88));
 
 
-        textRedactor.addSpell("src/resources/spells/key");
-        textRedactor.addSpell("src/resources/spells/repair");
-        textRedactor.addSpell("src/resources/spells/gun");
+        textRedactor.addSpell("/resources/spells/key");
+        textRedactor.addSpell("/resources/spells/repair");
+        textRedactor.addSpell("/resources/spells/gun");
     }
 
     public void addButton(String name) {
