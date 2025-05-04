@@ -10,6 +10,7 @@ public class Main {
     public static void main(String[] args) {
         GamePanel panel = new GamePanel();
 
+
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setContentPane(panel);
 
