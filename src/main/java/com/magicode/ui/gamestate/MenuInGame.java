@@ -100,8 +100,8 @@ public class MenuInGame {
                 buttonDirectoryImage = gp.textureAtlas.textures[14][3].getTexture();
                 if(click) {
                     click = false;
-                    gp.state = GamePanel.GameState.GameMenu;
-                    state = true;
+                    gp.state = GamePanel.GameState.GameOpenDirectory;
+                    state = false;
                 }
             } else {
                 buttonDirectoryImage = gp.textureAtlas.textures[14][2].getTexture();

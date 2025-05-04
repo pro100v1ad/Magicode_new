@@ -7,6 +7,7 @@ import main.java.com.magicode.gameplay.entity.Player;
 import main.java.com.magicode.ui.gamestate.MenuInGame;
 import main.java.com.magicode.ui.gamestate.StartMenu;
 import main.java.com.magicode.ui.gamestate.Tablet;
+import main.java.com.magicode.ui.gamestate.Directory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,6 +78,7 @@ public class GamePanel extends JComponent {
     public StartMenu startMenu;
     public MenuInGame menuInGame;
     public Tablet tablet;
+    public Directory directory;
 
     // Объявление классов Необходимых в процессе разработки
     public Listeners listeners;
@@ -94,7 +96,7 @@ public class GamePanel extends JComponent {
 
         startMenu = new StartMenu(this, saveManager.checkIfFilesExist());
         tablet = new Tablet(this);
-
+        directory = new Directory(this);
         listeners = new Listeners(this);
 
         setWhoHaveCollision();
@@ -302,6 +304,9 @@ public class GamePanel extends JComponent {
             tablet.click();
             tablet.click2();
         }
+        if(state.equals(GameState.GameOpenDirectory)){
+            directory.click();
+        }
     }
 
     public int getWorldWidth() {
@@ -344,6 +349,9 @@ public class GamePanel extends JComponent {
         if(state.equals(GameState.GameOpenTablet)) {
             tablet.update();
         }
+        if(state.equals(GameState.GameOpenDirectory)) {
+            directory.update();
+        }
 
     }
     public void render1(){
@@ -367,6 +375,9 @@ public class GamePanel extends JComponent {
             tablet.draw(g);
         }
 
+        if(state.equals(GameState.GameOpenDirectory)) {
+            directory.draw(g);
+        }
 
         draw();
     }

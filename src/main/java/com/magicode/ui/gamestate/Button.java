@@ -17,8 +17,11 @@ public class Button extends GUI {
     private int textWidth; // Будем хранить ширину текста
     private int textHeight; // И высоту текста
 
+    private Color textColor;
     private Color backgroundColor;
     private Color staticLineColor;
+    private Color passiveLineColor;
+    private Color activeLineColor;
 
     public Button(GamePanel gp, int posX, int posY, String text, float fontSize, boolean state) {
         super();
@@ -29,6 +32,9 @@ public class Button extends GUI {
         this.fontSize = fontSize;
         this.colorLine = Color.white;
         this.state = state;
+        this.textColor = Color.WHITE;
+        this.passiveLineColor = Color.WHITE;
+        this.activeLineColor = Color.YELLOW;
 
         // Временная инициализация, точные значения получим в методе draw
         this.textWidth = (int)(text.length() * fontSize / 1.55);
@@ -55,6 +61,10 @@ public class Button extends GUI {
         return state;
     }
 
+    public String getText() {
+        return text;
+    }
+
     public void setBackgroundColor(Color backgroundColor) {
         this.backgroundColor = backgroundColor;
     }
@@ -71,18 +81,31 @@ public class Button extends GUI {
         int mY = GamePanel.mouseY;
 
         if(mX >= posX && mX <= posX + width && mY >= posY && mY <= posY + height) {
-            colorLine = Color.yellow;
+            colorLine = activeLineColor;
             if(click) {
                 click = false;
                 return true;
             }
         } else {
-            colorLine = Color.white;
+            colorLine = passiveLineColor;
         }
         click = false;
         return false;
     }
 
+
+    public void setTextColor(Color textColor){
+        this.textColor = textColor;
+    }
+
+    public void setPassiveLineColor(Color passiveLineColor){
+        this.colorLine = passiveLineColor;
+        this.passiveLineColor = passiveLineColor;
+    }
+
+    public void setActiveLineColor(Color activeLineColor){
+        this.activeLineColor = activeLineColor;
+    }
 
     @Override
     public void draw(Graphics2D g) {
@@ -104,7 +127,7 @@ public class Button extends GUI {
 
         // Рисуем текст
         if(state) {
-            g.setColor(Color.white);
+            g.setColor(textColor);
         } else {
             g.setColor(new Color(88, 88, 88, 255));
         }
