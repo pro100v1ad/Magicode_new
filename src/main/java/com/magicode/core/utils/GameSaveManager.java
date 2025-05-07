@@ -50,7 +50,7 @@ public class GameSaveManager {
                     if(structures[i].getName().equals("chest")) {
                         Chest chest = (Chest) structures[i];
                         writer.write("chest_" + chest.getX() + "_" + chest.getY() + "_" + chest.getW() + "_" + chest.getH() +
-                                "_" + chest.getCode() + ":" + chest.getRadius() + "_" + chest.getLock() + "_" + chest.getDirection()
+                                "_" + chest.getCode() + ":" + chest.getRadius() + ":" + chest.getObjectName() + "_" + chest.getLock() + "_" + chest.getDirection()
                                 + "_" + chest.getState() + " ");
                     }
 

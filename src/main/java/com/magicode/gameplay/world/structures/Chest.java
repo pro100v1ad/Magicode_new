@@ -2,6 +2,8 @@ package main.java.com.magicode.gameplay.world.structures;
 
 import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.gameplay.world.Structure;
+import main.java.com.magicode.gameplay.world.GameObject;
+import main.java.com.magicode.gameplay.world.objects.Key;
 
 import java.awt.*;
 
@@ -9,17 +11,24 @@ public class Chest extends Structure {
 
     private boolean isLock;
     private GamePanel gp;
+    private int objectCode;
+    private String objectName;
 
     public Chest(GamePanel gp, int x, int y, int w, int h, String code, boolean isLock, boolean state, String direction) {
+        this.gp = gp;
         this.name = "chest";
-        this.code = Integer.parseInt(code.split(":")[0]);
-        this.radius = Integer.parseInt(code.split(":")[1]);
+        String[] parts = code.split(":"); // Немного изменил парсинг (для работы третьего опционального параметра)
+        this.code = Integer.parseInt(parts[0]);
+        this.radius = Integer.parseInt(parts[1]);
+        this.objectCode = Integer.parseInt(parts[0]); // Сундук не может быть пустым теперь
+        this.objectName = parts[2];
+
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
 
-        this.gp = gp;
+
         this.isLock = isLock;
         this.state = state;
         this.direction = direction;
@@ -62,13 +71,32 @@ public class Chest extends Structure {
         return isLock;
     }
 
-    public void openChest() {
+    public String getObjectName() {
+        return objectName;
+    }
+
+    public GameObject openChest(GameObject object) {
         isLock = false;
         code = 0;
         radius = 0;
         loadImage();
+        return setObjectByCode(object, objectName);
     }
 
+    private GameObject setObjectByCode(GameObject object, String objectName) { // Добавил функцию
+        switch (objectName) {
+            case "key":
+                object = new Key(gp, x, y, this.objectCode);
+                break;
+            //case 2:
+            //storedObject = new Book(gp);
+            //break;
+            default:
+                System.out.println("Error = NULL");
+                object = null;
+        }
+        return object;
+    }
 
     @Override
     public void draw(Graphics2D g) {
@@ -85,5 +113,4 @@ public class Chest extends Structure {
         }
 
     }
-
 }
