@@ -1,8 +1,12 @@
 package main.java.com.magicode.core.utils;
 
 import main.java.com.magicode.gameplay.entity.Player;
+import main.java.com.magicode.gameplay.world.GameObject;
 import main.java.com.magicode.gameplay.world.Layer;
 import main.java.com.magicode.gameplay.world.Structure;
+import main.java.com.magicode.gameplay.world.objects.Book;
+import main.java.com.magicode.gameplay.world.objects.Key;
+import main.java.com.magicode.gameplay.world.objects.Wrench;
 import main.java.com.magicode.gameplay.world.structures.Chest;
 import main.java.com.magicode.gameplay.world.structures.Door;
 import main.java.com.magicode.gameplay.world.structures.Hatch;
@@ -13,9 +17,11 @@ public class GameSaveManager {
     private final String saveFilePathBackground = "saves/backgroundSave.txt";
     private final String saveFilePathStructure = "saves/structureSave.txt";
     private final String saveFilePathPlayer = "saves/playerSave.txt";
+    private final String saveFilePathObjects = "saves/objectSave.txt";
     private final String saveFilePathSceneInfo = "saves/sceneInfo.txt";
+
     // Сохранение игры
-    public void saveGame(Layer[][] worldMap, Structure[] structures, Player player, SceneChanger sceneChanger) {
+    public void saveGame(Layer[][] worldMap, Structure[] structures, Player player, SceneChanger sceneChanger, GameObject[] objects) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFilePathBackground))) {
             writer.write(worldMap[0].length + " " + worldMap.length + "\n");
             for(int i = 0; i < worldMap.length; i++) {
@@ -90,6 +96,35 @@ public class GameSaveManager {
             System.err.println("Ошибка при сохранении информации о сцене: " + e.getMessage());
         }
 
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFilePathObjects))) {
+
+            writer.write(objects.length + "\n");
+
+            for(GameObject object: objects) { // Сохранение объектов
+                if(object == null) continue;
+                if(object.getName().equals("key")) {
+                    Key key = (Key) object;
+                    writer.write("key_" + key.getPosX() + "_" + key.getPosY() + "_" + key.getCode() + "\n");
+                }
+                if(object.getName().equals("book")) {
+                    Book book = (Book) object;
+                    writer.write("book_" + book.getPosX() + "_" + book.getPosY() + "_" + book.getCode() + "\n");
+                }
+                if(object.getName().equals("wrench")) {
+                    Wrench wrench = (Wrench) object;
+                    writer.write("wrench_" + wrench.getPosX() + "_" + wrench.getPosY() + "_" + wrench.getCode() + "\n");
+                }
+
+
+
+            }
+
+
+            System.out.println("objects сохранен в файл: " + saveFilePathObjects);
+        } catch (IOException e) {
+            System.err.println("Ошибка при сохранении объектов: " + e.getMessage());
+        }
+
     }
 
     // Загрузка игры
@@ -104,6 +139,9 @@ public class GameSaveManager {
     }
     public String getSaveFilePathSceneInfo() {
         return saveFilePathSceneInfo;
+    }
+    public String getSaveFilePathObjects() {
+        return saveFilePathObjects;
     }
 
     // Проверка и создание папки для сохранений
@@ -121,9 +159,10 @@ public class GameSaveManager {
         File file2 = new File(saveFilePathStructure);
         File file3 = new File(saveFilePathPlayer);
         File file4 = new File(saveFilePathSceneInfo);
+        File file5 = new File(saveFilePathObjects);
 
         // Проверяем, существуют ли оба файла
-        return file1.exists() && file2.exists() && file3.exists() && file4.exists();
+        return file1.exists() && file2.exists() && file3.exists() && file4.exists() && file5.exists();
     }
 
 

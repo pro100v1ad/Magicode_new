@@ -6,6 +6,9 @@ import main.java.com.magicode.core.utils.Interaction;
 import main.java.com.magicode.gameplay.world.GameObject;
 import main.java.com.magicode.gameplay.world.Layer;
 import main.java.com.magicode.gameplay.world.Structure;
+import main.java.com.magicode.gameplay.world.objects.Book;
+import main.java.com.magicode.gameplay.world.objects.Key;
+import main.java.com.magicode.gameplay.world.objects.Wrench;
 import main.java.com.magicode.gameplay.world.structures.Chest;
 import main.java.com.magicode.gameplay.world.structures.Door;
 import main.java.com.magicode.gameplay.world.structures.Hatch;
@@ -31,13 +34,13 @@ public class SceneLoader {
     private boolean isCutScene;
     
 
-    public SceneLoader(GamePanel gp, boolean isStart, String backgroundPath, String structurePath) {
+    public SceneLoader(GamePanel gp, boolean isStart, String backgroundPath, String structurePath, String objectPath) {
         this.gp = gp;
         if(backgroundPath != null || structurePath != null) {
             if(isStart) {
                 loadScene(backgroundPath, structurePath); // Новая игра
             } else {
-                loadSaveScene(backgroundPath, structurePath); // Продолжить игру
+                loadSaveScene(backgroundPath, structurePath, objectPath); // Продолжить игру
             }
 
         } else {
@@ -49,7 +52,7 @@ public class SceneLoader {
         isCooldown = false;
     }
 
-    private void loadSaveScene(String backgroundPath, String structurePath) {
+    private void loadSaveScene(String backgroundPath, String structurePath, String objectPath) {
 
 
         try (BufferedReader reader = new BufferedReader(new FileReader(backgroundPath))) {
@@ -136,6 +139,8 @@ public class SceneLoader {
             }
 
 
+
+
             if(structures != null) {
                 if(collision != null) {
                     collision.loadStructure(structures);
@@ -153,6 +158,38 @@ public class SceneLoader {
             System.err.println("Ошибка при загрузке структур: " + e.getMessage());
         }
 
+        // OBJECTS
+        try (BufferedReader reader = new BufferedReader(new FileReader(objectPath))) {
+            String line;
+            line = reader.readLine();
+            if (line == null) {
+                System.out.println("Файл пуст");
+                return;// Если файл закончился раньше, чем ожидалось
+            }
+
+            objects = new GameObject[Integer.parseInt(line)];
+            for(int i = 0; i < objects.length; i++) {
+                line = reader.readLine();
+                if(line == null) break;
+                String[] parts = line.split("_");
+                if(parts[0].equals("key")) {
+                    objects[i] = new Key(gp, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3]));
+                }
+                if(parts[0].equals("book")) {
+                    objects[i] = new Book(gp, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3]));
+                }
+                if(parts[0].equals("wrench")) {
+                    objects[i] = new Wrench(gp, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3]));
+                }
+
+            }
+
+            interaction.loadObjects(objects);
+
+            System.out.println("Объекты загружены из файла: " + objectPath);
+        } catch (IOException e) {
+            System.err.println("Ошибка при загрузке объектов: " + e.getMessage());
+        }
 
     }
 
@@ -326,6 +363,14 @@ public class SceneLoader {
 
     public Structure[] getStructures() {
         return structures;
+    }
+
+    public GameObject[] getObjects() {
+        return objects;
+    }
+
+    public void setObjects(GameObject[] objects) {
+        this.objects = objects;
     }
 
     public void update() {

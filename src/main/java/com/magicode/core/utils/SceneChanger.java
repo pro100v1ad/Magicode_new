@@ -25,14 +25,16 @@ public class SceneChanger {
 
         if(isStart) {
             numberActiveScene = 0;
-            gp.sceneLoader = new SceneLoader(gp, true, null, null);
+            gp.sceneLoader = new SceneLoader(gp, true, null, null, null);
             loadSceneInfo();
         } else {
             if(filePath != null) {
                 readFile(filePath);
                 gp.sceneLoader = new SceneLoader(gp, false, gp.saveManager.getSaveFilePathBackground(),
-                        gp.saveManager.getSaveFilePathStructure());
+                        gp.saveManager.getSaveFilePathStructure(),
+                        gp.saveManager.getSaveFilePathObjects());
             }
+            loadSceneInfo();
         }
 
 
@@ -96,7 +98,7 @@ public class SceneChanger {
         gp.player.setWorldY(Integer.parseInt(sceneInfo[index].split(" ")[2]));
         gp.sceneLoader = new SceneLoader(gp, true,
                 sceneInfo[index].split(" ")[0] + "background",
-                sceneInfo[index].split(" ")[0] + "structure");
+                sceneInfo[index].split(" ")[0] + "structure", null);
     }
 
 
