@@ -3,6 +3,7 @@ package main.java.com.magicode.gameplay.world.structures;
 import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.gameplay.world.Structure;
 import main.java.com.magicode.gameplay.world.GameObject;
+import main.java.com.magicode.gameplay.world.objects.Book;
 import main.java.com.magicode.gameplay.world.objects.Key;
 
 import java.awt.*;
@@ -88,9 +89,9 @@ public class Chest extends Structure {
             case "key":
                 object = new Key(gp, x, y, this.objectCode);
                 break;
-            //case 2:
-            //storedObject = new Book(gp);
-            //break;
+            case "book":
+                object = new Book(gp, x, y, this.objectCode);
+                break;
             default:
                 System.out.println("Error = NULL");
                 object = null;

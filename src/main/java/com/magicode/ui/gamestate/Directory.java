@@ -1,6 +1,7 @@
 package main.java.com.magicode.ui.gamestate;
 
 import main.java.com.magicode.core.GamePanel;
+import main.java.com.magicode.gameplay.entity.Player;
 import main.java.com.magicode.ui.GUI;
 
 
@@ -55,23 +56,21 @@ public class Directory extends GUI {
         buttonCount = 0;
         buttonNames =  new String[] {"Переменные()","Операторы()","Условия()","Циклы()"};
 
-        for (int i = 0; i < 4; i++) {
-
-            addInfo();
-
-        }
-
 
     }
 
     public void addInfo(){
-    spellButtons[buttonCount]=new Button(this.gp,posButtonX,posButtonY+buttonCount*64,buttonNames[buttonCount],32,true);
-    spellButtons[buttonCount].setTextColor(Color.BLACK);
-    spellButtons[buttonCount].setBackgroundColor(new Color(255, 255, 255, 0));
-    spellButtons[buttonCount].setStaticLineColor(new Color(255, 255, 255, 0));
-    spellButtons[buttonCount].setPassiveLineColor(new Color(140, 140, 140, 200));
-    spellButtons[buttonCount].setActiveLineColor(Color.pink);
-    buttonCount++;
+        if(buttonCount >= buttonNames.length) {
+            return;
+        }
+        spellButtons[buttonCount]=new Button(this.gp,posButtonX,posButtonY+buttonCount*64,buttonNames[buttonCount],32,true);
+        spellButtons[buttonCount].setTextColor(Color.BLACK);
+        spellButtons[buttonCount].setBackgroundColor(new Color(255, 255, 255, 0));
+        spellButtons[buttonCount].setStaticLineColor(new Color(255, 255, 255, 0));
+        spellButtons[buttonCount].setPassiveLineColor(new Color(140, 140, 140, 200));
+        spellButtons[buttonCount].setActiveLineColor(Color.pink);
+        buttonCount++;
+
     }
 
     public void click() {

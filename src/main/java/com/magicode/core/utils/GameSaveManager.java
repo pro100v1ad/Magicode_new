@@ -66,7 +66,13 @@ public class GameSaveManager {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFilePathPlayer))) {
 
-            writer.write((int)(player.getWorldX()) + "_" + (int)(player.getWorldY()));
+            writer.write((int)(player.getWorldX()) + "_" + (int)(player.getWorldY()) + "\n");
+
+            writer.write(player.getCountBook() + "\n");
+
+            writer.write(player.getN() + "_" + player.getPlus() + "_" + player.getMinus() + "_" + player.getExclamationMark());
+
+
 
 
             System.out.println("Player сохранен в файл: " + saveFilePathStructure);

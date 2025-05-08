@@ -86,7 +86,7 @@ public class SceneLoader {
                 }
             }
 
-            collision.loadMap(worldMap);
+            setWorldMap(worldMap);
 
 
             System.out.println("Задний фон загружен из файла: " + backgroundPath);
@@ -205,6 +205,7 @@ public class SceneLoader {
 
             }
 
+            setWorldMap(worldMap);
 
             System.out.println("Успешная загрузка сцены: " + backgroundPath);
 //            System.out.println("Сцена загрузилась за: " + ((System.nanoTime()-startTime)/1000000) + " миллисекунд!");
@@ -334,7 +335,7 @@ public class SceneLoader {
         }
 
 
-        if(cooldown == 40) {
+        if(cooldown == 20) {
             cooldown = 0;
             isCooldown = false;
         }
@@ -385,6 +386,21 @@ public class SceneLoader {
                                 if(objects[i] != null) {
                                     if (objects[i].equals(object)) {
                                         objects[i] = null;
+                                        System.out.println("Ключ подобран!");
+                                        break;
+                                    }
+                                }
+
+                            }
+                        }
+                        if(object.getName().equals("book")) {
+                            for (int i = 0; i < objects.length; i++) {
+                                if(objects[i] != null) {
+                                    if (objects[i].equals(object)) {
+                                        objects[i] = null;
+                                        System.out.println("Книга подобрана!");
+                                        gp.directory.addInfo();
+                                        gp.player.setCountBook(gp.player.getCountBook() + 1);
                                         break;
                                     }
                                 }

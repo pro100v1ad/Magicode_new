@@ -3,6 +3,7 @@ package main.java.com.magicode.gameplay.entity;
 import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.core.utils.Animation;
 import main.java.com.magicode.core.utils.ResourceLoader;
+import main.java.com.magicode.ui.gamestate.Directory;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -23,10 +24,12 @@ public class Player extends Entity implements Serializable {
     private final int screenY;
     private String lastDirection = "";
 
-    private int N = 0;
-    private int plus = 0;
-    private int minus = 0;
-    private int exclamationMark = 0;
+    private int N;
+    private int plus;
+    private int minus;
+    private int exclamationMark;
+
+    private int countBook;
 
     public Player(GamePanel gp, String filePath){
         this.gp = gp;
@@ -46,6 +49,8 @@ public class Player extends Entity implements Serializable {
         } else {
             setDefaultValues();
         }
+
+
 
     }
 
@@ -89,6 +94,13 @@ public class Player extends Entity implements Serializable {
 //        worldX = 10;
 //        worldY = 10;
 
+        N = 0;
+        plus = 0;
+        minus = 0;
+        exclamationMark = 0;
+
+        countBook = 0;
+
         worldX = GamePanel.tileSize*35;
         worldY = GamePanel.tileSize*17;
         float pixelsPerSecond = 200f;
@@ -111,6 +123,10 @@ public class Player extends Entity implements Serializable {
         this.worldY = worldY;
     }
 
+    public void setCountBook(int countBook) {
+        this.countBook = countBook;
+    }
+
     public void setHealth(double health) {
         this.health = health;
     }
@@ -131,6 +147,10 @@ public class Player extends Entity implements Serializable {
         return exclamationMark;
     }
 
+    public int getCountBook() {
+        return countBook;
+    }
+
     public boolean loadPlayerFromFile(String filePath) {
         try(BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -140,9 +160,23 @@ public class Player extends Entity implements Serializable {
                 return false;// Если файл закончился раньше, чем ожидалось
             }
 
-            String parts[] = line.split("_");
+            String[] parts = line.split("_");
             worldX = Integer.parseInt(parts[0]);
             worldY = Integer.parseInt(parts[1]);
+            line = reader.readLine();
+            countBook = Integer.parseInt(line);
+            gp.directory = new Directory(gp);
+            for(int i = 0; i < countBook; i++) {
+                gp.directory.addInfo();
+            }
+
+            line = reader.readLine();
+            parts = line.split("_");
+            N = Integer.parseInt(parts[0]);
+            plus = Integer.parseInt(parts[1]);
+            minus = Integer.parseInt(parts[2]);
+            exclamationMark = Integer.parseInt(parts[3]);
+
             // Потом поменяю //////////
             float pixelsPerSecond = 200f;
             speed = (pixelsPerSecond * GamePanel.scale) / GamePanel.UPDATE_RATE; // scale минимум 1/4 и максимум 2.
