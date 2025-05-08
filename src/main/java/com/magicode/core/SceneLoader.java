@@ -21,8 +21,8 @@ public class SceneLoader {
     private Layer[][] worldMap;
     private Structure[] structures;
     private GameObject[] objects;
-    public static final String DEFAULT_BACKGROUND = "/resources/levels/parts1/background";
-    public static final String DEFAULT_STRUCTURE = "/resources/levels/parts1/structure";
+    public static final String DEFAULT_BACKGROUND = "/resources/levels/scenes/start/background";
+    public static final String DEFAULT_STRUCTURE = "/resources/levels/scenes/start/structure";
     private int sceneWidth;
     private int sceneHeight;
     private CutScene scene;
@@ -31,10 +31,15 @@ public class SceneLoader {
     private boolean isCutScene;
     
 
-    public SceneLoader(GamePanel gp, String backgroundPath, String structurePath) {
+    public SceneLoader(GamePanel gp, boolean isStart, String backgroundPath, String structurePath) {
         this.gp = gp;
         if(backgroundPath != null || structurePath != null) {
-            loadSaveScene(backgroundPath, structurePath); // Продолжить игру
+            if(isStart) {
+                loadScene(backgroundPath, structurePath); // Новая игра
+            } else {
+                loadSaveScene(backgroundPath, structurePath); // Продолжить игру
+            }
+
         } else {
             loadScene(DEFAULT_BACKGROUND, DEFAULT_STRUCTURE); // Новая игра
         }
@@ -414,6 +419,7 @@ public class SceneLoader {
                                     if (objects[i].equals(object)) {
                                         objects[i] = null;
                                         System.out.println("Гаечный ключ подобран!");
+                                        gp.sceneChanger.setNumberActiveScene(gp.sceneChanger.getNumberActiveScene() + 1);
                                         break;
                                     }
                                 }

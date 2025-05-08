@@ -84,6 +84,7 @@ public class GamePanel extends JComponent {
     public Listeners listeners;
     public TextureAtlas textureAtlas;
     public SceneLoader sceneLoader;
+    public SceneChanger sceneChanger;
     public Player player;
 
 
@@ -276,15 +277,18 @@ public class GamePanel extends JComponent {
     }
 
     public void startNewGame() {
-        sceneLoader = new SceneLoader(this, null, null);
+//        sceneLoader = new SceneLoader(this, null, null);
+        sceneChanger = new SceneChanger(this, true, null);
         player = new Player(this, null);
         menuInGame = new MenuInGame(this);
     }
 
     public void continueGame() {
-        sceneLoader = new SceneLoader(this, saveManager.getSaveFilePathBackground(), saveManager.getSaveFilePathStructure());
+//        sceneLoader = new SceneLoader(this, saveManager.getSaveFilePathBackground(), saveManager.getSaveFilePathStructure());
+        sceneChanger = new SceneChanger(this, false, saveManager.getSaveFilePathSceneInfo());
         player = new Player(this, saveManager.getSaveFilePathPlayer());
         menuInGame = new MenuInGame(this);
+
     }
 
     public void exitGame() {
@@ -292,7 +296,7 @@ public class GamePanel extends JComponent {
     }
 
     public void saveGame() {
-        saveManager.saveGame(sceneLoader.getWorldMap(), sceneLoader.getStructures(), player);
+        saveManager.saveGame(sceneLoader.getWorldMap(), sceneLoader.getStructures(), player, sceneChanger);
         startMenu.setState(true);
     }
 

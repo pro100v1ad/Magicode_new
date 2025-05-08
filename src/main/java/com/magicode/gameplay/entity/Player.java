@@ -276,6 +276,8 @@ public class Player extends Entity implements Serializable {
             case "right": case "up_right": case "down_right": animations[3].update(); break;
         }
 
+//        System.out.println("Player - x: " + worldX + ", y: " + worldY);
+
     }
 
 

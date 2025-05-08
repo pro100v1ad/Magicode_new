@@ -10,11 +10,12 @@ import main.java.com.magicode.gameplay.world.structures.Hatch;
 import java.io.*;
 
 public class GameSaveManager {
-    private String saveFilePathBackground = "saves/backgroundSave.txt";
-    private String saveFilePathStructure = "saves/structureSave.txt";
-    private String saveFilePathPlayer = "saves/playerSave.txt";
+    private final String saveFilePathBackground = "saves/backgroundSave.txt";
+    private final String saveFilePathStructure = "saves/structureSave.txt";
+    private final String saveFilePathPlayer = "saves/playerSave.txt";
+    private final String saveFilePathSceneInfo = "saves/sceneInfo.txt";
     // Сохранение игры
-    public void saveGame(Layer[][] worldMap, Structure[] structures, Player player) {
+    public void saveGame(Layer[][] worldMap, Structure[] structures, Player player, SceneChanger sceneChanger) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFilePathBackground))) {
             writer.write(worldMap[0].length + " " + worldMap.length + "\n");
             for(int i = 0; i < worldMap.length; i++) {
@@ -80,6 +81,15 @@ public class GameSaveManager {
             System.err.println("Ошибка при сохранении игрока: " + e.getMessage());
         }
 
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFilePathSceneInfo))) {
+
+            writer.write(sceneChanger.getNumberActiveScene() + "");
+
+            System.out.println("sceneInfo сохранен в файл: " + saveFilePathSceneInfo);
+        } catch (IOException e) {
+            System.err.println("Ошибка при сохранении информации о сцене: " + e.getMessage());
+        }
+
     }
 
     // Загрузка игры
@@ -91,6 +101,9 @@ public class GameSaveManager {
     }
     public String getSaveFilePathPlayer() {
         return saveFilePathPlayer;
+    }
+    public String getSaveFilePathSceneInfo() {
+        return saveFilePathSceneInfo;
     }
 
     // Проверка и создание папки для сохранений
@@ -107,9 +120,10 @@ public class GameSaveManager {
         File file1 = new File(saveFilePathBackground);
         File file2 = new File(saveFilePathStructure);
         File file3 = new File(saveFilePathPlayer);
+        File file4 = new File(saveFilePathSceneInfo);
 
         // Проверяем, существуют ли оба файла
-        return file1.exists() && file2.exists() && file3.exists();
+        return file1.exists() && file2.exists() && file3.exists() && file4.exists();
     }
 
 
