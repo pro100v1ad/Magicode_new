@@ -407,6 +407,19 @@ public class SceneLoader {
 
                             }
                         }
+
+                        if(object.getName().equals("wrench")) {
+                            for (int i = 0; i < objects.length; i++) {
+                                if(objects[i] != null) {
+                                    if (objects[i].equals(object)) {
+                                        objects[i] = null;
+                                        System.out.println("Гаечный ключ подобран!");
+                                        break;
+                                    }
+                                }
+
+                            }
+                        }
                         interaction.reloadMap(structures, objects);
                     }
                 }

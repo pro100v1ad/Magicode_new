@@ -5,6 +5,7 @@ import main.java.com.magicode.gameplay.world.Structure;
 import main.java.com.magicode.gameplay.world.GameObject;
 import main.java.com.magicode.gameplay.world.objects.Book;
 import main.java.com.magicode.gameplay.world.objects.Key;
+import main.java.com.magicode.gameplay.world.objects.Wrench;
 
 import java.awt.*;
 
@@ -92,6 +93,10 @@ public class Chest extends Structure {
             case "book":
                 object = new Book(gp, x, y, this.objectCode);
                 break;
+            case "wrench":
+                object = new Wrench(gp, x, y, this.objectCode);
+                break;
+
             default:
                 System.out.println("Error = NULL");
                 object = null;
