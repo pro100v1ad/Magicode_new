@@ -25,6 +25,18 @@ public class TextureAtlas {
         textures[1][0].loadTexture("/resources/background/grass/grassCenter.png");
 
         textures[2][0].loadTexture("/resources/background/water/waterCenter.png");
+        textures[2][1].loadTexture("/resources/background/water/waterUp.png");
+        textures[2][2].loadTexture("/resources/background/water/waterDown.png");
+        textures[2][3].loadTexture("/resources/background/water/waterLeft.png");
+        textures[2][4].loadTexture("/resources/background/water/waterRight.png");
+        textures[2][5].loadTexture("/resources/background/water/waterUpLeft.png");
+        textures[2][6].loadTexture("/resources/background/water/waterUpRight.png");
+        textures[2][7].loadTexture("/resources/background/water/waterDownLeft.png");
+        textures[2][8].loadTexture("/resources/background/water/waterDownRight.png");
+        textures[2][9].loadTexture("/resources/background/water/waterLeftUp.png");
+        textures[2][10].loadTexture("/resources/background/water/waterLeftDown.png");
+        textures[2][11].loadTexture("/resources/background/water/waterRightUp.png");
+        textures[2][12].loadTexture("/resources/background/water/waterRightDown.png");
 
         textures[10][0].loadTexture("/resources/structures/door/doorUp.png");
         textures[10][1].loadTexture("/resources/structures/door/doorDown.png");

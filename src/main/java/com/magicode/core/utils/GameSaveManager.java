@@ -40,30 +40,32 @@ public class GameSaveManager {
 
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFilePathStructure))) {
+            if(structures == null) {
+                writer.write("");
+            } else {
+                for (int i = 0; i < structures.length; i++) {
+                    if (structures[i] != null) {
+                        if (structures[i].getName().equals("door")) {
+                            Door door = (Door) structures[i];
+                            writer.write("door_" + door.getX() + "_" + door.getY() + "_" + door.getW() + "_" + door.getH() +
+                                    "_" + door.getCode() + ":" + door.getRadius() + "_" + door.getLock() + "_" + door.getDirection()
+                                    + "_" + door.getState() + " ");
+                        }
+                        if (structures[i].getName().equals("hatch")) {
+                            Hatch hatch = (Hatch) structures[i];
+                            writer.write("hatch_" + hatch.getX() + "_" + hatch.getY() + "_" + hatch.getW() + "_" + hatch.getH() +
+                                    "_" + hatch.getCode() + ":" + hatch.getRadius() + "_" + hatch.getState() + "_" + hatch.getDefaultRoute() + " ");
+                        }
+                        if (structures[i].getName().equals("chest")) {
+                            Chest chest = (Chest) structures[i];
+                            writer.write("chest_" + chest.getX() + "_" + chest.getY() + "_" + chest.getW() + "_" + chest.getH() +
+                                    "_" + chest.getCode() + ":" + chest.getRadius() + ":" + chest.getObjectName() + "_" + chest.getLock() + "_" + chest.getDirection()
+                                    + "_" + chest.getState() + " ");
+                        }
 
-            for(int i = 0; i < structures.length; i++) {
-                if(structures[i] != null) {
-                    if(structures[i].getName().equals("door")) {
-                        Door door = (Door) structures[i];
-                        writer.write("door_" + door.getX() + "_" + door.getY() + "_" + door.getW() + "_" + door.getH() +
-                                "_" + door.getCode() + ":" + door.getRadius() + "_" + door.getLock() + "_" + door.getDirection()
-                                + "_" + door.getState() + " ");
                     }
-                    if(structures[i].getName().equals("hatch")) {
-                        Hatch hatch = (Hatch) structures[i];
-                        writer.write("hatch_" + hatch.getX() + "_" + hatch.getY() + "_" + hatch.getW() + "_" + hatch.getH() +
-                                "_" + hatch.getCode() + ":" + hatch.getRadius() + "_" + hatch.getState() + "_" + hatch.getDefaultRoute() + " ");
-                    }
-                    if(structures[i].getName().equals("chest")) {
-                        Chest chest = (Chest) structures[i];
-                        writer.write("chest_" + chest.getX() + "_" + chest.getY() + "_" + chest.getW() + "_" + chest.getH() +
-                                "_" + chest.getCode() + ":" + chest.getRadius() + ":" + chest.getObjectName() + "_" + chest.getLock() + "_" + chest.getDirection()
-                                + "_" + chest.getState() + " ");
-                    }
-
                 }
             }
-
 
 
             System.out.println("Structure сохранен в файл: " + saveFilePathStructure);
@@ -97,28 +99,29 @@ public class GameSaveManager {
         }
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFilePathObjects))) {
+            if(objects == null) {
+                writer.write("");
+            } else {
+                writer.write(objects.length + "\n");
 
-            writer.write(objects.length + "\n");
+                for (GameObject object : objects) { // Сохранение объектов
+                    if (object == null) continue;
+                    if (object.getName().equals("key")) {
+                        Key key = (Key) object;
+                        writer.write("key_" + key.getPosX() + "_" + key.getPosY() + "_" + key.getCode() + "\n");
+                    }
+                    if (object.getName().equals("book")) {
+                        Book book = (Book) object;
+                        writer.write("book_" + book.getPosX() + "_" + book.getPosY() + "_" + book.getCode() + "\n");
+                    }
+                    if (object.getName().equals("wrench")) {
+                        Wrench wrench = (Wrench) object;
+                        writer.write("wrench_" + wrench.getPosX() + "_" + wrench.getPosY() + "_" + wrench.getCode() + "\n");
+                    }
 
-            for(GameObject object: objects) { // Сохранение объектов
-                if(object == null) continue;
-                if(object.getName().equals("key")) {
-                    Key key = (Key) object;
-                    writer.write("key_" + key.getPosX() + "_" + key.getPosY() + "_" + key.getCode() + "\n");
+
                 }
-                if(object.getName().equals("book")) {
-                    Book book = (Book) object;
-                    writer.write("book_" + book.getPosX() + "_" + book.getPosY() + "_" + book.getCode() + "\n");
-                }
-                if(object.getName().equals("wrench")) {
-                    Wrench wrench = (Wrench) object;
-                    writer.write("wrench_" + wrench.getPosX() + "_" + wrench.getPosY() + "_" + wrench.getCode() + "\n");
-                }
-
-
-
             }
-
 
             System.out.println("objects сохранен в файл: " + saveFilePathObjects);
         } catch (IOException e) {

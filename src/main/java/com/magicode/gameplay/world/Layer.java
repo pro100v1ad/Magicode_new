@@ -57,23 +57,24 @@ public class Layer implements Serializable {
         if(firstLayer > 0 && firstLayer < 10) {
             imageFirst = gp.textureAtlas.textures[0][firstLayer-1].getTexture();
         }
-        if(firstLayer == 10) {
-            imageFirst = gp.textureAtlas.textures[1][0].getTexture();
+        if(firstLayer > 10 && firstLayer < 20) {
+            imageFirst = gp.textureAtlas.textures[1][firstLayer-10-1].getTexture();
         }
-        if(firstLayer == 20) {
-            imageFirst = gp.textureAtlas.textures[2][0].getTexture();
+        if(firstLayer > 20 && firstLayer < 35) {
+            imageFirst = gp.textureAtlas.textures[2][firstLayer-20-1].getTexture();
         }
+
 
 
 
         if(secondLayer > 0 && secondLayer < 10) {
             imageSecond = gp.textureAtlas.textures[0][secondLayer-1].getTexture();
         }
-        if(secondLayer == 10) {
-            imageSecond = gp.textureAtlas.textures[1][0].getTexture();
+        if(secondLayer > 10 && secondLayer < 20) {
+            imageSecond = gp.textureAtlas.textures[1][secondLayer-10-1].getTexture();
         }
-        if(secondLayer == 20) {
-            imageSecond = gp.textureAtlas.textures[2][0].getTexture();
+        if(secondLayer > 20 && secondLayer < 35) {
+            imageSecond = gp.textureAtlas.textures[2][secondLayer-20-1].getTexture();
         }
 
     }

@@ -519,6 +519,7 @@ public class SceneLoader {
     }
 
     public void drawStructure(Graphics2D g) {
+        if (structures == null) return;
         for(Structure s: structures) {
             if(s != null) {
                 s.draw(g);
@@ -527,6 +528,7 @@ public class SceneLoader {
     }
 
     public void drawObjects(Graphics2D g) {
+        if(objects == null) return;
         for(GameObject o: objects) {
             if(o != null) {
                 o.draw(g);
