@@ -3,6 +3,8 @@ package main.java.com.magicode.core;
 import main.java.com.magicode.core.utils.Collision;
 import main.java.com.magicode.core.utils.CutScene;
 import main.java.com.magicode.core.utils.Interaction;
+import main.java.com.magicode.gameplay.entity.Enemy;
+import main.java.com.magicode.gameplay.entity.EnemyType.Slime;
 import main.java.com.magicode.gameplay.world.GameObject;
 import main.java.com.magicode.gameplay.world.Layer;
 import main.java.com.magicode.gameplay.world.Structure;
@@ -15,6 +17,10 @@ import main.java.com.magicode.gameplay.world.structures.Hatch;
 
 import java.awt.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.List;
 
 public class SceneLoader {
 
@@ -32,24 +38,61 @@ public class SceneLoader {
     private int cooldown;
     private boolean isCooldown;
     private boolean isCutScene;
-    
+    private Enemy[] enemies;
 
-    public SceneLoader(GamePanel gp, boolean isStart, String backgroundPath, String structurePath, String objectPath) {
+    public SceneLoader(GamePanel gp, boolean isStart, String backgroundPath,
+                       String structurePath, String objectPath, String enemiesPath) {
         this.gp = gp;
         if(backgroundPath != null || structurePath != null) {
             if(isStart) {
-                loadScene(backgroundPath, structurePath); // Новая игра
+                loadScene(backgroundPath, structurePath);
+                loadEnemies(enemiesPath); // Гарантированно вызываем loadEnemies
             } else {
-                loadSaveScene(backgroundPath, structurePath, objectPath); // Продолжить игру
+                loadSaveScene(backgroundPath, structurePath, objectPath);
+                loadEnemies(enemiesPath); // Гарантированно вызываем loadEnemies
             }
-
         } else {
-            loadScene(DEFAULT_BACKGROUND, DEFAULT_STRUCTURE); // Новая игра
+            loadScene(DEFAULT_BACKGROUND, DEFAULT_STRUCTURE);
+            loadEnemies(enemiesPath); // Гарантированно вызываем loadEnemies
         }
-
-
         cooldown = 0;
         isCooldown = false;
+    }
+
+    // Метод загрузки врагов
+    private void loadEnemies(String enemiesPath) {
+        System.out.println("Начало загрузки врагов. Путь: " + enemiesPath);
+
+        if (enemiesPath == null || enemiesPath.isEmpty()) {
+            System.out.println("Путь к врагам не указан");
+            enemies = new Enemy[0];
+            return;
+        }
+
+        try (InputStream is = getClass().getResourceAsStream(enemiesPath)) {
+            if (is == null) {
+                System.err.println("Файл не найден в ресурсах: " + enemiesPath);
+                enemies = new Enemy[0];
+                return;
+            }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String line;
+            List<Enemy> loadedEnemies = new ArrayList<>();
+
+            while ((line = br.readLine()) != null) {
+                System.out.println("Обработка строки: " + line);
+                // ... парсинг ...
+            }
+
+            enemies = loadedEnemies.toArray(new Enemy[0]);
+            System.out.println("Успешно загружено врагов: " + enemies.length);
+
+        } catch (Exception e) {
+            System.err.println("Критическая ошибка загрузки врагов: ");
+            e.printStackTrace();
+            enemies = new Enemy[0];
+        }
     }
 
     private void loadSaveScene(String backgroundPath, String structurePath, String objectPath) {
@@ -319,7 +362,15 @@ public class SceneLoader {
 
     }
 
-    
+    // Методы для работы с врагами
+    public Enemy[] getEnemies() {
+        return enemies;
+    }
+
+    public void setEnemies(Enemy[] enemies) {
+        this.enemies = enemies;
+    }
+
     public int getSceneWidth() {
         return sceneWidth;
     }
@@ -478,7 +529,20 @@ public class SceneLoader {
             }
 
         }
+        for(Enemy enemy : enemies) {
+            if(enemy != null) {
+                enemy.update();
+            }
+        }
 
+        System.out.println("Активных врагов: " + Arrays.stream(enemies).filter(Objects::nonNull).count());
+
+        for(Enemy enemy : enemies) {
+            if(enemy != null) {
+                enemy.update();
+                System.out.println("Враг на позиции: " + enemy.getWorldX() + "," + enemy.getWorldY());
+            }
+        }
 
     }
 
@@ -543,5 +607,14 @@ public class SceneLoader {
         drawBackground(g);
         drawStructure(g);
         drawObjects(g);
+        drawEnemies(g);
+    }
+
+    private void drawEnemies(Graphics2D g) {
+        for(Enemy enemy : enemies) {
+            if(enemy != null) {
+                enemy.draw(g);
+            }
+        }
     }
 }

@@ -74,8 +74,6 @@ public class TextureAtlas {
         textures[16][1].loadTexture("/resources/gui/directory/DirectoryArrowLeft.png");
         textures[16][2].loadTexture("/resources/gui/directory/DirectoryArrowRight.png");
 
-
-
     }
 
 }
