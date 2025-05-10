@@ -4,6 +4,7 @@ import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.core.utils.Animation;
 import main.java.com.magicode.core.utils.ResourceLoader;
 import main.java.com.magicode.ui.gamestate.Directory;
+import main.java.com.magicode.ui.interface_.Bar;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -24,12 +25,18 @@ public class Player extends Entity implements Serializable {
     private final int screenY;
     private String lastDirection = "";
 
+    private int maxMana;
+    private int mana;
+
     private int N;
     private int plus;
     private int minus;
     private int exclamationMark;
 
     private int countBook;
+
+    private Bar healthBar;
+    private Bar manaBar;
 
     public Player(GamePanel gp, String filePath){
         this.gp = gp;
@@ -50,6 +57,17 @@ public class Player extends Entity implements Serializable {
             setDefaultValues();
         }
 
+        int healthBarWidth = 300;
+        int healthBarHeight = 32;
+        int healthBarPosX = GamePanel.WIDTH/2 - healthBarWidth/2;
+        int healthBarPosY = GamePanel.HEIGHT - healthBarHeight*2;
+        healthBar = new Bar(gp, healthBarPosX, healthBarPosY, healthBarWidth, healthBarHeight, maxHealth, health, Color.red);
+
+        int manaBarWidth = 400;
+        int manaBarHeight = 32;
+        int manaBarPosX = GamePanel.WIDTH/2 - manaBarWidth/2;
+        int manaBarPosY = GamePanel.HEIGHT - manaBarHeight*3;
+        manaBar = new Bar(gp, manaBarPosX, manaBarPosY, manaBarWidth, manaBarHeight, maxMana, mana, Color.blue);
 
 
     }
@@ -101,6 +119,12 @@ public class Player extends Entity implements Serializable {
 
         countBook = 0;
 
+        maxHealth = 100;
+        health = 100;
+
+        maxMana = 100;
+        mana = 100;
+
         worldX = GamePanel.tileSize*35;
         worldY = GamePanel.tileSize*17;
         float pixelsPerSecond = 200f;
@@ -127,7 +151,7 @@ public class Player extends Entity implements Serializable {
         this.countBook = countBook;
     }
 
-    public void setHealth(double health) {
+    public void setHealth(int health) {
         this.health = health;
     }
 
@@ -278,6 +302,9 @@ public class Player extends Entity implements Serializable {
 
 //        System.out.println("Player - x: " + worldX + ", y: " + worldY);
 
+        healthBar.setCurrentValue(health);
+        manaBar.setCurrentValue(mana);
+
     }
 
 
@@ -297,6 +324,9 @@ public class Player extends Entity implements Serializable {
             case "right", "up_right", "down_right": animations[3].draw(g, screenX, screenY, playerWidth, playerHeight); break;
             case "null": animations[0].draw(g, screenX, screenY, playerWidth, playerHeight);
         }
+
+        healthBar.draw(g);
+        manaBar.draw(g);
 
     }
 

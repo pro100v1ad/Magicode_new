@@ -7,8 +7,8 @@ public class Entity {
     protected double speed;
     protected String direction = "null";
 
-    protected double maxHealth;
-    protected double health;
+    protected int maxHealth;
+    protected int health;
     protected double regeneration;
 
     protected int collisionX;
