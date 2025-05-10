@@ -125,9 +125,18 @@ public class GamePanel extends JComponent {
         whoHaveCollision[6] = 7;
         whoHaveCollision[7] = 8;
         whoHaveCollision[8] = 21;
-        whoHaveCollision[9] = 23;
-        whoHaveCollision[10] = 25;
-        whoHaveCollision[11] = 33;
+        whoHaveCollision[9] = 22;
+        whoHaveCollision[10] = 23;
+        whoHaveCollision[11] = 24;
+        whoHaveCollision[12] = 25;
+        whoHaveCollision[13] = 26;
+        whoHaveCollision[14] = 27;
+        whoHaveCollision[15] = 28;
+        whoHaveCollision[16] = 29;
+        whoHaveCollision[17] = 30;
+        whoHaveCollision[18] = 31;
+        whoHaveCollision[19] = 32;
+        whoHaveCollision[20] = 33;
     }
 
     public void setupGame() {

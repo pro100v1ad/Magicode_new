@@ -25,8 +25,8 @@ public class Player extends Entity implements Serializable {
     private final int screenY;
     private String lastDirection = "";
 
-    private int maxMana;
-    private int mana;
+    private double maxMana;
+    private double mana;
 
     private int N;
     private int plus;
@@ -61,13 +61,13 @@ public class Player extends Entity implements Serializable {
         int healthBarHeight = 32;
         int healthBarPosX = GamePanel.WIDTH/2 - healthBarWidth/2;
         int healthBarPosY = GamePanel.HEIGHT - healthBarHeight*2;
-        healthBar = new Bar(gp, healthBarPosX, healthBarPosY, healthBarWidth, healthBarHeight, maxHealth, health, Color.red);
+        healthBar = new Bar(gp, healthBarPosX, healthBarPosY, healthBarWidth, healthBarHeight, (int)maxHealth, (int)health, Color.red);
 
         int manaBarWidth = 400;
         int manaBarHeight = 32;
         int manaBarPosX = GamePanel.WIDTH/2 - manaBarWidth/2;
         int manaBarPosY = GamePanel.HEIGHT - manaBarHeight*3;
-        manaBar = new Bar(gp, manaBarPosX, manaBarPosY, manaBarWidth, manaBarHeight, maxMana, mana, Color.blue);
+        manaBar = new Bar(gp, manaBarPosX, manaBarPosY, manaBarWidth, manaBarHeight, (int)maxMana, (int)mana, Color.blue);
 
 
     }
@@ -120,10 +120,10 @@ public class Player extends Entity implements Serializable {
         countBook = 0;
 
         maxHealth = 100;
-        health = 100;
+        health = 10;
 
         maxMana = 100;
-        mana = 100;
+        mana = 10;
 
         worldX = GamePanel.tileSize*35;
         worldY = GamePanel.tileSize*17;
@@ -302,8 +302,11 @@ public class Player extends Entity implements Serializable {
 
 //        System.out.println("Player - x: " + worldX + ", y: " + worldY);
 
-        healthBar.setCurrentValue(health);
-        manaBar.setCurrentValue(mana);
+        if(health < maxHealth) health += 0.01;
+        if(mana < maxMana) mana += 0.01;
+
+        healthBar.setCurrentValue((int)health);
+        manaBar.setCurrentValue((int)mana);
 
     }
 
