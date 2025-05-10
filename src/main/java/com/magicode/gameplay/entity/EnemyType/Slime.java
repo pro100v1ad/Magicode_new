@@ -34,6 +34,8 @@ public class Slime extends Enemy {
 
         collisionWidth = (int)(GamePanel.tileSize * 1.5 / 2);
         collisionHeight = (int)(GamePanel.tileSize * 1.5 / 2);
+
+        resourceLoader = new ResourceLoader();
     }
 
     protected void loadAnimations() {

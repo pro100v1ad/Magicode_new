@@ -32,6 +32,7 @@ public class SceneLoader {
     private GameObject[] objects;
     public static final String DEFAULT_BACKGROUND = "/resources/levels/scenes/start/background";
     public static final String DEFAULT_STRUCTURE = "/resources/levels/scenes/start/structure";
+    public static final String DEFAULT_ENEMY = "/resources/levels/scenes/start/enemies";
     private int sceneWidth;
     private int sceneHeight;
     private CutScene scene;
@@ -43,7 +44,7 @@ public class SceneLoader {
     public SceneLoader(GamePanel gp, boolean isStart, String backgroundPath,
                        String structurePath, String objectPath, String enemiesPath) {
         this.gp = gp;
-        if(backgroundPath != null || structurePath != null) {
+        if(backgroundPath != null && structurePath != null) {
             if(isStart) {
                 loadScene(backgroundPath, structurePath);
                 loadEnemies(enemiesPath); // Гарантированно вызываем loadEnemies
@@ -53,7 +54,7 @@ public class SceneLoader {
             }
         } else {
             loadScene(DEFAULT_BACKGROUND, DEFAULT_STRUCTURE);
-            loadEnemies(enemiesPath); // Гарантированно вызываем loadEnemies
+            loadEnemies(DEFAULT_ENEMY); // Гарантированно вызываем loadEnemies
         }
         cooldown = 0;
         isCooldown = false;
@@ -72,7 +73,7 @@ public class SceneLoader {
         try (InputStream is = getClass().getResourceAsStream(enemiesPath)) {
             if (is == null) {
                 System.err.println("Файл не найден в ресурсах: " + enemiesPath);
-                enemies = new Enemy[0];
+                enemies = new Enemy[10];
                 return;
             }
 
@@ -82,10 +83,11 @@ public class SceneLoader {
 
             while ((line = br.readLine()) != null) {
                 System.out.println("Обработка строки: " + line);
+
                 // ... парсинг ...
             }
-
-            enemies = loadedEnemies.toArray(new Enemy[0]);
+            enemies = new Enemy[10];
+            enemies[0] = new Slime(gp);
             System.out.println("Успешно загружено врагов: " + enemies.length);
 
         } catch (Exception e) {
