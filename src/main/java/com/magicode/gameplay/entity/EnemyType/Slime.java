@@ -76,7 +76,7 @@ public class Slime extends Enemy {
 
     @Override
     public void update() {
-        if(gp.sceneLoader.getCutScene() || gp.state.equals(GamePanel.GameState.StartMenu)) {
+        if(gp.state.equals(GamePanel.GameState.StartMenu)) {
             return;
         }
 
@@ -153,7 +153,7 @@ public class Slime extends Enemy {
 
     @Override
     public void draw(Graphics2D g) {
-        if(gp.sceneLoader.getCutScene() || gp.state.equals(GamePanel.GameState.StartMenu)) {
+        if(gp.state.equals(GamePanel.GameState.StartMenu)) {
             return;
         }
 

@@ -34,7 +34,7 @@ public abstract class Enemy extends Entity {
     public abstract void update();
 
     public void draw(Graphics2D g) {
-        if(gp.sceneLoader.getCutScene() || gp.state.equals(GamePanel.GameState.StartMenu)) {
+        if(gp.state.equals(GamePanel.GameState.StartMenu)) {
             return;
         }
 
