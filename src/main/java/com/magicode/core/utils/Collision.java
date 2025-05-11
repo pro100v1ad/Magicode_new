@@ -7,6 +7,7 @@ import main.java.com.magicode.gameplay.world.Structure;
 import main.java.com.magicode.gameplay.world.structures.Bridge;
 import main.java.com.magicode.gameplay.world.structures.Chest;
 import main.java.com.magicode.gameplay.world.structures.Door;
+import main.java.com.magicode.gameplay.world.structures.Portal;
 
 import java.awt.*;
 
@@ -146,6 +147,20 @@ public class Collision {
                                 if(row < y + 8) collisionMap[row][col] = 1;
                                 if(row > y+h-32) collisionMap[row][col] = 1;
                             }
+                        }
+                    }
+
+                } else if(structures[i].getName().equals("portal")) {
+                    Portal portal = (Portal) structures[i];
+
+                    int x = portal.getX();
+                    int y = portal.getY();
+                    int w = portal.getW();
+                    int h = portal.getH();
+
+                    for(int row = y; row < y+h; row++) {
+                        for(int col = x; col < x+w; col++) {
+                            collisionMap[row][col] = 1;
                         }
                     }
 

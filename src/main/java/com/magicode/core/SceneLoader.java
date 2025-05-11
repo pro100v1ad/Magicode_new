@@ -144,6 +144,11 @@ public class SceneLoader {
                     structures[i] = new Bridge(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
                             Integer.parseInt(structure[3]), structure[4], structure[5].equals("true"), structure[0]);
                 }
+                if(structure[0].equals("portal")) {
+                    //Формат name_x_y_w_h_code:radius_direction
+                    structures[i] = new Portal(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
+                            Integer.parseInt(structure[3]), Integer.parseInt(structure[4]), structure[5], structure[6]);
+                }
             }
 
 
@@ -315,6 +320,11 @@ public class SceneLoader {
                     structures[i] = new Bridge(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
                             Integer.parseInt(structure[3]), structure[4], structure[5].equals("true"), structure[0]);
                 }
+                if(structure[0].equals("portal")) {
+                    //Формат name_x_y_w_h_code:radius_direction
+                    structures[i] = new Portal(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
+                            Integer.parseInt(structure[3]), Integer.parseInt(structure[4]), structure[5], structure[6]);
+                }
             }
 
 
@@ -437,6 +447,8 @@ public class SceneLoader {
                         }
                         Chest chest = (Chest) structure;
                         objects[index] = chest.openChest(objects[index]);
+                    } else if(structure.getName().equals("portal")) {
+                        gp.sceneChanger.setNumberActiveScene(gp.sceneChanger.getNumberActiveScene() + 1);
                     }
 
                     collision.reloadMap(worldMap, structures);
@@ -483,13 +495,13 @@ public class SceneLoader {
                                     if (objects[i].equals(object)) {
                                         objects[i] = null;
                                         System.out.println("Гаечный ключ подобран!");
-                                        gp.sceneChanger.setNumberActiveScene(gp.sceneChanger.getNumberActiveScene() + 1);
                                         break;
                                     }
                                 }
 
                             }
                         }
+
                         interaction.reloadMap(structures, objects);
                     }
                 }
