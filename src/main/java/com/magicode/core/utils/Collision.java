@@ -106,6 +106,17 @@ public class Collision {
                         }
                     }
 
+                } else if(structures[i].getName().equals("tree") || structures[i].getName().equals("stone") || structures[i].getName().equals("bush")) {
+                    int x = structures[i].getX();
+                    int y = structures[i].getY();
+                    int w = structures[i].getW();
+                    int h = structures[i].getH();
+
+                    for(int row = y; row < y+h; row++) {
+                        for(int col = x; col < x+w; col++) {
+                            collisionMap[row][col] = 1;
+                        }
+                    }
                 }
             }//end if
 
@@ -113,53 +124,6 @@ public class Collision {
 
     }
 
-//    public void loadObject(SuperObject[] object) {
-//
-//        for(int i = 0; i < object.length; i++) {
-//            if(object[i] != null) {
-//
-//                if(object[i].getName().equals("Book")) {
-//                    OBJ_Book book = (OBJ_Book) object[i];
-//                    int x = book.worldX;
-//                    int y = book.worldY;
-//                    int w = book.collisionWidth;
-//                    int h = book.collisionHeight;
-//
-//                    for (int row = y; row < y + h; row++) {
-//                        for(int col = x; col < x + w; col++) {
-//                            collisionMap[row][col] = 1;
-//                        }
-//                    }
-//
-//                }
-//
-//            }
-//        }
-//
-//    }
-
-//    public void clearObject(SuperObject object) {
-//
-//        if(object != null) {
-//
-//            if(object.getName().equals("Book")) {
-//                OBJ_Book book = (OBJ_Book) object;
-//                int x = book.worldX;
-//                int y = book.worldY;
-//                int w = book.collisionWidth;
-//                int h = book.collisionHeight;
-//
-//                for (int row = y; row < y + h; row++) {
-//                    for(int col = x; col < x + w; col++) {
-//                        collisionMap[row][col] = 0;
-//                    }
-//                }
-//
-//            }
-//
-//        }
-//
-//    }
 
     public boolean checkCollisionUp(Entity entity) {
         int x = (int)entity.getWorldX();

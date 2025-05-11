@@ -88,6 +88,10 @@ public class TextureAtlas {
 
         textures[17][0].loadTexture("/resources/gui/interface_/bar.png");
 
+        textures[18][0].loadTexture("/resources/structures/decoration/bush.png");
+        textures[18][1].loadTexture("/resources/structures/decoration/stone.png");
+        textures[18][2].loadTexture("/resources/structures/decoration/tree.png");
+
 
 
     }

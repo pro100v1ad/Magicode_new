@@ -10,6 +10,7 @@ import main.java.com.magicode.gameplay.world.objects.Book;
 import main.java.com.magicode.gameplay.world.objects.Key;
 import main.java.com.magicode.gameplay.world.objects.Wrench;
 import main.java.com.magicode.gameplay.world.structures.Chest;
+import main.java.com.magicode.gameplay.world.structures.Decoration;
 import main.java.com.magicode.gameplay.world.structures.Door;
 import main.java.com.magicode.gameplay.world.structures.Hatch;
 
@@ -135,6 +136,11 @@ public class SceneLoader {
                     structures[i] = new Chest(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
                             Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
                             structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7]);
+                }
+                if(structure[0].equals("tree") || structure[0].equals("bush") || structure[0].equals("stone")) {
+                    // Формат name_x_y_w_h - для декораций
+                    structures[i] = new Decoration(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
+                            Integer.parseInt(structure[3]), Integer.parseInt(structure[4]), structure[0]);
                 }
             }
 
@@ -273,6 +279,7 @@ public class SceneLoader {
             String parts[] = line.split(" ");
             structures = new Structure[parts.length];
             objects = new GameObject[parts.length];
+            System.out.println("Количество структур: " + parts.length);
             for(int i = 0; i < parts.length; i++) {
                 String structure[] = parts[i].split("_");
                 if(structure[0].equals("door")) {
@@ -295,6 +302,11 @@ public class SceneLoader {
                     structures[i] = new Chest(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
                             Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
                             structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7]);
+                }
+                if(structure[0].equals("tree") || structure[0].equals("bush") || structure[0].equals("stone")) {
+                    // Формат name_x_y_w_h - для декораций
+                    structures[i] = new Decoration(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
+                            Integer.parseInt(structure[3]), Integer.parseInt(structure[4]), structure[0]);
                 }
             }
 
