@@ -94,51 +94,14 @@ public class SceneChanger {
     }
 
     public void loadScene(int index) {
-        if (index < 0 || index >= sceneInfo.length) {
-            System.err.println("Неверный индекс сцены: " + index);
-            return;
-        }
-
-        String[] sceneData = sceneInfo[index].split(" ");
-        if (sceneData.length < 3) {
-            System.err.println("Неверный формат данных сцены");
-            return;
-        }
-
-        try {
-            // Установка позиции игрока
-            gp.getPlayer().setWorldX(Integer.parseInt(sceneData[1]));
-            gp.getPlayer().setWorldY(Integer.parseInt(sceneData[2]));
-
-            // Формирование путей
-            String sceneBasePath = sceneData[0]; // Будет "/levels/scenes/start/"
-            String enemiesPath = sceneBasePath + "enemies";
-
-            System.out.println("Проверяем путь к врагам: " + enemiesPath);
-
-            // Проверка существования файла в ресурсах
-            try (InputStream is = getClass().getResourceAsStream(enemiesPath)) {
-                if (is == null) {
-                    System.err.println("Файл врагов не найден: " + enemiesPath);
-                    enemiesPath = null;
-                } else {
-                    System.out.println("Файл врагов успешно обнаружен!");
-                }
-            }
-
-            // Создаем новый SceneLoader
-            gp.sceneLoader = new SceneLoader(
-                    gp,
-                    true,
-                    sceneBasePath + "background",
-                    sceneBasePath + "structure",
-                    sceneBasePath + "objects",
-                    enemiesPath
-            );
-
-        } catch (NumberFormatException | IOException e) {
-            System.err.println("Ошибка загрузки сцены: " + e.getMessage());
-        }
+        gp.player.setWorldX(Integer.parseInt(sceneInfo[index].split(" ")[1]));
+        gp.player.setWorldY(Integer.parseInt(sceneInfo[index].split(" ")[2]));
+        gp.sceneLoader = new SceneLoader(
+                gp,
+                true,
+                sceneInfo[index].split(" ")[0] + "background",
+                sceneInfo[index].split(" ")[0] + "structure",
+                null,
+                sceneInfo[index].split(" ")[0] + "enemies");
     }
-
 }

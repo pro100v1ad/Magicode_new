@@ -53,18 +53,18 @@ public abstract class Enemy extends Entity {
     }
 
     protected boolean isPlayerInRange() {
-        if (gp.getPlayer() == null) return false; // Добавляем проверку на null
+        if (gp.player == null) return false; // Добавляем проверку на null
 
-        Player player = gp.getPlayer();
+        Player player = gp.player;
         double distance = Math.sqrt(Math.pow(worldX - player.getWorldX(), 2) +
                 Math.pow(worldY - player.getWorldY(), 2));
         return distance <= detectionRange;
     }
 
     protected void moveTowardsPlayer() {
-        if (gp.getPlayer() == null) return; // Добавляем проверку на null
+        if (gp.player == null) return; // Добавляем проверку на null
 
-        Player player = gp.getPlayer();
+        Player player = gp.player;
         double dx = player.getWorldX() - worldX;
         double dy = player.getWorldY() - worldY;
         double distance = Math.sqrt(dx * dx + dy * dy);

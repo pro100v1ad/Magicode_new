@@ -30,7 +30,6 @@ public class SceneLoader {
     private GameObject[] objects;
     public static final String DEFAULT_BACKGROUND = "/resources/levels/scenes/start/background";
     public static final String DEFAULT_STRUCTURE = "/resources/levels/scenes/start/structure";
-    public static final String DEFAULT_ENEMY = "/resources/levels/scenes/start/enemies";
     private int sceneWidth;
     private int sceneHeight;
     private CutScene scene;
@@ -42,36 +41,33 @@ public class SceneLoader {
     public SceneLoader(GamePanel gp, boolean isStart, String backgroundPath,
                        String structurePath, String objectPath, String enemiesPath) {
         this.gp = gp;
-        if(backgroundPath != null && structurePath != null) {
+        if(backgroundPath != null && structurePath != null && enemiesPath != null) {
             if(isStart) {
                 loadScene(backgroundPath, structurePath);
-                loadEnemies(enemiesPath); // Гарантированно вызываем loadEnemies
             } else {
                 loadSaveScene(backgroundPath, structurePath, objectPath);
-                loadEnemies(enemiesPath); // Гарантированно вызываем loadEnemies
             }
         } else {
             loadScene(DEFAULT_BACKGROUND, DEFAULT_STRUCTURE);
-            loadEnemies(DEFAULT_ENEMY); // Гарантированно вызываем loadEnemies
         }
+        loadEnemies(enemiesPath);
         cooldown = 0;
         isCooldown = false;
     }
 
     // Метод загрузки врагов
     private void loadEnemies(String enemiesPath) {
+
         System.out.println("Начало загрузки врагов. Путь: " + enemiesPath);
 
-        if (enemiesPath == null || enemiesPath.isEmpty()) {
-            System.out.println("Путь к врагам не указан");
-            enemies = new Enemy[0];
+        if (enemiesPath == null) {
+            System.out.println("Враги на локации отсутствуют (путь не указан)");
             return;
         }
 
         try (InputStream is = getClass().getResourceAsStream(enemiesPath)) {
             if (is == null) {
-                System.err.println("Файл не найден в ресурсах: " + enemiesPath);
-                enemies = new Enemy[0];
+                System.out.println("Ошибка: файл не найден! " + enemiesPath);
                 return;
             }
 
@@ -126,7 +122,6 @@ public class SceneLoader {
                         }
                     } catch (Exception e) {
                         System.err.println("Ошибка парсинга строки: " + line);
-                        e.printStackTrace();
                     }
                 }
             }
@@ -135,8 +130,6 @@ public class SceneLoader {
 
         } catch (Exception e) {
             System.err.println("Критическая ошибка загрузки врагов: ");
-            e.printStackTrace();
-            enemies = new Enemy[0];
         }
     }
 
@@ -595,21 +588,14 @@ public class SceneLoader {
             }
 
         }
-        for(Enemy enemy : enemies) {
-            if(enemy != null) {
-                enemy.update();
+
+        if (enemies != null) {
+            for(Enemy enemy : enemies) {
+                if(enemy != null) {
+                    enemy.update();
+                }
             }
         }
-
-        System.out.println("Активных врагов: " + Arrays.stream(enemies).filter(Objects::nonNull).count());
-
-        for(Enemy enemy : enemies) {
-            if(enemy != null) {
-                enemy.update();
-                System.out.println("Враг на позиции: " + enemy.getWorldX() + "," + enemy.getWorldY());
-            }
-        }
-
     }
 
     public void drawBackground(Graphics2D g) {
@@ -679,6 +665,7 @@ public class SceneLoader {
     }
 
     private void drawEnemies(Graphics2D g) {
+        if (enemies == null) return;
         for(Enemy enemy : enemies) {
             if(enemy != null) {
                 enemy.draw(g);
