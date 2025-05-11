@@ -25,15 +25,15 @@ public class Slime extends Enemy {
     protected void setDefaultValues() {
         worldX = GamePanel.tileSize * 10;
         worldY = GamePanel.tileSize * 10;
-        speed = 1.5;
+        speed = 1.25;
         maxHealth = 50;
         health = maxHealth;
         damage = 10;
         detectionRange = GamePanel.tileSize * 5;
         aggressive = false;
 
-        collisionWidth = (int)(GamePanel.tileSize * 1.5 / 2);
-        collisionHeight = (int)(GamePanel.tileSize * 1.5 / 2);
+        collisionWidth = (int)(GamePanel.tileSize*1.7/2);
+        collisionHeight = GamePanel.tileSize*3/2;
 
         resourceLoader = new ResourceLoader();
     }
@@ -47,7 +47,7 @@ public class Slime extends Enemy {
         downImages[1] = resourceLoader.loadImage("/resources/enemies/slime/down/slime_down2.png");
         downImages[2] = resourceLoader.loadImage("/resources/enemies/slime/down/slime_down3.png");
         downImages[3] = resourceLoader.loadImage("/resources/enemies/slime/down/slime_down4.png");
-        animations[0] = new Animation(downImages, 10);
+        animations[0] = new Animation(downImages, 5);
 
         // Анимация "вверх"
         BufferedImage[] upImages = new BufferedImage[4];
@@ -55,7 +55,7 @@ public class Slime extends Enemy {
         upImages[1] = resourceLoader.loadImage("/resources/enemies/slime/up/slime_up2.png");
         upImages[2] = resourceLoader.loadImage("/resources/enemies/slime/up/slime_up3.png");
         upImages[3] = resourceLoader.loadImage("/resources/enemies/slime/up/slime_up4.png");
-        animations[1] = new Animation(upImages, 10);
+        animations[1] = new Animation(upImages, 5);
 
         // Анимация "влево"
         BufferedImage[] leftImages = new BufferedImage[4];
@@ -63,7 +63,7 @@ public class Slime extends Enemy {
         leftImages[1] = resourceLoader.loadImage("/resources/enemies/slime/left/slime_left2.png");
         leftImages[2] = resourceLoader.loadImage("/resources/enemies/slime/left/slime_left3.png");
         leftImages[3] = resourceLoader.loadImage("/resources/enemies/slime/left/slime_left4.png");
-        animations[2] = new Animation(leftImages, 10);
+        animations[2] = new Animation(leftImages, 5);
 
         // Анимация "вправо"
         BufferedImage[] rightImages = new BufferedImage[4];
@@ -71,7 +71,7 @@ public class Slime extends Enemy {
         rightImages[1] = resourceLoader.loadImage("/resources/enemies/slime/right/slime_right2.png");
         rightImages[2] = resourceLoader.loadImage("/resources/enemies/slime/right/slime_right3.png");
         rightImages[3] = resourceLoader.loadImage("/resources/enemies/slime/right/slime_right4.png");
-        animations[3] = new Animation(rightImages, 10);
+        animations[3] = new Animation(rightImages, 5);
     }
 
     @Override
@@ -159,8 +159,8 @@ public class Slime extends Enemy {
 
         int screenX = (int)(worldX - gp.player.getWorldX() + gp.player.getScreenX());
         int screenY = (int)(worldY - gp.player.getWorldY() + gp.player.getScreenY());
-        int enemyWidth = (int)(GamePanel.tileSize * 1.5);
-        int enemyHeight = (int)(GamePanel.tileSize * 1.5);
+        int enemyWidth = (int)(GamePanel.tileSize * 2/2);
+        int enemyHeight = (int)(GamePanel.tileSize * 4/2);
 
         switch(direction) {
             case "up": animations[1].draw(g, screenX, screenY, enemyWidth, enemyHeight); break;

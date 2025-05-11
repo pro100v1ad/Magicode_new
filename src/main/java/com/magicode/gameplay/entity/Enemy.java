@@ -38,8 +38,8 @@ public abstract class Enemy extends Entity {
             return;
         }
 
-        int enemyWidth = (int)(GamePanel.tileSize * 2 / 2);
-        int enemyHeight = (int)(GamePanel.tileSize * 4 / 2);
+        int enemyWidth = (int)(GamePanel.tileSize*2/2);
+        int enemyHeight = (int)(GamePanel.tileSize*4/2);
 
         switch (direction) {
             case "up": animations[1].draw(g, (int)worldX, (int)worldY, enemyWidth, enemyHeight); break;
