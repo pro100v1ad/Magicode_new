@@ -101,8 +101,6 @@ public class TextureAtlas {
         textures[19][6].loadTexture("/resources/structures/bridge/vertical/bridgePart.png");
         textures[19][7].loadTexture("/resources/structures/bridge/vertical/bridgeStart.png");
 
-
-
         textures[20][0].loadTexture("/resources/background/parts1/wallPR.png");
         textures[20][1].loadTexture("/resources/background/parts1/wallPL.png");
         textures[20][2].loadTexture("/resources/background/parts1/wallPDR.png");
@@ -111,6 +109,10 @@ public class TextureAtlas {
         textures[20][5].loadTexture("/resources/background/parts1/wallAngleLeft.png");
         textures[20][6].loadTexture("/resources/background/parts1/wallAngleUR.png");
         textures[20][7].loadTexture("/resources/background/parts1/wallAngleUL.png");
+
+        textures[21][0].loadTexture("/resources/structures/portal/portalHor.png");
+        textures[21][1].loadTexture("/resources/structures/portal/portalVert.png");
+
 
     }
 
