@@ -22,7 +22,6 @@ public class TextureAtlas {
         textures[0][7].loadTexture("/resources/background/parts1/wallUpRight.png");
         textures[0][8].loadTexture("/resources/background/parts1/floor.png");
 
-
         textures[1][0].loadTexture("/resources/background/grass/grassCenter.png");
 
         textures[2][0].loadTexture("/resources/background/water/waterCenter.png");

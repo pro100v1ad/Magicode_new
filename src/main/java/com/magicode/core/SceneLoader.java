@@ -3,6 +3,8 @@ package main.java.com.magicode.core;
 import main.java.com.magicode.core.utils.Collision;
 import main.java.com.magicode.core.utils.CutScene;
 import main.java.com.magicode.core.utils.Interaction;
+import main.java.com.magicode.gameplay.entity.Enemy;
+import main.java.com.magicode.gameplay.entity.EnemyType.Slime;
 import main.java.com.magicode.gameplay.world.GameObject;
 import main.java.com.magicode.gameplay.world.Layer;
 import main.java.com.magicode.gameplay.world.Structure;
@@ -13,6 +15,10 @@ import main.java.com.magicode.gameplay.world.structures.*;
 
 import java.awt.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.List;
 
 public class SceneLoader {
 
@@ -24,30 +30,114 @@ public class SceneLoader {
     private GameObject[] objects;
     public static final String DEFAULT_BACKGROUND = "/resources/levels/scenes/start/background";
     public static final String DEFAULT_STRUCTURE = "/resources/levels/scenes/start/structure";
+    public static final String DEFAULT_ENEMY = "/resources/levels/scenes/start/enemies";
     private int sceneWidth;
     private int sceneHeight;
     private CutScene scene;
     private int cooldown;
     private boolean isCooldown;
     private boolean isCutScene;
-    
+    private Enemy[] enemies;
 
-    public SceneLoader(GamePanel gp, boolean isStart, String backgroundPath, String structurePath, String objectPath) {
+    public SceneLoader(GamePanel gp, boolean isStart, String backgroundPath,
+                       String structurePath, String objectPath, String enemiesPath) {
         this.gp = gp;
-        if(backgroundPath != null || structurePath != null) {
+        if(backgroundPath != null && structurePath != null) {
             if(isStart) {
-                loadScene(backgroundPath, structurePath); // Новая игра
+                loadScene(backgroundPath, structurePath);
+                loadEnemies(enemiesPath); // Гарантированно вызываем loadEnemies
             } else {
-                loadSaveScene(backgroundPath, structurePath, objectPath); // Продолжить игру
+                loadSaveScene(backgroundPath, structurePath, objectPath);
+                loadEnemies(enemiesPath); // Гарантированно вызываем loadEnemies
             }
-
         } else {
-            loadScene(DEFAULT_BACKGROUND, DEFAULT_STRUCTURE); // Новая игра
+            loadScene(DEFAULT_BACKGROUND, DEFAULT_STRUCTURE);
+            loadEnemies(DEFAULT_ENEMY); // Гарантированно вызываем loadEnemies
         }
-
-
         cooldown = 0;
         isCooldown = false;
+    }
+
+    // Метод загрузки врагов
+    private void loadEnemies(String enemiesPath) {
+        System.out.println("Начало загрузки врагов. Путь: " + enemiesPath);
+
+        if (enemiesPath == null || enemiesPath.isEmpty()) {
+            System.out.println("Путь к врагам не указан");
+            enemies = new Enemy[0];
+            return;
+        }
+
+        try (InputStream is = getClass().getResourceAsStream(enemiesPath)) {
+            if (is == null) {
+                System.err.println("Файл не найден в ресурсах: " + enemiesPath);
+                enemies = new Enemy[0];
+                return;
+            }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String line;
+            int enemyCount = 0;
+
+            // Первый проход - подсчет количества врагов
+            while ((line = br.readLine()) != null) {
+                if (!line.trim().isEmpty()) enemyCount++;
+            }
+
+            // Создаем массив нужного размера
+            enemies = new Enemy[enemyCount];
+            int index = 0;
+
+            // Второй проход - чтение данных
+            try (InputStream is2 = getClass().getResourceAsStream(enemiesPath)) {
+                BufferedReader br2 = new BufferedReader(new InputStreamReader(is2));
+
+                while ((line = br2.readLine()) != null) {
+                    line = line.trim();
+                    if (line.isEmpty()) continue;
+
+                    try {
+                        String[] parts = line.split("_");
+                        if (parts.length < 4) {
+                            System.err.println("Некорректный формат строки: " + line);
+                            continue;
+                        }
+
+                        String enemyType = parts[0];
+                        int x = Integer.parseInt(parts[1]);
+                        int y = Integer.parseInt(parts[2]);
+                        boolean aggressive = Boolean.parseBoolean(parts[3]);
+
+                        if (index >= enemies.length) {
+                            System.err.println("Превышение размера массива");
+                            break;
+                        }
+
+                        switch (enemyType.toLowerCase()) {
+                            case "slime":
+                                Slime slime = new Slime(gp);
+                                slime.setWorldX(x);
+                                slime.setWorldY(y);
+                                slime.setAggressive(aggressive);
+                                enemies[index++] = slime;
+                                break;
+                            default:
+                                System.err.println("Неизвестный тип врага: " + enemyType);
+                        }
+                    } catch (Exception e) {
+                        System.err.println("Ошибка парсинга строки: " + line);
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            System.out.println("Успешно загружено врагов: " + index);
+
+        } catch (Exception e) {
+            System.err.println("Критическая ошибка загрузки врагов: ");
+            e.printStackTrace();
+            enemies = new Enemy[0];
+        }
     }
 
     private void loadSaveScene(String backgroundPath, String structurePath, String objectPath) {
@@ -338,7 +428,15 @@ public class SceneLoader {
 
     }
 
-    
+    // Методы для работы с врагами
+    public Enemy[] getEnemies() {
+        return enemies;
+    }
+
+    public void setEnemies(Enemy[] enemies) {
+        this.enemies = enemies;
+    }
+
     public int getSceneWidth() {
         return sceneWidth;
     }
@@ -497,7 +595,20 @@ public class SceneLoader {
             }
 
         }
+        for(Enemy enemy : enemies) {
+            if(enemy != null) {
+                enemy.update();
+            }
+        }
 
+        System.out.println("Активных врагов: " + Arrays.stream(enemies).filter(Objects::nonNull).count());
+
+        for(Enemy enemy : enemies) {
+            if(enemy != null) {
+                enemy.update();
+                System.out.println("Враг на позиции: " + enemy.getWorldX() + "," + enemy.getWorldY());
+            }
+        }
 
     }
 
@@ -564,5 +675,14 @@ public class SceneLoader {
         drawBackground(g);
         drawStructure(g);
         drawObjects(g);
+        drawEnemies(g);
+    }
+
+    private void drawEnemies(Graphics2D g) {
+        for(Enemy enemy : enemies) {
+            if(enemy != null) {
+                enemy.draw(g);
+            }
+        }
     }
 }

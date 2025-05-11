@@ -3,6 +3,7 @@ package main.java.com.magicode.core;
 
 import main.java.com.magicode.Main;
 import main.java.com.magicode.core.utils.*;
+import main.java.com.magicode.gameplay.entity.Enemy;
 import main.java.com.magicode.gameplay.entity.Player;
 import main.java.com.magicode.ui.gamestate.MenuInGame;
 import main.java.com.magicode.ui.gamestate.StartMenu;
@@ -23,7 +24,6 @@ public class GamePanel extends JComponent {
     public static final String TITLE = "Magicode";
     public static boolean running; // Отвечает за то, что запущена игра или нет
     public static int isUpgrade = 1;
-
     public static enum GameState {
         StartMenu,
         Game,
@@ -333,6 +333,10 @@ public class GamePanel extends JComponent {
         if(state.equals(GameState.GameOpenDirectory)){
             directory.click();
         }
+    }
+
+    public Enemy[] getEnemies() {
+        return sceneLoader.getEnemies();
     }
 
     public int getWorldWidth() {
