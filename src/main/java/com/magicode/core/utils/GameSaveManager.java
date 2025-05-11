@@ -7,9 +7,7 @@ import main.java.com.magicode.gameplay.world.Structure;
 import main.java.com.magicode.gameplay.world.objects.Book;
 import main.java.com.magicode.gameplay.world.objects.Key;
 import main.java.com.magicode.gameplay.world.objects.Wrench;
-import main.java.com.magicode.gameplay.world.structures.Chest;
-import main.java.com.magicode.gameplay.world.structures.Door;
-import main.java.com.magicode.gameplay.world.structures.Hatch;
+import main.java.com.magicode.gameplay.world.structures.*;
 
 import java.io.*;
 
@@ -61,6 +59,16 @@ public class GameSaveManager {
                             writer.write("chest_" + chest.getX() + "_" + chest.getY() + "_" + chest.getW() + "_" + chest.getH() +
                                     "_" + chest.getCode() + ":" + chest.getRadius() + ":" + chest.getObjectName() + "_" + chest.getLock() + "_" + chest.getDirection()
                                     + "_" + chest.getState() + " ");
+                        }
+                        if(structures[i].getName().equals("tree") || structures[i].getName().equals("stone") || structures[i].getName().equals("bush")) {
+                            Decoration decoration = (Decoration) structures[i];
+                            writer.write(decoration.getName() + "_" + decoration.getX() + "_" + decoration.getY() + "_" +
+                                    decoration.getW() + "_" + decoration.getH() + " ");
+                        }
+                        if(structures[i].getName().equals("bridge")) {
+                            Bridge bridge = (Bridge) structures[i];
+                            writer.write("bridge_" + bridge.getX() + "_" + bridge.getY() + "_" + bridge.getLen() + "_" +
+                                    bridge.getDirection() + "_" + bridge.getBreak() + " ");
                         }
 
                     }

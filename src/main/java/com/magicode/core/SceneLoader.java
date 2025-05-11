@@ -9,10 +9,7 @@ import main.java.com.magicode.gameplay.world.Structure;
 import main.java.com.magicode.gameplay.world.objects.Book;
 import main.java.com.magicode.gameplay.world.objects.Key;
 import main.java.com.magicode.gameplay.world.objects.Wrench;
-import main.java.com.magicode.gameplay.world.structures.Chest;
-import main.java.com.magicode.gameplay.world.structures.Decoration;
-import main.java.com.magicode.gameplay.world.structures.Door;
-import main.java.com.magicode.gameplay.world.structures.Hatch;
+import main.java.com.magicode.gameplay.world.structures.*;
 
 import java.awt.*;
 import java.io.*;
@@ -141,6 +138,11 @@ public class SceneLoader {
                     // Формат name_x_y_w_h - для декораций
                     structures[i] = new Decoration(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
                             Integer.parseInt(structure[3]), Integer.parseInt(structure[4]), structure[0]);
+                }
+                if(structure[0].equals("bridge")) {
+                    //Формат name_x_y_len_direction_isBreak
+                    structures[i] = new Bridge(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
+                            Integer.parseInt(structure[3]), structure[4], structure[5].equals("true"), structure[0]);
                 }
             }
 
@@ -307,6 +309,11 @@ public class SceneLoader {
                     // Формат name_x_y_w_h - для декораций
                     structures[i] = new Decoration(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
                             Integer.parseInt(structure[3]), Integer.parseInt(structure[4]), structure[0]);
+                }
+                if(structure[0].equals("bridge")) {
+                    //Формат name_x_y_len_direction_isBreak
+                    structures[i] = new Bridge(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
+                            Integer.parseInt(structure[3]), structure[4], structure[5].equals("true"), structure[0]);
                 }
             }
 

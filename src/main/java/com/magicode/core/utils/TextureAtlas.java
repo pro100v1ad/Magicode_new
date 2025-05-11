@@ -92,6 +92,16 @@ public class TextureAtlas {
         textures[18][1].loadTexture("/resources/structures/decoration/stone.png");
         textures[18][2].loadTexture("/resources/structures/decoration/tree.png");
 
+        textures[19][0].loadTexture("/resources/structures/bridge/horizontal/bridgeStart.png");
+        textures[19][1].loadTexture("/resources/structures/bridge/horizontal/bridgeEnd.png");
+        textures[19][2].loadTexture("/resources/structures/bridge/horizontal/bridgePart.png");
+        textures[19][3].loadTexture("/resources/structures/bridge/horizontal/bridgeBreak.png");
+        textures[19][4].loadTexture("/resources/structures/bridge/vertical/bridgeBreak.png");
+        textures[19][5].loadTexture("/resources/structures/bridge/vertical/bridgeEnd.png");
+        textures[19][6].loadTexture("/resources/structures/bridge/vertical/bridgePart.png");
+        textures[19][7].loadTexture("/resources/structures/bridge/vertical/bridgeStart.png");
+
+
 
 
     }

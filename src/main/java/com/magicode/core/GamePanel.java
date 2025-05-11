@@ -23,6 +23,7 @@ public class GamePanel extends JComponent {
     public static final String TITLE = "Magicode";
     public static boolean running; // Отвечает за то, что запущена игра или нет
     public static int isUpgrade = 1;
+
     public static enum GameState {
         StartMenu,
         Game,

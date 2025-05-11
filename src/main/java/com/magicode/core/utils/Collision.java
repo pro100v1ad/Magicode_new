@@ -4,8 +4,11 @@ import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.gameplay.entity.Entity;
 import main.java.com.magicode.gameplay.world.Layer;
 import main.java.com.magicode.gameplay.world.Structure;
+import main.java.com.magicode.gameplay.world.structures.Bridge;
 import main.java.com.magicode.gameplay.world.structures.Chest;
 import main.java.com.magicode.gameplay.world.structures.Door;
+
+import java.awt.*;
 
 
 public class Collision {
@@ -117,6 +120,35 @@ public class Collision {
                             collisionMap[row][col] = 1;
                         }
                     }
+                } else if(structures[i].getName().equals("bridge")) {
+                    Bridge bridge = (Bridge) structures[i];
+
+                    int x = bridge.getX();
+                    int y = bridge.getY();
+                    int w = bridge.getW();
+                    int h = bridge.getH();
+
+                    if(bridge.getBreak()) {
+                        for(int row = y; row < y+h; row++) {
+                            for(int col = x; col < x+w; col++) {
+                                collisionMap[row][col] = 0;
+                                if(row < y + 8) collisionMap[row][col] = 1;
+                                if(row > y+h-32) collisionMap[row][col] = 1;
+                                if(col > x+w*3/4 + 16 && col < x+w-64) {
+                                    collisionMap[row][col] = 1;
+                                }
+                            }
+                        }
+                    } else {
+                        for(int row = y; row < y+h; row++) {
+                            for(int col = x; col < x+w; col++) {
+                                if(col < x+w-32) collisionMap[row][col] = 0;
+                                if(row < y + 8) collisionMap[row][col] = 1;
+                                if(row > y+h-32) collisionMap[row][col] = 1;
+                            }
+                        }
+                    }
+
                 }
             }//end if
 
@@ -283,8 +315,8 @@ public class Collision {
 //        g.setColor(Color.BLUE);
 //
 //        // Перебираем всю карту коллизий
-//        for (int worldY = 0; worldY < GamePanel.worldHeight; worldY++) {
-//            for (int worldX = 0; worldX < GamePanel.worldWidth; worldX++) {
+//        for (int worldY = 0; worldY < GamePanel.HEIGHT; worldY++) {
+//            for (int worldX = 0; worldX < GamePanel.WIDTH; worldX++) {
 //
 //                // Если в этой точке есть коллизия сущности (например, игрока)
 //                if (collisionMap[worldY][worldX] == 1) {
