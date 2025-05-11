@@ -13,7 +13,7 @@ public class TextureAtlas {
         }
 
         textures[0][0].loadTexture("/resources/background/parts1/wallDown.png");
-        textures[0][1].loadTexture("/resources/background/parts1/wallUP.png");
+        textures[0][1].loadTexture("/resources/background/parts1/wallUp.png");
         textures[0][2].loadTexture("/resources/background/parts1/wallLeft.png");
         textures[0][3].loadTexture("/resources/background/parts1/wallRight.png");
         textures[0][4].loadTexture("/resources/background/parts1/wallDownLeft.png");
@@ -21,6 +21,7 @@ public class TextureAtlas {
         textures[0][6].loadTexture("/resources/background/parts1/wallUpLeft.png");
         textures[0][7].loadTexture("/resources/background/parts1/wallUpRight.png");
         textures[0][8].loadTexture("/resources/background/parts1/floor.png");
+
 
         textures[1][0].loadTexture("/resources/background/grass/grassCenter.png");
 
@@ -103,6 +104,14 @@ public class TextureAtlas {
 
 
 
+        textures[20][0].loadTexture("/resources/background/parts1/wallPR.png");
+        textures[20][1].loadTexture("/resources/background/parts1/wallPL.png");
+        textures[20][2].loadTexture("/resources/background/parts1/wallPDR.png");
+        textures[20][3].loadTexture("/resources/background/parts1/wallPDL.png");
+        textures[20][4].loadTexture("/resources/background/parts1/wallAngleRight.png");
+        textures[20][5].loadTexture("/resources/background/parts1/wallAngleLeft.png");
+        textures[20][6].loadTexture("/resources/background/parts1/wallAngleUR.png");
+        textures[20][7].loadTexture("/resources/background/parts1/wallAngleUL.png");
 
     }
 

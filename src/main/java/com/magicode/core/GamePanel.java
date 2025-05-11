@@ -94,7 +94,7 @@ public class GamePanel extends JComponent {
 
         saveManager = new GameSaveManager();
         saveManager.ensureSaveDirectoryExists(); // проверка наличия папки.
-        textureAtlas = new TextureAtlas(20, 20);
+        textureAtlas = new TextureAtlas(100, 100);
 
         startMenu = new StartMenu(this, saveManager.checkIfFilesExist());
         tablet = new Tablet(this);
@@ -138,6 +138,14 @@ public class GamePanel extends JComponent {
         whoHaveCollision[18] = 31;
         whoHaveCollision[19] = 32;
         whoHaveCollision[20] = 33;
+        whoHaveCollision[21] = 201;
+        whoHaveCollision[22] = 202;
+        whoHaveCollision[23] = 203;
+        whoHaveCollision[24] = 204;
+        whoHaveCollision[25] = 205;
+        whoHaveCollision[26] = 206;
+        whoHaveCollision[27] = 207;
+        whoHaveCollision[28] = 208;
     }
 
     public void setupGame() {

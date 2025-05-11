@@ -63,6 +63,9 @@ public class Layer implements Serializable {
         if(firstLayer > 20 && firstLayer < 35) {
             imageFirst = gp.textureAtlas.textures[2][firstLayer-20-1].getTexture();
         }
+        if(firstLayer > 200 && firstLayer < 300) {
+            imageFirst = gp.textureAtlas.textures[20][firstLayer-200-1].getTexture();
+        }
 
 
 
@@ -75,6 +78,9 @@ public class Layer implements Serializable {
         }
         if(secondLayer > 20 && secondLayer < 35) {
             imageSecond = gp.textureAtlas.textures[2][secondLayer-20-1].getTexture();
+        }
+        if(secondLayer > 200 && secondLayer < 300) {
+            imageSecond = gp.textureAtlas.textures[20][secondLayer-200-1].getTexture();
         }
 
     }
