@@ -44,9 +44,13 @@ public abstract class Enemy extends Entity {
         switch (direction) {
             case "up": animations[1].draw(g, (int)worldX, (int)worldY, enemyWidth, enemyHeight); break;
             case "down": animations[0].draw(g, (int)worldX, (int)worldY, enemyWidth, enemyHeight); break;
-            case "left", "up_left", "down_left":
+            case "left":
+            case "up_left":
+            case "down_left":
                 animations[2].draw(g, (int)worldX, (int)worldY, enemyWidth, enemyHeight); break;
-            case "right", "up_right", "down_right":
+            case "right":
+            case "up_right":
+            case "down_right":
                 animations[3].draw(g, (int)worldX, (int)worldY, enemyWidth, enemyHeight); break;
             case "null": animations[0].draw(g, (int)worldX, (int)worldY, enemyWidth, enemyHeight);
         }

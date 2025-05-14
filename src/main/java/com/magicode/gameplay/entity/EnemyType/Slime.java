@@ -76,79 +76,79 @@ public class Slime extends Enemy {
 
     @Override
     public void update() {
-        if(gp.state.equals(GamePanel.GameState.StartMenu)) {
-            return;
-        }
-
-        // Сохраняем старые координаты для отката при коллизии
-        double oldX = worldX;
-        double oldY = worldY;
-
-        // Простое патрулирование
-        if(!aggressive) {
-            if(Math.random() < 0.01) {
-                direction = switch((int)(Math.random() * 4)) {
-                    case 0 -> "up";
-                    case 1 -> "down";
-                    case 2 -> "left";
-                    case 3 -> "right";
-                    default -> direction;
-                };
-            }
-
-            // Движение с проверкой коллизий
-            switch(direction) {
-                case "up":
-                    for(int i = 0; i < speed/sqrt(2); i++) {
-                        if(worldY > 0 && gp.getCollision().checkCollisionUp(this)) {
-                            worldY -= 1;
-                        }
-                    }
-                    break;
-                case "down":
-                    for(int i = 0; i < speed/sqrt(2); i++) {
-                        if(worldY < gp.getWorldHeight()*GamePanel.tileSize-GamePanel.tileSize*4-1 &&
-                                gp.getCollision().checkCollisionDown(this)) {
-                            worldY += 1;
-                        }
-                    }
-                    break;
-                case "left":
-                    for(int i = 0; i < speed/sqrt(2); i++) {
-                        if(worldX > 1 && gp.getCollision().checkCollisionLeft(this)) {
-                            worldX -= 1;
-                        }
-                    }
-                    break;
-                case "right":
-                    for(int i = 0; i < speed/sqrt(2); i++) {
-                        if(worldX < gp.getWorldWidth()*GamePanel.tileSize-GamePanel.tileSize*2-1 &&
-                                gp.getCollision().checkCollisionRight(this)) {
-                            worldX += 1;
-                        }
-                    }
-                    break;
-            }
-        }
-        else if(isPlayerInRange()) {
-            moveTowardsPlayer();
-            // Проверка коллизий после движения к игроку
-            if(gp.getCollision().checkCollisionUp(this) ||
-                    gp.getCollision().checkCollisionDown(this) ||
-                    gp.getCollision().checkCollisionLeft(this) ||
-                    gp.getCollision().checkCollisionRight(this)) {
-                worldX = oldX;
-                worldY = oldY;
-            }
-        }
-
-        // Обновление анимации
-        switch(direction) {
-            case "up": animations[1].update(); break;
-            case "down": animations[0].update(); break;
-            case "left": animations[2].update(); break;
-            case "right": animations[3].update(); break;
-        }
+//        if(gp.state.equals(GamePanel.GameState.StartMenu)) {
+//            return;
+//        }
+//
+//        // Сохраняем старые координаты для отката при коллизии
+//        double oldX = worldX;
+//        double oldY = worldY;
+//
+//        // Простое патрулирование
+//        if(!aggressive) {
+//            if(Math.random() < 0.01) {
+//                direction = switch((int)(Math.random() * 4)) {
+//                    case 0 : "up";
+//                    case 1 : "down";
+//                    case 2 : "left";
+//                    case 3 : "right";
+//                    default -> direction;
+//                };
+//            }
+//
+//            // Движение с проверкой коллизий
+//            switch(direction) {
+//                case "up":
+//                    for(int i = 0; i < speed/sqrt(2); i++) {
+//                        if(worldY > 0 && gp.getCollision().checkCollisionUp(this)) {
+//                            worldY -= 1;
+//                        }
+//                    }
+//                    break;
+//                case "down":
+//                    for(int i = 0; i < speed/sqrt(2); i++) {
+//                        if(worldY < gp.getWorldHeight()*GamePanel.tileSize-GamePanel.tileSize*4-1 &&
+//                                gp.getCollision().checkCollisionDown(this)) {
+//                            worldY += 1;
+//                        }
+//                    }
+//                    break;
+//                case "left":
+//                    for(int i = 0; i < speed/sqrt(2); i++) {
+//                        if(worldX > 1 && gp.getCollision().checkCollisionLeft(this)) {
+//                            worldX -= 1;
+//                        }
+//                    }
+//                    break;
+//                case "right":
+//                    for(int i = 0; i < speed/sqrt(2); i++) {
+//                        if(worldX < gp.getWorldWidth()*GamePanel.tileSize-GamePanel.tileSize*2-1 &&
+//                                gp.getCollision().checkCollisionRight(this)) {
+//                            worldX += 1;
+//                        }
+//                    }
+//                    break;
+//            }
+//        }
+//        else if(isPlayerInRange()) {
+//            moveTowardsPlayer();
+//            // Проверка коллизий после движения к игроку
+//            if(gp.getCollision().checkCollisionUp(this) ||
+//                    gp.getCollision().checkCollisionDown(this) ||
+//                    gp.getCollision().checkCollisionLeft(this) ||
+//                    gp.getCollision().checkCollisionRight(this)) {
+//                worldX = oldX;
+//                worldY = oldY;
+//            }
+//        }
+//
+//        // Обновление анимации
+//        switch(direction) {
+//            case "up": animations[1].update(); break;
+//            case "down": animations[0].update(); break;
+//            case "left": animations[2].update(); break;
+//            case "right": animations[3].update(); break;
+//        }
     }
 
     @Override

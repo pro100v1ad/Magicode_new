@@ -323,8 +323,12 @@ public class Player extends Entity implements Serializable {
         switch (direction) { // Анимирует движение по направлениям
             case "up": animations[1].draw(g, screenX, screenY, playerWidth, playerHeight); break;
             case "down": animations[0].draw(g, screenX, screenY, playerWidth, playerHeight); break;
-            case "left", "up_left", "down_left": animations[2].draw(g, screenX, screenY, playerWidth, playerHeight); break;
-            case "right", "up_right", "down_right": animations[3].draw(g, screenX, screenY, playerWidth, playerHeight); break;
+            case "left":
+            case "up_left":
+            case "down_left": animations[2].draw(g, screenX, screenY, playerWidth, playerHeight); break;
+            case "right":
+            case "up_right":
+            case "down_right": animations[3].draw(g, screenX, screenY, playerWidth, playerHeight); break;
             case "null": animations[0].draw(g, screenX, screenY, playerWidth, playerHeight);
         }
 

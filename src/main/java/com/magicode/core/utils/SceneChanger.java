@@ -2,12 +2,7 @@ package main.java.com.magicode.core.utils;
 
 import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.core.SceneLoader;
-import main.java.com.magicode.gameplay.world.GameObject;
-import main.java.com.magicode.gameplay.world.Structure;
-import main.java.com.magicode.gameplay.world.structures.Chest;
-import main.java.com.magicode.gameplay.world.structures.Door;
-import main.java.com.magicode.gameplay.world.structures.Hatch;
-import main.java.com.magicode.ui.gamestate.Directory;
+
 
 import java.awt.*;
 import java.io.*;
