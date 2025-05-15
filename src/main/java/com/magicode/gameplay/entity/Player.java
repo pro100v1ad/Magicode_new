@@ -175,6 +175,14 @@ public class Player extends Entity implements Serializable {
         return countBook;
     }
 
+    public double getMana() {
+        return mana;
+    }
+
+    public double getMaxMana() {
+        return maxMana;
+    }
+
     public boolean loadPlayerFromFile(String filePath) {
         try(BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -200,6 +208,17 @@ public class Player extends Entity implements Serializable {
             plus = Integer.parseInt(parts[1]);
             minus = Integer.parseInt(parts[2]);
             exclamationMark = Integer.parseInt(parts[3]);
+
+            line = reader.readLine();
+            parts = line.split("_");
+            maxHealth = Integer.parseInt(parts[0]);
+            health = Integer.parseInt(parts[1]);
+
+            line = reader.readLine();
+            parts = line.split("_");
+            maxMana = Integer.parseInt(parts[0]);
+            mana = Integer.parseInt(parts[1]);
+
 
             // Потом поменяю //////////
             float pixelsPerSecond = 200f;

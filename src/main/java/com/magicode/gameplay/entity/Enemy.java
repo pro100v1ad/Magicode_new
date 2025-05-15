@@ -12,6 +12,7 @@ public abstract class Enemy extends Entity {
     protected Animation[] animations;
     protected ResourceLoader resourceLoader;
 
+    protected String name;
     protected int detectionRange; // Дистанция обнаружения игрока
     protected int damage; // Урон, который наносит враг
     protected int attackCooldown; // Задержка между атаками
@@ -99,6 +100,10 @@ public abstract class Enemy extends Entity {
 
     public void setAggressive(boolean aggressive) {
         this.aggressive = aggressive;
+    }
+
+    public String getName() {
+        return name;
     }
 
 }

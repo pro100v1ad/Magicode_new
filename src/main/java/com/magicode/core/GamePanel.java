@@ -152,11 +152,12 @@ public class GamePanel extends JComponent {
         whoHaveCollision[32] = 230;
         whoHaveCollision[33] = 231;
         whoHaveCollision[34] = 232;
-        whoHaveCollision[35] = 234;
-        whoHaveCollision[36] = 235;
-        whoHaveCollision[37] = 236;
-        whoHaveCollision[38] = 237;
-        whoHaveCollision[39] = 238;
+        whoHaveCollision[35] = 233;
+        whoHaveCollision[36] = 234;
+        whoHaveCollision[37] = 235;
+        whoHaveCollision[38] = 236;
+        whoHaveCollision[39] = 237;
+        whoHaveCollision[40] = 238;
     }
 
     public void setupGame() {
@@ -329,7 +330,7 @@ public class GamePanel extends JComponent {
     }
 
     public void saveGame() {
-        saveManager.saveGame(sceneLoader.getWorldMap(), sceneLoader.getStructures(), player, sceneChanger, sceneLoader.getObjects());
+        saveManager.saveGame(sceneLoader.getWorldMap(), sceneLoader.getStructures(), player, sceneChanger, sceneLoader.getObjects(), sceneLoader.getEnemies());
         startMenu.setState(true);
     }
 
