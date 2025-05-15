@@ -22,9 +22,18 @@ public class TextureAtlas {
         textures[0][7].loadTexture("/resources/background/parts1/wallUpRight.png");
         textures[0][8].loadTexture("/resources/background/parts1/floor.png");
 
-        textures[1][0].loadTexture("/resources/background/parts2/grass/grassCenter.png");
+        textures[1][0].loadTexture("/resources/background/parts2/grass/grass1.png");
+        textures[1][1].loadTexture("/resources/background/parts2/grass/grassTileDownLeft.png");
+        textures[1][2].loadTexture("/resources/background/parts2/grass/grassTileDownRight.png");
+        textures[1][3].loadTexture("/resources/background/parts2/grass/grassTileUpLeft.png");
+        textures[1][4].loadTexture("/resources/background/parts2/grass/grassTileUpRight.png");
+        textures[1][5].loadTexture("/resources/background/parts2/grass/grassTop.png");
+        textures[1][6].loadTexture("/resources/background/parts2/grass/grassDown.png");
+        textures[1][7].loadTexture("/resources/background/parts2/grass/grassRight.png");
+        textures[1][8].loadTexture("/resources/background/parts2/grass/grassLeft.png");
 
-        textures[2][0].loadTexture("/resources/background/parts2/water/waterCenter.png");
+
+        textures[2][0].loadTexture("/resources/background/parts2/water/waterTile.png");
         textures[2][1].loadTexture("/resources/background/parts2/water/waterUp.png");
         textures[2][2].loadTexture("/resources/background/parts2/water/waterDown.png");
         textures[2][3].loadTexture("/resources/background/parts2/water/waterLeft.png");
