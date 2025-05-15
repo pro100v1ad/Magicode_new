@@ -49,6 +49,70 @@ public class Slime extends Enemy {
 
     }
 
+    private void updateAggressiveMovement() {
+        double playerX = gp.player.getWorldX();
+        double playerY = gp.player.getWorldY();
+
+        double dx = playerX - worldX;
+        double dy = playerY - worldY;
+
+        String[] priorities;
+
+        if (Math.abs(dx) > Math.abs(dy)) {
+            priorities = new String[]{
+                    dx > 0 ? "right" : "left",
+                    dy > 0 ? "down" : "up"
+            };
+        } else {
+            priorities = new String[]{
+                    dy > 0 ? "down" : "up",
+                    dx > 0 ? "right" : "left"
+            };
+        }
+
+        // Пробуем по приоритетам
+        for (String dir : priorities) {
+                moveOneStep(dir);
+                direction = dir;
+                break;
+        }
+    }
+
+    private void moveOneStep(String dir) {
+        switch (dir) {
+            case "up":
+                for (int i = 0; i < speed / sqrt(2); i++) {
+                    if (worldY > 0 && gp.getCollision().checkCollisionUp(this)) {
+                        worldY -= 1;
+                    }
+                }
+                break;
+            case "down":
+                for (int i = 0; i < speed / sqrt(2); i++) {
+                    if (worldY < gp.getWorldHeight() * GamePanel.tileSize - GamePanel.tileSize * 4 - 1
+                            && gp.getCollision().checkCollisionDown(this)) {
+                        worldY += 1;
+                    }
+                }
+                break;
+            case "left":
+                for (int i = 0; i < speed / sqrt(2); i++) {
+                    if (worldX > 1 && gp.getCollision().checkCollisionLeft(this)) {
+                        worldX -= 1;
+                    }
+                }
+                break;
+            case "right":
+                for (int i = 0; i < speed / sqrt(2); i++) {
+                    if (worldX < gp.getWorldWidth() * GamePanel.tileSize - GamePanel.tileSize * 2 - 1
+                            && gp.getCollision().checkCollisionRight(this)) {
+                        worldX += 1;
+                    }
+                }
+                break;
+        }
+    }
+
     @Override
     public void update() {
         if(gp.state.equals(GamePanel.GameState.StartMenu)) {
@@ -115,15 +179,7 @@ public class Slime extends Enemy {
             }
         }
         else if(isPlayerInRange()) {
-            moveTowardsPlayer();
-            // Проверка коллизий после движения к игроку
-            if(gp.getCollision().checkCollisionUp(this) ||
-                    gp.getCollision().checkCollisionDown(this) ||
-                    gp.getCollision().checkCollisionLeft(this) ||
-                    gp.getCollision().checkCollisionRight(this)) {
-                worldX = oldX;
-                worldY = oldY;
-            }
+            updateAggressiveMovement();
         }
 
         // Обновление анимации
