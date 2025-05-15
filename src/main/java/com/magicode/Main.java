@@ -1,6 +1,5 @@
 package main.java.com.magicode;
 
-
 import main.java.com.magicode.core.GamePanel;
 
 import javax.swing.*;
