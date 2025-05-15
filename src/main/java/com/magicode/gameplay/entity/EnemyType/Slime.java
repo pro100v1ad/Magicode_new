@@ -1,5 +1,6 @@
 package main.java.com.magicode.gameplay.entity.EnemyType;
 
+import main.java.com.magicode.ui.interface_.Bar;
 import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.core.utils.Animation;
 import main.java.com.magicode.core.utils.ResourceLoader;
@@ -14,6 +15,9 @@ public class Slime extends Enemy {
     private Animation[] animations;
     private ResourceLoader resourceLoader;
     private String lastDirection = "";
+    private long lastDamageTime = 0;
+    private final long damageCooldown = 1000; // мс
+    private Bar healthBar;  // добавляем поле для бара
 
     public Slime(GamePanel gp) {
         super(gp);
@@ -33,9 +37,10 @@ public class Slime extends Enemy {
         aggressive = false;
 
         collisionWidth = (int)(GamePanel.tileSize*1.7/1.5);
-        collisionHeight =(int)(GamePanel.tileSize*3/2.5);
+        collisionHeight = (int)(GamePanel.tileSize*3/2);
 
         resourceLoader = new ResourceLoader();
+        healthBar = new Bar(gp, 0, 0, (int)(GamePanel.tileSize * 2 / 1.5), 8, (int)maxHealth, (int)health, new Color(200, 0, 0));
     }
 
     protected void loadAnimations() {
@@ -152,6 +157,9 @@ public class Slime extends Enemy {
                             worldY -= 1;
                         }
                     }
+                    if(gp.getCollision().checkCollisionUpEnemy(this)) {
+                        System.out.println("Удар");
+                    }
                     break;
                 case "down":
                     for(int i = 0; i < speed/sqrt(2); i++) {
@@ -182,6 +190,8 @@ public class Slime extends Enemy {
             updateAggressiveMovement();
         }
 
+        // checkPlayerCollisionAndDamage();
+
         // Обновление анимации
         switch(direction) {
             case "up": animations[0].update(); break;
@@ -189,6 +199,7 @@ public class Slime extends Enemy {
             case "left": animations[0].update(); break;
             case "right": animations[0].update(); break;
         }
+        healthBar.setCurrentValue((int)health);
     }
 
     @Override
@@ -209,6 +220,9 @@ public class Slime extends Enemy {
             case "right": animations[0].draw(g, screenX, screenY, enemyWidth, enemyHeight); break;
             default: animations[0].draw(g, screenX, screenY, enemyWidth, enemyHeight);
         }
+        healthBar.setPosX(screenX);
+        healthBar.setPosY(screenY - 10); // чуть выше слайма
+        healthBar.draw(g);
     }
 
     @Override
