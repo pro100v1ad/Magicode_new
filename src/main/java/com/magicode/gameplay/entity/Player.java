@@ -46,7 +46,7 @@ public class Player extends Entity implements Serializable {
         screenY = GamePanel.HEIGHT/2 - GamePanel.tileSize*2;
 
         collisionWidth = (int)(GamePanel.tileSize*1.7/2);
-        collisionHeight = GamePanel.tileSize*3/2;
+        collisionHeight = GamePanel.tileSize*2;
         collisionCode = 2;
 
         loadAnimation();
@@ -73,14 +73,16 @@ public class Player extends Entity implements Serializable {
     }
 
     public void loadAnimation() {
-        animations = new Animation[4];
+        animations = new Animation[5];
 
         // Анимация "вниз" (новый массив для каждой анимации)
-        BufferedImage[] downImages = new BufferedImage[4];
+        BufferedImage[] downImages = new BufferedImage[6];
         downImages[0] = resourceLoader.loadImage("/resources/player/down/playerDown1.png");
         downImages[1] = resourceLoader.loadImage("/resources/player/down/playerDown2.png");
         downImages[2] = resourceLoader.loadImage("/resources/player/down/playerDown3.png");
         downImages[3] = resourceLoader.loadImage("/resources/player/down/playerDown4.png");
+        downImages[4] = resourceLoader.loadImage("/resources/player/down/playerDown5.png");
+        downImages[5] = resourceLoader.loadImage("/resources/player/down/playerDown6.png");
         animations[0] = new Animation(downImages, 5);
 
         // Анимация "вверх"
@@ -94,20 +96,34 @@ public class Player extends Entity implements Serializable {
         animations[1] = new Animation(upImages, 5);
 
         // Анимация "влево"
-        BufferedImage[] leftImages = new BufferedImage[4];
+        BufferedImage[] leftImages = new BufferedImage[6];
         leftImages[0] = resourceLoader.loadImage("/resources/player/left/playerLeft1.png");
         leftImages[1] = resourceLoader.loadImage("/resources/player/left/playerLeft2.png");
         leftImages[2] = resourceLoader.loadImage("/resources/player/left/playerLeft3.png");
         leftImages[3] = resourceLoader.loadImage("/resources/player/left/playerLeft4.png");
+        leftImages[4] = resourceLoader.loadImage("/resources/player/left/playerLeft5.png");
+        leftImages[5] = resourceLoader.loadImage("/resources/player/left/playerLeft6.png");
         animations[2] = new Animation(leftImages, 5);
 
         // Анимация "вправо"
-        BufferedImage[] rightImages = new BufferedImage[4];
+        BufferedImage[] rightImages = new BufferedImage[6];
         rightImages[0] = resourceLoader.loadImage("/resources/player/right/playerRight1.png");
         rightImages[1] = resourceLoader.loadImage("/resources/player/right/playerRight2.png");
         rightImages[2] = resourceLoader.loadImage("/resources/player/right/playerRight3.png");
         rightImages[3] = resourceLoader.loadImage("/resources/player/right/playerRight4.png");
+        rightImages[4] = resourceLoader.loadImage("/resources/player/right/playerRight5.png");
+        rightImages[5] = resourceLoader.loadImage("/resources/player/right/playerRight6.png");
         animations[3] = new Animation(rightImages, 5);
+
+        // Анимация "вправо"
+        BufferedImage[] nullImages = new BufferedImage[6];
+        nullImages[0] = resourceLoader.loadImage("/resources/player/null/playerNull1.png");
+        nullImages[1] = resourceLoader.loadImage("/resources/player/null/playerNull2.png");
+        nullImages[2] = resourceLoader.loadImage("/resources/player/null/playerNull3.png");
+        nullImages[3] = resourceLoader.loadImage("/resources/player/null/playerNull4.png");
+        nullImages[4] = resourceLoader.loadImage("/resources/player/null/playerNull5.png");
+        nullImages[5] = resourceLoader.loadImage("/resources/player/null/playerNull6.png");
+        animations[4] = new Animation(nullImages, 5);
     }
 
     public void setDefaultValues() {
@@ -319,6 +335,7 @@ public class Player extends Entity implements Serializable {
             case "down": animations[0].update(); break;
             case "left": case "up_left": case "down_left": animations[2].update(); break;
             case "right": case "up_right": case "down_right": animations[3].update(); break;
+            case "null": animations[4].update(); break;
         }
 
 //        System.out.println("Player - x: " + worldX + ", y: " + worldY);
@@ -350,7 +367,7 @@ public class Player extends Entity implements Serializable {
             case "right":
             case "up_right":
             case "down_right": animations[3].draw(g, screenX, screenY, playerWidth, playerHeight); break;
-            case "null": animations[0].draw(g, screenX, screenY, playerWidth, playerHeight);
+            case "null": animations[4].draw(g, screenX, screenY, playerWidth, playerHeight);
         }
 
         healthBar.draw(g);
