@@ -17,7 +17,8 @@ public class Slime extends Enemy {
 
     public Slime(GamePanel gp) {
         super(gp);
-        System.out.println("Slime created at: " + worldX + ", " + worldY);
+        this.name = "slime";
+//        System.out.println("Slime created at: " + worldX + ", " + worldY);
         setDefaultValues();
     }
 
@@ -193,5 +194,9 @@ public class Slime extends Enemy {
     @Override
     public void setAggressive(boolean aggressive) {
         super.setAggressive(aggressive);
+    }
+
+    public boolean getAggressive() {
+        return aggressive;
     }
 }

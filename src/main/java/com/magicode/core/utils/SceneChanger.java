@@ -29,7 +29,7 @@ public class SceneChanger {
                         gp.saveManager.getSaveFilePathBackground(),
                         gp.saveManager.getSaveFilePathStructure(),
                         gp.saveManager.getSaveFilePathObjects(),
-                        null); // Добавлен null для enemiesPath
+                        gp.saveManager.getSaveFilePathEnemy()); // Добавлен null для enemiesPath
             }
             loadSceneInfo();
         }
