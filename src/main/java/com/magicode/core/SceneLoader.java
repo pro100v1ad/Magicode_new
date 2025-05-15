@@ -372,77 +372,97 @@ public class SceneLoader {
         }
 
         //STRUCTURE
-        startTime = System.nanoTime();
         try (InputStream is = getClass().getResourceAsStream(structurePath)) {
             if (is == null) {
                 System.out.println("Ошибка: файл не найден! " + structurePath);
                 return;
             }
+
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String line = br.readLine();
-            if (line == null) {
-                System.out.println("Файл пуст");
-                return;// Если файл закончился раньше, чем ожидалось
-            }
-            String parts[] = line.split(" ");
-            structures = new Structure[parts.length];
-            objects = new GameObject[parts.length];
-            System.out.println("Количество структур: " + parts.length);
-            for(int i = 0; i < parts.length; i++) {
-                String structure[] = parts[i].split("_");
-                if(structure[0].equals("door")) {
-                    //Формат: name_x_y_w_h_code:radius_isLock_direction_state - для двери
-                    structures[i] = new Door(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
-                            Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
-                            structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7]);
-                }
 
-                if(structure[0].equals("hatch")) {
-                    //Формат: name_x_y_w_h_code:radius_state_nextX_nextY - для люка
-                    structures[i] = new Hatch(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
-                            Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
-                            structure[5], structure[6].equals("true"),
-                            structure[7]);
-                }
+            // Сначала подсчитаем общее количество структур
+            int totalStructures = 0;
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.trim().isEmpty()) continue; // Пропускаем пустые строки
 
-                if(structure[0].equals("chest")) {
-                    //Формат: name_x_y_w_h_code:radius_isLock_direction_state - для сундука
-                    structures[i] = new Chest(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
-                            Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
-                            structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7]);
-                }
-                if(structure[0].equals("tree") || structure[0].equals("bush") || structure[0].equals("stone")) {
-                    // Формат name_x_y_w_h - для декораций
-                    structures[i] = new Decoration(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
-                            Integer.parseInt(structure[3]), Integer.parseInt(structure[4]), structure[0]);
-                }
-                if(structure[0].equals("bridge")) {
-                    //Формат name_x_y_len_direction_isBreak
-                    structures[i] = new Bridge(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
-                            Integer.parseInt(structure[3]), structure[4], structure[5].equals("true"), structure[0]);
-                }
-                if(structure[0].equals("portal")) {
-                    //Формат name_x_y_w_h_code:radius_direction
-                    structures[i] = new Portal(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
-                            Integer.parseInt(structure[3]), Integer.parseInt(structure[4]), structure[5], structure[6]);
-                }
+                String[] parts = line.split(" ");
+                totalStructures += parts.length;
             }
 
+            if (totalStructures == 0) {
+                System.out.println("Файл пуст или не содержит структур");
+                return;
+            }
 
-            if(structures != null) {
-                if(collision != null) {
+            System.out.println("Количество структур: " + totalStructures);
+
+            // Выделяем память
+            structures = new Structure[totalStructures];
+            objects = new GameObject[totalStructures];
+
+            try (InputStream newIs = getClass().getResourceAsStream(structurePath)) {
+                br = new BufferedReader(new InputStreamReader(newIs));
+
+                int index = 0;
+                while ((line = br.readLine()) != null) {
+                    if (line.trim().isEmpty()) continue; // Пропускаем пустые строки
+
+                    String[] parts = line.split(" ");
+                    for (String part : parts) {
+                        String[] structure = part.split("_");
+
+                        try {
+                            if (structure[0].equals("door")) {
+                                structures[index++] = new Door(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
+                                        Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
+                                        structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7]);
+                            }
+                            else if (structure[0].equals("hatch")) {
+                                structures[index++] = new Hatch(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
+                                        Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
+                                        structure[5], structure[6].equals("true"), structure[7]);
+                            }
+                            else if (structure[0].equals("chest")) {
+                                structures[index++] = new Chest(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
+                                        Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
+                                        structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7]);
+                            }
+                            else if (structure[0].equals("tree") || structure[0].equals("bush") || structure[0].equals("stone")) {
+                                structures[index++] = new Decoration(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
+                                        Integer.parseInt(structure[3]), Integer.parseInt(structure[4]), structure[0]);
+                            }
+                            else if (structure[0].equals("bridge")) {
+                                structures[index++] = new Bridge(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
+                                        Integer.parseInt(structure[3]), structure[4], structure[5].equals("true"), structure[0]);
+                            }
+                            else if (structure[0].equals("portal")) {
+                                structures[index++] = new Portal(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
+                                        Integer.parseInt(structure[3]), Integer.parseInt(structure[4]), structure[5], structure[6]);
+                            }
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            System.err.println("Ошибка в формате структуры: " + part);
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+
+
+
+
+            if (structures != null) {
+                if (collision != null) {
                     collision.loadStructure(structures);
                 }
-                if(interaction != null) {
+                if (interaction != null) {
                     interaction.loadStructure(structures);
                 }
-
             }
 
             System.out.println("Успешная загрузка структур: " + backgroundPath);
-//            System.out.println("Структуры загрузились за: " + ((System.nanoTime()-startTime)/1000000) + " миллисекунд!");
-        }
-        catch (IOException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
+        } catch (IOException | NumberFormatException e) {
             System.err.println("Ошибка загрузки структур: " + e.getMessage());
             e.printStackTrace();
         }
