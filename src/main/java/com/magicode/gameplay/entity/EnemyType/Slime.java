@@ -17,6 +17,7 @@ public class Slime extends Enemy {
 
     public Slime(GamePanel gp) {
         super(gp);
+        this.name = "slime";
         setDefaultValues();
     }
 
@@ -167,5 +168,9 @@ public class Slime extends Enemy {
     @Override
     public void setAggressive(boolean aggressive) {
         super.setAggressive(aggressive);
+    }
+
+    public boolean getAggressive() {
+        return aggressive;
     }
 }

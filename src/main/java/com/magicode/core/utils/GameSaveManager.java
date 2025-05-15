@@ -1,5 +1,7 @@
 package main.java.com.magicode.core.utils;
 
+import main.java.com.magicode.gameplay.entity.Enemy;
+import main.java.com.magicode.gameplay.entity.EnemyType.Slime;
 import main.java.com.magicode.gameplay.entity.Player;
 import main.java.com.magicode.gameplay.world.GameObject;
 import main.java.com.magicode.gameplay.world.Layer;
@@ -16,10 +18,11 @@ public class GameSaveManager {
     private final String saveFilePathStructure = "saves/structureSave.txt";
     private final String saveFilePathPlayer = "saves/playerSave.txt";
     private final String saveFilePathObjects = "saves/objectSave.txt";
+    private final String saveFilePathEnemy = "saves/enemySave.txt";
     private final String saveFilePathSceneInfo = "saves/sceneInfo.txt";
 
     // Сохранение игры
-    public void saveGame(Layer[][] worldMap, Structure[] structures, Player player, SceneChanger sceneChanger, GameObject[] objects) {
+    public void saveGame(Layer[][] worldMap, Structure[] structures, Player player, SceneChanger sceneChanger, GameObject[] objects, Enemy[] enemies) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFilePathBackground))) {
             writer.write(worldMap[0].length + " " + worldMap.length + "\n");
             for(int i = 0; i < worldMap.length; i++) {
@@ -69,6 +72,11 @@ public class GameSaveManager {
                             Bridge bridge = (Bridge) structures[i];
                             writer.write("bridge_" + bridge.getX() + "_" + bridge.getY() + "_" + bridge.getLen() + "_" +
                                     bridge.getDirection() + "_" + bridge.getBreak() + " ");
+                        }
+                        if(structures[i].getName().equals("portal")) {
+                            Portal portal = (Portal) structures[i];
+                            writer.write("portal_" + portal.getX() + "_" + portal.getY() + "_" + portal.getW() + "_" + portal.getH() +
+                                    "_" + portal.getCode() + ":" + portal.getRadius() + "_" + portal.getDirection());
                         }
 
                     }
@@ -136,6 +144,30 @@ public class GameSaveManager {
             System.err.println("Ошибка при сохранении объектов: " + e.getMessage());
         }
 
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFilePathEnemy))) {
+            if(enemies == null) {
+                writer.write("");
+            } else {
+                writer.write(enemies.length + "\n");
+                for (Enemy enemy : enemies) { // Сохранение объектов
+                    if (enemy == null) continue;
+                    if (enemy.getName().equals("slime")) {
+                        Slime slime = (Slime) enemy;
+                        writer.write("slime_" + (int)slime.getWorldX() + "_" +
+                                (int)slime.getWorldY() + "_" + slime.getAggressive() + "\n");
+                    }
+
+                }
+            }
+
+            System.out.println("enemy сохранен в файл: " + saveFilePathObjects);
+        } catch (IOException e) {
+            System.err.println("Ошибка при сохранении врагов: " + e.getMessage());
+        }
+
+
+
     }
 
     // Загрузка игры
@@ -154,6 +186,9 @@ public class GameSaveManager {
     public String getSaveFilePathObjects() {
         return saveFilePathObjects;
     }
+    public String getSaveFilePathEnemy() {
+        return saveFilePathEnemy;
+    }
 
     // Проверка и создание папки для сохранений
     public void ensureSaveDirectoryExists() {
@@ -171,9 +206,10 @@ public class GameSaveManager {
         File file3 = new File(saveFilePathPlayer);
         File file4 = new File(saveFilePathSceneInfo);
         File file5 = new File(saveFilePathObjects);
+        File file6 = new File(saveFilePathEnemy);
 
         // Проверяем, существуют ли оба файла
-        return file1.exists() && file2.exists() && file3.exists() && file4.exists() && file5.exists();
+        return file1.exists() && file2.exists() && file3.exists() && file4.exists() && file5.exists() && file6.exists();
     }
 
 

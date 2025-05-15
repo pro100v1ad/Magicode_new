@@ -78,7 +78,7 @@ public class TextRedactor {
 
             tablet.addButton(filePath.split("/")[filePath.split("/").length-1] + "()");
 
-            System.out.println("Функция-заклинание загружено из файла: " + filePath);
+//            System.out.println("Функция-заклинание загружено из файла: " + filePath);
         } catch (IOException e) {
             System.err.println("Ошибка при загрузке заклинания: " + e.getMessage());
         }

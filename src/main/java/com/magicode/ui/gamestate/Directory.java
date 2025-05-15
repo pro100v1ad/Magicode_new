@@ -1,7 +1,6 @@
 package main.java.com.magicode.ui.gamestate;
 
 import main.java.com.magicode.core.GamePanel;
-import main.java.com.magicode.gameplay.entity.Player;
 import main.java.com.magicode.ui.GUI;
 
 
@@ -145,7 +144,7 @@ public class Directory extends GUI {
                 linecounter++;
             }
 
-            System.out.println("Текст загружен из файла: " + filePath);
+//            System.out.println("Текст загружен из файла: " + filePath);
         } catch (IOException e) {
             System.err.println("Ошибка при загрузке текста: " + e.getMessage());
         }

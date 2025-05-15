@@ -41,18 +41,67 @@ public class SceneLoader {
     public SceneLoader(GamePanel gp, boolean isStart, String backgroundPath,
                        String structurePath, String objectPath, String enemiesPath) {
         this.gp = gp;
-        if(backgroundPath != null && structurePath != null && enemiesPath != null) {
-            if(isStart) {
-                loadScene(backgroundPath, structurePath);
+
+        if(isStart) {
+            if(backgroundPath == null || structurePath == null) {
+                loadScene(DEFAULT_BACKGROUND, DEFAULT_STRUCTURE);
             } else {
-                loadSaveScene(backgroundPath, structurePath, objectPath);
+                loadScene(backgroundPath, structurePath);
             }
+            loadEnemies(enemiesPath);
         } else {
-            loadScene(DEFAULT_BACKGROUND, DEFAULT_STRUCTURE);
+            loadSaveScene(backgroundPath, structurePath, objectPath);
+            loadSaveEnemies(enemiesPath);
         }
-        loadEnemies(enemiesPath);
+
         cooldown = 0;
         isCooldown = false;
+    }
+
+
+    private void loadSaveEnemies(String enemiesPath) {
+
+        System.out.println("Начало загрузки врагов. Путь: " + enemiesPath);
+
+        if (enemiesPath == null) {
+            System.out.println("Враги на локации отсутствуют (путь не указан)");
+            return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(enemiesPath))) {
+            String line;
+            line = reader.readLine();
+            if (line == null) {
+                System.out.println("Файл пуст");
+                return;// Если файл закончился раньше, чем ожидалось
+            }
+
+
+            int enemyCount = Integer.parseInt(line);
+
+            // Создаем массив нужного размера
+            enemies = new Enemy[enemyCount];
+
+            for(int i = 0; i < enemyCount; i++) {
+
+                line = reader.readLine();
+
+                String[] parts = line.split("_");
+
+                if(parts[0].equals("slime")) {
+                    Slime slime = new Slime(gp);
+                    slime.setWorldX(Integer.parseInt(parts[1]));
+                    slime.setWorldY(Integer.parseInt(parts[2]));
+                    slime.setAggressive(parts[3].equals("true"));
+                    enemies[i] = slime;
+                }
+
+            }
+
+
+        } catch (Exception e) {
+            System.err.println("Критическая ошибка загрузки врагов: ");
+        }
     }
 
     // Метод загрузки врагов
@@ -73,60 +122,28 @@ public class SceneLoader {
 
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line;
-            int enemyCount = 0;
-
-            // Первый проход - подсчет количества врагов
-            while ((line = br.readLine()) != null) {
-                if (!line.trim().isEmpty()) enemyCount++;
-            }
+            line = br.readLine();
+            int enemyCount = Integer.parseInt(line);
 
             // Создаем массив нужного размера
             enemies = new Enemy[enemyCount];
-            int index = 0;
 
-            // Второй проход - чтение данных
-            try (InputStream is2 = getClass().getResourceAsStream(enemiesPath)) {
-                BufferedReader br2 = new BufferedReader(new InputStreamReader(is2));
+            for(int i = 0; i < enemyCount; i++) {
 
-                while ((line = br2.readLine()) != null) {
-                    line = line.trim();
-                    if (line.isEmpty()) continue;
+                line = br.readLine();
 
-                    try {
-                        String[] parts = line.split("_");
-                        if (parts.length < 4) {
-                            System.err.println("Некорректный формат строки: " + line);
-                            continue;
-                        }
+                String[] parts = line.split("_");
 
-                        String enemyType = parts[0];
-                        int x = Integer.parseInt(parts[1]);
-                        int y = Integer.parseInt(parts[2]);
-                        boolean aggressive = Boolean.parseBoolean(parts[3]);
-
-                        if (index >= enemies.length) {
-                            System.err.println("Превышение размера массива");
-                            break;
-                        }
-
-                        switch (enemyType.toLowerCase()) {
-                            case "slime":
-                                Slime slime = new Slime(gp);
-                                slime.setWorldX(x);
-                                slime.setWorldY(y);
-                                slime.setAggressive(aggressive);
-                                enemies[index++] = slime;
-                                break;
-                            default:
-                                System.err.println("Неизвестный тип врага: " + enemyType);
-                        }
-                    } catch (Exception e) {
-                        System.err.println("Ошибка парсинга строки: " + line);
-                    }
+                if(parts[0].equals("slime")) {
+                    Slime slime = new Slime(gp);
+                    slime.setWorldX(Integer.parseInt(parts[1]));
+                    slime.setWorldY(Integer.parseInt(parts[2]));
+                    slime.setAggressive(parts[3].equals("true"));
+                    enemies[i] = slime;
                 }
+
             }
 
-            System.out.println("Успешно загружено врагов: " + index);
 
         } catch (Exception e) {
             System.err.println("Критическая ошибка загрузки врагов: ");
