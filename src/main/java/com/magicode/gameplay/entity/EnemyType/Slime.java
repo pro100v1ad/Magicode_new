@@ -17,7 +17,6 @@ public class Slime extends Enemy {
 
     public Slime(GamePanel gp) {
         super(gp);
-        System.out.println("Slime created at: " + worldX + ", " + worldY);
         setDefaultValues();
     }
 
@@ -32,46 +31,21 @@ public class Slime extends Enemy {
         detectionRange = GamePanel.tileSize * 5;
         aggressive = false;
 
-        collisionWidth = (int)(GamePanel.tileSize*1.7/2);
-        collisionHeight = GamePanel.tileSize*3/2;
+        collisionWidth = (int)(GamePanel.tileSize*1.7/1.5);
+        collisionHeight =(int)(GamePanel.tileSize*3/2.5);
 
         resourceLoader = new ResourceLoader();
     }
 
     protected void loadAnimations() {
-        animations = new Animation[4]; // 4 направления
+        animations = new Animation[1];
 
-        // Анимация "вниз"
-        BufferedImage[] downImages = new BufferedImage[4];
-        downImages[0] = resourceLoader.loadImage("/resources/enemies/slime/down/slime_down1.png");
-        downImages[1] = resourceLoader.loadImage("/resources/enemies/slime/down/slime_down2.png");
-        downImages[2] = resourceLoader.loadImage("/resources/enemies/slime/down/slime_down3.png");
-        downImages[3] = resourceLoader.loadImage("/resources/enemies/slime/down/slime_down4.png");
-        animations[0] = new Animation(downImages, 5);
+        BufferedImage[] Images = new BufferedImage[3];
+        Images[0] = resourceLoader.loadImage("/resources/enemies/slime/Slimes1.png");
+        Images[1] = resourceLoader.loadImage("/resources/enemies/slime/Slimes2.png");
+        Images[2] = resourceLoader.loadImage("/resources/enemies/slime/Slimes3.png");
+        animations[0] = new Animation(Images, 5);
 
-        // Анимация "вверх"
-        BufferedImage[] upImages = new BufferedImage[4];
-        upImages[0] = resourceLoader.loadImage("/resources/enemies/slime/up/slime_up1.png");
-        upImages[1] = resourceLoader.loadImage("/resources/enemies/slime/up/slime_up2.png");
-        upImages[2] = resourceLoader.loadImage("/resources/enemies/slime/up/slime_up3.png");
-        upImages[3] = resourceLoader.loadImage("/resources/enemies/slime/up/slime_up4.png");
-        animations[1] = new Animation(upImages, 5);
-
-        // Анимация "влево"
-        BufferedImage[] leftImages = new BufferedImage[4];
-        leftImages[0] = resourceLoader.loadImage("/resources/enemies/slime/left/slime_left1.png");
-        leftImages[1] = resourceLoader.loadImage("/resources/enemies/slime/left/slime_left2.png");
-        leftImages[2] = resourceLoader.loadImage("/resources/enemies/slime/left/slime_left3.png");
-        leftImages[3] = resourceLoader.loadImage("/resources/enemies/slime/left/slime_left4.png");
-        animations[2] = new Animation(leftImages, 5);
-
-        // Анимация "вправо"
-        BufferedImage[] rightImages = new BufferedImage[4];
-        rightImages[0] = resourceLoader.loadImage("/resources/enemies/slime/right/slime_right1.png");
-        rightImages[1] = resourceLoader.loadImage("/resources/enemies/slime/right/slime_right2.png");
-        rightImages[2] = resourceLoader.loadImage("/resources/enemies/slime/right/slime_right3.png");
-        rightImages[3] = resourceLoader.loadImage("/resources/enemies/slime/right/slime_right4.png");
-        animations[3] = new Animation(rightImages, 5);
     }
 
     @Override
@@ -153,10 +127,10 @@ public class Slime extends Enemy {
 
         // Обновление анимации
         switch(direction) {
-            case "up": animations[1].update(); break;
+            case "up": animations[0].update(); break;
             case "down": animations[0].update(); break;
-            case "left": animations[2].update(); break;
-            case "right": animations[3].update(); break;
+            case "left": animations[0].update(); break;
+            case "right": animations[0].update(); break;
         }
     }
 
@@ -168,14 +142,14 @@ public class Slime extends Enemy {
 
         int screenX = (int)(worldX - gp.player.getWorldX() + gp.player.getScreenX());
         int screenY = (int)(worldY - gp.player.getWorldY() + gp.player.getScreenY());
-        int enemyWidth = (int)(GamePanel.tileSize * 2/2);
-        int enemyHeight = (int)(GamePanel.tileSize * 4/2);
+        int enemyWidth = (int)(GamePanel.tileSize * 2/1.5);
+        int enemyHeight = (int)(GamePanel.tileSize * 4/2.5);
 
         switch(direction) {
-            case "up": animations[1].draw(g, screenX, screenY, enemyWidth, enemyHeight); break;
+            case "up": animations[0].draw(g, screenX, screenY, enemyWidth, enemyHeight); break;
             case "down": animations[0].draw(g, screenX, screenY, enemyWidth, enemyHeight); break;
-            case "left": animations[2].draw(g, screenX, screenY, enemyWidth, enemyHeight); break;
-            case "right": animations[3].draw(g, screenX, screenY, enemyWidth, enemyHeight); break;
+            case "left": animations[0].draw(g, screenX, screenY, enemyWidth, enemyHeight); break;
+            case "right": animations[0].draw(g, screenX, screenY, enemyWidth, enemyHeight); break;
             default: animations[0].draw(g, screenX, screenY, enemyWidth, enemyHeight);
         }
     }
