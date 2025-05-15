@@ -18,14 +18,18 @@ public class TextRedactor {
 
         editAreas = new EditArea[10];
         countEditAreas = 0;
-        String[] text = new String[4];
+        String[] text = new String[8];
         text[0] = "public Spells {";
         text[1] = " ";
-        text[2] = " ";
-        text[3] = "} ";
+        text[2] = "    int first = 4;";
+        text[3] = "    int second = 5;";
+        text[4] = "    String third = \"key\";";
+        text[5] = "    String fourth = false;";
+        text[6] = " ";
+        text[7] = "} ";
         tablet.setText(text);
 
-        startRowsForSpell = 2;
+        startRowsForSpell = 6;
 
 
 

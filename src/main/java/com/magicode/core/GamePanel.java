@@ -29,6 +29,7 @@ public class GamePanel extends JComponent {
         Game,
         GameOpenTablet,
         GameOpenDirectory,
+        GameOpenBoard,
         GameMenu;
     }
 

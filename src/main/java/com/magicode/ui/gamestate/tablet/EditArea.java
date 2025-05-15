@@ -55,7 +55,7 @@ public class EditArea extends GUI {
     public boolean isMouseOver(int mouseX, int mouseY, int startRow, int verticalOffset, FontMetrics metrics) {
         if (markerLine >= startRow && markerLine < startRow + Tablet.getCountRowsVisible() - 1) {
             // Вычисляем координаты области
-            int x = Tablet.getTextPosX() + metrics.charWidth('A') * markerPos;
+            int x = Tablet.getTextPosX() + metrics.charWidth('A') * markerPos - 28;
             int y = Tablet.getTextPosY() + verticalOffset +
                     (markerLine - startRow) * Tablet.getLineSpace() - metrics.getAscent() - 2;
 

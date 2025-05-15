@@ -1,0 +1,3 @@
+if(arg1 + arg2 == 8) {
+    openDoor();
+}
