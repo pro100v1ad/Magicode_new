@@ -84,11 +84,13 @@ public class Player extends Entity implements Serializable {
         animations[0] = new Animation(downImages, 5);
 
         // Анимация "вверх"
-        BufferedImage[] upImages = new BufferedImage[4];
+        BufferedImage[] upImages = new BufferedImage[6];
         upImages[0] = resourceLoader.loadImage("/resources/player/up/playerUp1.png");
         upImages[1] = resourceLoader.loadImage("/resources/player/up/playerUp2.png");
         upImages[2] = resourceLoader.loadImage("/resources/player/up/playerUp3.png");
         upImages[3] = resourceLoader.loadImage("/resources/player/up/playerUp4.png");
+        upImages[4] = resourceLoader.loadImage("/resources/player/up/playerUp5.png");
+        upImages[5] = resourceLoader.loadImage("/resources/player/up/playerUp6.png");
         animations[1] = new Animation(upImages, 5);
 
         // Анимация "влево"
