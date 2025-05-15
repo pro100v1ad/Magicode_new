@@ -46,7 +46,7 @@ public class Layer implements Serializable {
             }
 
         } else {
-            System.out.println("Строка не соответствует формату 'число_число'");
+            System.out.println("Строка не соответствует формату 'число_число': " + input);
         }
 
         setImage();

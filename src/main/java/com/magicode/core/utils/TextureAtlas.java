@@ -22,21 +22,21 @@ public class TextureAtlas {
         textures[0][7].loadTexture("/resources/background/parts1/wallUpRight.png");
         textures[0][8].loadTexture("/resources/background/parts1/floor.png");
 
-        textures[1][0].loadTexture("/resources/background/grass/grassCenter.png");
+        textures[1][0].loadTexture("/resources/background/parts2/grass/grassCenter.png");
 
-        textures[2][0].loadTexture("/resources/background/water/waterCenter.png");
-        textures[2][1].loadTexture("/resources/background/water/waterUp.png");
-        textures[2][2].loadTexture("/resources/background/water/waterDown.png");
-        textures[2][3].loadTexture("/resources/background/water/waterLeft.png");
-        textures[2][4].loadTexture("/resources/background/water/waterRight.png");
-        textures[2][5].loadTexture("/resources/background/water/waterUpLeft.png");
-        textures[2][6].loadTexture("/resources/background/water/waterUpRight.png");
-        textures[2][7].loadTexture("/resources/background/water/waterDownLeft.png");
-        textures[2][8].loadTexture("/resources/background/water/waterDownRight.png");
-        textures[2][9].loadTexture("/resources/background/water/waterLeftUp.png");
-        textures[2][10].loadTexture("/resources/background/water/waterLeftDown.png");
-        textures[2][11].loadTexture("/resources/background/water/waterRightUp.png");
-        textures[2][12].loadTexture("/resources/background/water/waterRightDown.png");
+        textures[2][0].loadTexture("/resources/background/parts2/water/waterCenter.png");
+        textures[2][1].loadTexture("/resources/background/parts2/water/waterUp.png");
+        textures[2][2].loadTexture("/resources/background/parts2/water/waterDown.png");
+        textures[2][3].loadTexture("/resources/background/parts2/water/waterLeft.png");
+        textures[2][4].loadTexture("/resources/background/parts2/water/waterRight.png");
+        textures[2][5].loadTexture("/resources/background/parts2/water/waterUpLeft.png");
+        textures[2][6].loadTexture("/resources/background/parts2/water/waterUpRight.png");
+        textures[2][7].loadTexture("/resources/background/parts2/water/waterDownLeft.png");
+        textures[2][8].loadTexture("/resources/background/parts2/water/waterDownRight.png");
+        textures[2][9].loadTexture("/resources/background/parts2/water/waterLeftUp.png");
+        textures[2][10].loadTexture("/resources/background/parts2/water/waterLeftDown.png");
+        textures[2][11].loadTexture("/resources/background/parts2/water/waterRightUp.png");
+        textures[2][12].loadTexture("/resources/background/parts2/water/waterRightDown.png");
 
         textures[10][0].loadTexture("/resources/structures/door/doorUp.png");
         textures[10][1].loadTexture("/resources/structures/door/doorDown.png");
@@ -110,8 +110,45 @@ public class TextureAtlas {
         textures[20][6].loadTexture("/resources/background/parts1/wallAngleUR.png");
         textures[20][7].loadTexture("/resources/background/parts1/wallAngleUL.png");
 
+        textures[20][8].loadTexture("/resources/background/parts3/floor/floor.png");
+        textures[20][9].loadTexture("/resources/background/parts3/bossFloor/bossFloorCenter.png");
+        textures[20][10].loadTexture("/resources/background/parts3/bossFloor/bossFloorDown.png");
+        textures[20][11].loadTexture("/resources/background/parts3/bossFloor/bossFloorUp.png");
+        textures[20][12].loadTexture("/resources/background/parts3/bossFloor/bossFloorLeft.png");
+        textures[20][13].loadTexture("/resources/background/parts3/bossFloor/bossFloorRight.png");
+        textures[20][14].loadTexture("/resources/background/parts3/bossFloor/bossFloorLeftDown.png");
+        textures[20][15].loadTexture("/resources/background/parts3/bossFloor/bossFloorLeftUp.png");
+        textures[20][16].loadTexture("/resources/background/parts3/bossFloor/bossFloorRightDown.png");
+        textures[20][17].loadTexture("/resources/background/parts3/bossFloor/bossFloorRightUp.png");
+        textures[20][18].loadTexture("/resources/background/parts3/bossRedLine/bossRedLineDown.png");
+        textures[20][19].loadTexture("/resources/background/parts3/bossRedLine/bossRedLineUp.png");
+        textures[20][20].loadTexture("/resources/background/parts3/bossRedLine/bossRedLineLeft.png");
+        textures[20][21].loadTexture("/resources/background/parts3/bossRedLine/bossRedLineRight.png");
+        textures[20][22].loadTexture("/resources/background/parts3/bossRedLine/bossRedLineLeftDown.png");
+        textures[20][23].loadTexture("/resources/background/parts3/bossRedLine/bossRedLineLeftUp.png");
+        textures[20][24].loadTexture("/resources/background/parts3/bossRedLine/bossRedLineRightDown.png");
+        textures[20][25].loadTexture("/resources/background/parts3/bossRedLine/bossRedLineRightUp.png");
+        textures[20][26].loadTexture("/resources/background/parts3/walls/wallsDown.png");
+        textures[20][27].loadTexture("/resources/background/parts3/walls/wallsUp.png");
+        textures[20][28].loadTexture("/resources/background/parts3/walls/wallsLeft.png");
+        textures[20][29].loadTexture("/resources/background/parts3/walls/wallsRight.png");
+        textures[20][30].loadTexture("/resources/background/parts3/walls/wallsLeftDown.png");
+        textures[20][31].loadTexture("/resources/background/parts3/walls/wallsLeftUp.png");
+        textures[20][32].loadTexture("/resources/background/parts3/walls/wallsRightDown.png");
+        textures[20][33].loadTexture("/resources/background/parts3/walls/wallsRightUp.png");
+        textures[20][34].loadTexture("/resources/background/parts3/walls/wallsDownLeft.png");
+        textures[20][35].loadTexture("/resources/background/parts3/walls/wallsDownRight.png");
+        textures[20][36].loadTexture("/resources/background/parts3/walls/wallsUpLeft.png");
+        textures[20][37].loadTexture("/resources/background/parts3/walls/wallsUpRight.png");
+        textures[20][38].loadTexture("/resources/background/parts3/floor/bossSpawn.png");
+
         textures[21][0].loadTexture("/resources/structures/portal/portalHor.png");
         textures[21][1].loadTexture("/resources/structures/portal/portalVert.png");
+
+
+
+
+
 
 
     }

@@ -329,6 +329,7 @@ public class SceneLoader {
                 for(int col = 0; col < sceneWidth; col++) {
                     String elements = parts[col];
                     // Упрощенная обработка
+                    if(elements.isEmpty()) System.out.println("Я лох^ " + row + "_ " + col);
                     worldMap[row][col].setLayers(elements);
                 }
             }
