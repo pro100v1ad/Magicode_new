@@ -89,8 +89,6 @@ public class SceneChanger {
     }
 
     public void loadScene(int index) {
-        gp.player.setWorldX(Integer.parseInt(sceneInfo[index].split(" ")[1]));
-        gp.player.setWorldY(Integer.parseInt(sceneInfo[index].split(" ")[2]));
         gp.sceneLoader = new SceneLoader(
                 gp,
                 true,
@@ -98,5 +96,7 @@ public class SceneChanger {
                 sceneInfo[index].split(" ")[0] + "structure",
                 null,
                 sceneInfo[index].split(" ")[0] + "enemies");
+        gp.player.setWorldX(Integer.parseInt(sceneInfo[index].split(" ")[1]));
+        gp.player.setWorldY(Integer.parseInt(sceneInfo[index].split(" ")[2]));
     }
 }
