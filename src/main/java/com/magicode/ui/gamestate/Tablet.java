@@ -435,7 +435,7 @@ public class Tablet extends GUI {
         for (EditArea editArea : editAreas) {
             if(editArea != null) {
                 if(editArea.getName().contains("key")) {
-                    Spell[] spells = gp.sceneLoader.getSpells();
+                    Spell[] spells = gp.player.getSpells();
                     if(spells != null) {
                         for (Spell spell : spells) {
                             if(spell != null) {

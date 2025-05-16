@@ -313,7 +313,7 @@ public class GamePanel extends JComponent {
         sceneChanger = new SceneChanger(this, true, null);
         tablet = new Tablet(this);
         directory = new Directory(this);
-        player = new Player(this, null);
+        player = new Player(this, null, null);
         menuInGame = new MenuInGame(this);
     }
 
@@ -323,7 +323,7 @@ public class GamePanel extends JComponent {
         tablet = new Tablet(this);
         directory = new Directory(this);
         tablet.loadSaveValues(saveManager.getSaveFilePathTabletInfo());
-        player = new Player(this, saveManager.getSaveFilePathPlayer());
+        player = new Player(this, saveManager.getSaveFilePathPlayer(), saveManager.getSaveFilePathSpells());
         menuInGame = new MenuInGame(this);
 
     }
@@ -334,7 +334,7 @@ public class GamePanel extends JComponent {
     }
 
     public void saveGame() {
-        saveManager.saveGame(sceneLoader.getWorldMap(), sceneLoader.getStructures(), player, sceneChanger, sceneLoader.getObjects(), sceneLoader.getEnemies(), sceneLoader.getSpells(), tablet);
+        saveManager.saveGame(sceneLoader.getWorldMap(), sceneLoader.getStructures(), player, sceneChanger, sceneLoader.getObjects(), sceneLoader.getEnemies(), player.getSpells(), tablet);
         startMenu.setState(true);
     }
 

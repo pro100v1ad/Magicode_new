@@ -3,15 +3,14 @@ package main.java.com.magicode.gameplay.entity;
 import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.core.utils.Animation;
 import main.java.com.magicode.core.utils.ResourceLoader;
+import main.java.com.magicode.spells.Spell;
 import main.java.com.magicode.spells.spells.KeySpell;
 import main.java.com.magicode.ui.gamestate.Directory;
 import main.java.com.magicode.ui.interface_.Bar;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.Serializable;
+import java.io.*;
 
 import static java.lang.Math.sqrt;
 
@@ -29,7 +28,8 @@ public class Player extends Entity implements Serializable {
     private double maxMana;
     private double mana;
 
-
+    private Spell[] spells;
+    public static final String DEFAULT_SPELLS = "/resources/levels/scenes/start/spells";
 
     private int countBook;
 
@@ -37,7 +37,7 @@ public class Player extends Entity implements Serializable {
     private Bar manaBar;
 
 
-    public Player(GamePanel gp, String filePath){
+    public Player(GamePanel gp, String playerFilePath, String spellFilePath){
         this.gp = gp;
         resourceLoader = new ResourceLoader();
 
@@ -51,8 +51,9 @@ public class Player extends Entity implements Serializable {
 
         loadAnimation();
 
-        if(filePath != null) {
-            loadPlayerFromFile(filePath);
+        if(playerFilePath != null && spellFilePath != null) {
+            loadPlayerFromFile(playerFilePath);
+            loadSaveSpells(spellFilePath);
         } else {
             setDefaultValues();
         }
@@ -127,6 +128,70 @@ public class Player extends Entity implements Serializable {
         animations[4] = new Animation(nullImages, 5);
     }
 
+    public void loadSaveSpells(String spellsPath) {
+        System.out.println("Начало загрузки сохраненных заклинаний. Путь: " + spellsPath);
+        if(spellsPath == null) {
+            return;
+        }
+        try (BufferedReader reader = new BufferedReader(new FileReader(spellsPath))) {
+            String line;
+            line = reader.readLine();
+            if (line == null) {
+                System.out.println("Файл пуст");
+                return;// Если файл закончился раньше, чем ожидалось
+            }
+            int enemyCount = Integer.parseInt(line);
+            // Создаем массив нужного размера
+            spells = new Spell[enemyCount];
+            int index = 0;
+
+            while((line = reader.readLine()) != null) {
+                String[] parts = line.split("_");
+                if(parts[1].equals("key")) {
+                    spells[index++] = new KeySpell(parts);
+                }
+            }
+
+
+
+
+        } catch (Exception e) {
+            System.err.println("Критическая ошибка загрузки сохраненных заклинаний: ");
+        }
+    }
+
+    public void loadSpells(String spellPath) {
+        try (InputStream is = getClass().getResourceAsStream(spellPath)) {
+            if (is == null) {
+                System.out.println("Ошибка: файл не найден! " + spellPath);
+                return;
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String line = br.readLine();
+            if (line == null) {
+                System.out.println("Файл пуст");
+                return;// Если файл закончился раньше, чем ожидалось
+            }
+
+            int enemyCount = Integer.parseInt(line);
+            // Создаем массив нужного размера
+            spells = new Spell[enemyCount];
+            int index = 0;
+
+            while((line = br.readLine()) != null) {
+                String[] parts = line.split("_");
+                if(parts[1].equals("key")) {
+                    spells[index++] = new KeySpell(parts);
+                }
+            }
+
+
+            System.out.println("Заклинания загружены из файла: " + spellPath);
+        } catch (IOException e) {
+            System.err.println("Ошибка при загрузке заклинаний: " + e.getMessage());
+        }
+    }
+
     public void setDefaultValues() {
 //        worldX = 10;
 //        worldY = 10;
@@ -141,11 +206,16 @@ public class Player extends Entity implements Serializable {
         maxMana = 100;
         mana = 10;
 
+        loadSpells(DEFAULT_SPELLS);
 
         worldX = GamePanel.tileSize*35;
         worldY = GamePanel.tileSize*17;
         float pixelsPerSecond = 200f;
         speed = (pixelsPerSecond * GamePanel.scale) / GamePanel.UPDATE_RATE; // scale минимум 1/4 и максимум 2.
+    }
+
+    public Spell[] getSpells() {
+        return spells;
     }
 
     public int getScreenX() {

@@ -31,10 +31,8 @@ public class SceneLoader {
     private Layer[][] worldMap;
     private Structure[] structures;
     private GameObject[] objects;
-    private Spell[] spells;
     public static final String DEFAULT_BACKGROUND = "/resources/levels/scenes/start/background";
     public static final String DEFAULT_STRUCTURE = "/resources/levels/scenes/start/structure";
-    public static final String DEFAULT_SPELLS = "/resources/levels/scenes/start/spells";
     private int sceneWidth;
     private int sceneHeight;
     private CutScene scene;
@@ -51,7 +49,6 @@ public class SceneLoader {
         if(isStart) {
             if(backgroundPath == null && structurePath == null && spellsPath == null) {
                 loadScene(DEFAULT_BACKGROUND, DEFAULT_STRUCTURE);
-                loadSpells(DEFAULT_SPELLS);
             } else {
                 loadScene(backgroundPath, structurePath);
             }
@@ -60,75 +57,10 @@ public class SceneLoader {
         } else {
             loadSaveScene(backgroundPath, structurePath, objectPath);
             loadSaveEnemies(enemiesPath);
-            loadSaveSpells(spellsPath);
         }
 
         cooldown = 0;
         isCooldown = false;
-    }
-
-    public void loadSaveSpells(String spellsPath) {
-        System.out.println("Начало загрузки сохраненных заклинаний. Путь: " + spellsPath);
-        if(spellsPath == null) {
-            return;
-        }
-        try (BufferedReader reader = new BufferedReader(new FileReader(spellsPath))) {
-            String line;
-            line = reader.readLine();
-            if (line == null) {
-                System.out.println("Файл пуст");
-                return;// Если файл закончился раньше, чем ожидалось
-            }
-            int enemyCount = Integer.parseInt(line);
-            // Создаем массив нужного размера
-            spells = new Spell[enemyCount];
-            int index = 0;
-
-            while((line = reader.readLine()) != null) {
-                String[] parts = line.split("_");
-                if(parts[1].equals("key")) {
-                    spells[index++] = new KeySpell(parts);
-                }
-            }
-
-
-
-
-        } catch (Exception e) {
-            System.err.println("Критическая ошибка загрузки сохраненных заклинаний: ");
-        }
-    }
-
-    public void loadSpells(String spellPath) {
-        try (InputStream is = getClass().getResourceAsStream(spellPath)) {
-            if (is == null) {
-                System.out.println("Ошибка: файл не найден! " + spellPath);
-                return;
-            }
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String line = br.readLine();
-            if (line == null) {
-                System.out.println("Файл пуст");
-                return;// Если файл закончился раньше, чем ожидалось
-            }
-
-            int enemyCount = Integer.parseInt(line);
-            // Создаем массив нужного размера
-            spells = new Spell[enemyCount];
-            int index = 0;
-
-            while((line = br.readLine()) != null) {
-                String[] parts = line.split("_");
-                if(parts[1].equals("key")) {
-                    spells[index++] = new KeySpell(parts);
-                }
-            }
-
-
-            System.out.println("Заклинания загружены из файла: " + spellPath);
-        } catch (IOException e) {
-            System.err.println("Ошибка при загрузке заклинаний: " + e.getMessage());
-        }
     }
 
     private void loadSaveEnemies(String enemiesPath) {
@@ -574,9 +506,6 @@ public class SceneLoader {
         return isCutScene;
     }
 
-    public Spell[] getSpells() {
-        return spells;
-    }
 
     public void setWorldMap(Layer[][] worldMap) {
         this.worldMap = worldMap;
@@ -671,6 +600,7 @@ public class SceneLoader {
                     if(structure.getName().equals("chest")) {
                         Chest chest = (Chest) structure;
                         KeySpell keySpell;
+                        Spell[] spells = gp.player.getSpells();
                         if (spells != null) {
                             System.out.println("Точно не лох!");
                             for (Spell spell : spells) {
