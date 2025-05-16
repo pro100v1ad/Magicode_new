@@ -68,7 +68,7 @@ public class Board extends GUI {
                 System.out.println("Файл пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
-
+            line = br.readLine();
             int index = 0;
             do {
                 text[index++] = line;

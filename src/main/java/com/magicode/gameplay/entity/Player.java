@@ -150,7 +150,6 @@ public class Player extends Entity implements Serializable {
         maxMana = 100;
         mana = 10;
 
-        keySpell.setDefaultValues();
 
         worldX = GamePanel.tileSize*35;
         worldY = GamePanel.tileSize*17;

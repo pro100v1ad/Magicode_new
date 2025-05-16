@@ -166,6 +166,75 @@ public class Chest extends Structure {
         return filePath;
     }
 
+    public int[] getNeedDefaultFirst() {
+        return needDefaultFirst;
+    }
+
+    public int[] getNeedDefaultSecond() {
+        return needDefaultSecond;
+    }
+
+    public String[] getNeedDefaultThird() {
+        return needDefaultThird;
+    }
+
+    public boolean[] getNeedDefaultFourth() {
+        return needDefaultFourth;
+    }
+
+    public void unblockChest() {
+        this.state = true;
+        loadImage();
+    }
+
+    public boolean checkValues(int first, int second, String third, boolean fourth) {
+        boolean flag1 = false;
+        boolean flag2 = false;
+        boolean flag3 = false;
+        boolean flag4 = false;
+
+        // Проверка для first и second (должны быть на одинаковых индексах)
+        if (needDefaultFirst != null && needDefaultSecond != null) {
+            // Ищем минимальную длину, чтобы не выйти за границы массивов
+            int minLength = Math.min(needDefaultFirst.length, needDefaultSecond.length);
+            for (int i = 0; i < minLength; i++) {
+                if (needDefaultFirst[i] == first && needDefaultSecond[i] == second) {
+                    flag1 = true;
+                    flag2 = true;
+                    break; // Нашли совпадение на одном индексе - можно выходить
+                }
+            }
+        } else {
+            // Если один из массивов null, считаем проверку пройденной
+            flag1 = (needDefaultFirst == null);
+            flag2 = (needDefaultSecond == null);
+        }
+
+        // Остальные проверки (как в оригинале)
+        if (needDefaultThird != null && third != null) {
+            for (int i = 0; i < needDefaultThird.length; i++) {
+                if (needDefaultThird[i] != null && needDefaultThird[i].equals(third)) {
+                    flag3 = true;
+                    break;
+                }
+            }
+        } else {
+            flag3 = true;
+        }
+
+        if (needDefaultFourth != null) {
+            for (int i = 0; i < needDefaultFourth.length; i++) {
+                if (needDefaultFourth[i] == fourth) {
+                    flag4 = true;
+                    break;
+                }
+            }
+        } else {
+            flag4 = true;
+        }
+
+        return flag1 && flag2 && flag3 && flag4;
+    }
 
     public GameObject openChest(GameObject object) {
         isLock = false;

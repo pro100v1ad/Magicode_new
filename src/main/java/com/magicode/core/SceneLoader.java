@@ -592,10 +592,16 @@ public class SceneLoader {
                     interaction.reloadMap(structures, objects);
                 }
 
-                if(GamePanel.keys[9]) {
+                if(GamePanel.keys[9]) { // k
                     isCooldown = true;
                     if(structure.getName().equals("chest")) {
-
+                        Chest chest = (Chest) structure;
+                        if(chest.checkValues(gp.player.getKeySpell().getCurrentFirst(),
+                                gp.player.getKeySpell().getCurrentSecond(),
+                                gp.player.getKeySpell().getCurrentThird(),
+                                gp.player.getKeySpell().getCurrentFourth())) {
+                            chest.unblockChest();
+                        }
 
                     }
 
