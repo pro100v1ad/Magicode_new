@@ -591,6 +591,19 @@ public class SceneLoader {
                     collision.reloadMap(worldMap, structures);
                     interaction.reloadMap(structures, objects);
                 }
+
+                if(GamePanel.keys[9]) {
+                    isCooldown = true;
+                    if(structure.getName().equals("chest")) {
+
+
+                    }
+
+
+                    collision.reloadMap(worldMap, structures);
+                    interaction.reloadMap(structures, objects);
+
+                }
             }
 
             if(!isCooldown) {

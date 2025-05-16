@@ -1,3 +1,4 @@
+null_null_null_true
 if(fourth) {
     openDoor();
 }

@@ -8,6 +8,11 @@ import main.java.com.magicode.gameplay.world.objects.Key;
 import main.java.com.magicode.gameplay.world.objects.Wrench;
 
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class Chest extends Structure {
 
@@ -16,6 +21,10 @@ public class Chest extends Structure {
     private int objectCode;
     private String objectName;
     private String filePath;
+
+    private int[] needDefaultFirst, needDefaultSecond;
+    private String[] needDefaultThird;
+    private boolean[] needDefaultFourth;
 
     public Chest(GamePanel gp, int x, int y, int w, int h, String code, boolean isLock, boolean state, String direction, String filePath) {
         this.gp = gp;
@@ -36,8 +45,82 @@ public class Chest extends Structure {
         this.isLock = isLock;
         this.state = state;
         this.direction = direction;
-
+        loadDefaultValue();
         loadImage();
+
+//        System.out.println(Arrays.toString(needDefaultFirst));
+//        System.out.println(Arrays.toString(needDefaultSecond));
+//        System.out.println(Arrays.toString(needDefaultThird));
+//        System.out.println(Arrays.toString(needDefaultFourth));
+    }
+    private void loadDefaultValue() {
+        if(filePath == null) {
+            return;
+        }
+        try (InputStream is = getClass().getResourceAsStream(filePath)) {
+            if (is == null) {
+                System.out.println("Ошибка: файл не найден! " + filePath);
+                return;
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String line = br.readLine();
+            if (line == null) {
+                System.out.println("Файл пуст");
+                return;// Если файл закончился раньше, чем ожидалось
+            }
+            String[] parts = line.split("_");
+            needDefaultFirst = parseNullableIntArray(parts[0]);
+            needDefaultSecond = parseNullableIntArray(parts[1]);
+            needDefaultThird = parseNullableStringArray(parts[2]);
+            needDefaultFourth = parseNullableBooleanArray(parts[3]);
+
+
+        }
+        catch (IOException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            System.err.println("Ошибка загрузки информации о задании для сундука: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Парсинг int[] или null
+    private static int[] parseNullableIntArray(String str) {
+        if (str.equals("null")) {
+            return null;
+        }
+        if (str.indexOf(':') != -1) {
+            String[] elements = str.split(":");
+            int[] result = new int[elements.length];
+            for (int i = 0; i < elements.length; i++) {
+                result[i] = Integer.parseInt(elements[i]);
+            }
+            return result;
+        } else {
+            return new int[]{Integer.parseInt(str)};
+        }
+    }
+
+    // Парсинг String[] или null
+    private static String[] parseNullableStringArray(String str) {
+        if (str.equals("null")) {
+            return null;
+        }
+        if (str.indexOf(':') != -1) {
+            return str.split(":");
+        } else {
+            return new String[]{str};
+        }
+    }
+
+    // Парсинг boolean[] или null
+    private static boolean[] parseNullableBooleanArray(String str) {
+        if (str.equals("null")) {
+            return null;
+        }
+        if (str.indexOf(':') != -1) {
+            return new boolean[]{true, false};
+        } else {
+            return new boolean[]{Boolean.parseBoolean(str)};
+        }
     }
 
     private void loadImage() {

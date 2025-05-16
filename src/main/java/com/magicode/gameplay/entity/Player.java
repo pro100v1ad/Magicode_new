@@ -3,6 +3,7 @@ package main.java.com.magicode.gameplay.entity;
 import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.core.utils.Animation;
 import main.java.com.magicode.core.utils.ResourceLoader;
+import main.java.com.magicode.spells.spells.KeySpell;
 import main.java.com.magicode.ui.gamestate.Directory;
 import main.java.com.magicode.ui.interface_.Bar;
 
@@ -38,6 +39,9 @@ public class Player extends Entity implements Serializable {
     private Bar healthBar;
     private Bar manaBar;
 
+    private KeySpell keySpell;
+
+
     public Player(GamePanel gp, String filePath){
         this.gp = gp;
         resourceLoader = new ResourceLoader();
@@ -48,6 +52,8 @@ public class Player extends Entity implements Serializable {
         collisionWidth = (int)(GamePanel.tileSize*1.7/2);
         collisionHeight = GamePanel.tileSize*2;
         collisionCode = 2;
+
+        keySpell = new KeySpell();
 
         loadAnimation();
 
@@ -68,6 +74,7 @@ public class Player extends Entity implements Serializable {
         int manaBarPosX = GamePanel.WIDTH/2 - manaBarWidth/2;
         int manaBarPosY = GamePanel.HEIGHT - manaBarHeight*3;
         manaBar = new Bar(gp, manaBarPosX, manaBarPosY, manaBarWidth, manaBarHeight, (int)maxMana, (int)mana, Color.blue);
+
 
 
     }
@@ -143,6 +150,8 @@ public class Player extends Entity implements Serializable {
         maxMana = 100;
         mana = 10;
 
+        keySpell.setDefaultValues();
+
         worldX = GamePanel.tileSize*35;
         worldY = GamePanel.tileSize*17;
         float pixelsPerSecond = 200f;
@@ -201,6 +210,11 @@ public class Player extends Entity implements Serializable {
         return maxMana;
     }
 
+    public KeySpell getKeySpell() {
+        return keySpell;
+    }
+
+
     public boolean loadPlayerFromFile(String filePath) {
         try(BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -236,6 +250,13 @@ public class Player extends Entity implements Serializable {
             parts = line.split("_");
             maxMana = Integer.parseInt(parts[0]);
             mana = Integer.parseInt(parts[1]);
+
+            line = reader.readLine();
+            parts = line.split("_");
+            keySpell.setDefaultFirst(Integer.parseInt(parts[0]));
+            keySpell.setDefaultSecond(Integer.parseInt(parts[1]));
+            keySpell.setDefaultThird(parts[2]);
+            keySpell.setDefaultFourth(parts[3].equals("true"));
 
 
             // Потом поменяю //////////

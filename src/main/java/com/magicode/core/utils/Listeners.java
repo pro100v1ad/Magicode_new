@@ -130,6 +130,9 @@ public class Listeners implements MouseListener, MouseMotionListener, KeyListene
                 GamePanel.keys[8] = true;
             }
         }
+        if(key == KeyEvent.VK_K) {
+            GamePanel.keys[9] = true;
+        }
 
 
         if (shouldCaptureInput) {
@@ -175,6 +178,9 @@ public class Listeners implements MouseListener, MouseMotionListener, KeyListene
         }
         if(key == KeyEvent.VK_U) {
             GamePanel.keys[8] = false;
+        }
+        if(key == KeyEvent.VK_K) {
+            GamePanel.keys[9] = false;
         }
 
 

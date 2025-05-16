@@ -40,10 +40,10 @@ public class Decoration extends Structure {
         int screenX = (int) (x - gp.player.getWorldX() + gp.player.getScreenX());
         int screenY = (int) (y - gp.player.getWorldY() + gp.player.getScreenY());
 
-        if (x + GamePanel.tileSize > gp.player.getWorldX() - gp.player.getScreenX() &&
+        if (x + GamePanel.tileSize * 2 > gp.player.getWorldX() - gp.player.getScreenX() &&
                 x - GamePanel.tileSize * 3 < gp.player.getWorldX() + gp.player.getScreenX() &&
-                y + GamePanel.tileSize > gp.player.getWorldY() - gp.player.getScreenY() &&
-                y - GamePanel.tileSize * 4 < gp.player.getWorldY() + gp.player.getScreenY())
+                y + GamePanel.tileSize * 2 > gp.player.getWorldY() - gp.player.getScreenY() &&
+                y - GamePanel.tileSize * 6 < gp.player.getWorldY() + gp.player.getScreenY())
         {
             g.drawImage(image, screenX, screenY, w, h, null);
         }

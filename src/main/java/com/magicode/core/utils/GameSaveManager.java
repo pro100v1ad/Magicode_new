@@ -99,7 +99,10 @@ public class GameSaveManager {
 
             writer.write((int)player.getMaxHealth() + "_" + (int)player.getHealth() + "\n");
 
-            writer.write((int)player.getMaxMana() + "_" + (int)player.getMana());
+            writer.write((int)player.getMaxMana() + "_" + (int)player.getMana() + "\n");
+
+            writer.write(player.getKeySpell().getDefaultFirst() + "_" + player.getKeySpell().getDefaultSecond() + "_" +
+                    player.getKeySpell().getDefaultThird() + "_" + player.getKeySpell().getDefaultFourth());
 
 
 
