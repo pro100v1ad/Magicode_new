@@ -39,8 +39,6 @@ public class Player extends Entity implements Serializable {
     private Bar healthBar;
     private Bar manaBar;
 
-    private KeySpell keySpell;
-
 
     public Player(GamePanel gp, String filePath){
         this.gp = gp;
@@ -53,7 +51,6 @@ public class Player extends Entity implements Serializable {
         collisionHeight = GamePanel.tileSize*2;
         collisionCode = 2;
 
-        keySpell = new KeySpell();
 
         loadAnimation();
 
@@ -137,10 +134,10 @@ public class Player extends Entity implements Serializable {
 //        worldX = 10;
 //        worldY = 10;
 
-        N = 0;
-        plus = 0;
-        minus = 0;
-        exclamationMark = 0;
+        N = 10;
+        plus = 10;
+        minus = 10;
+        exclamationMark = 10;
 
         countBook = 0;
 
@@ -209,9 +206,6 @@ public class Player extends Entity implements Serializable {
         return maxMana;
     }
 
-    public KeySpell getKeySpell() {
-        return keySpell;
-    }
 
 
     public boolean loadPlayerFromFile(String filePath) {
@@ -250,12 +244,6 @@ public class Player extends Entity implements Serializable {
             maxMana = Integer.parseInt(parts[0]);
             mana = Integer.parseInt(parts[1]);
 
-            line = reader.readLine();
-            parts = line.split("_");
-            keySpell.setDefaultFirst(Integer.parseInt(parts[0]));
-            keySpell.setDefaultSecond(Integer.parseInt(parts[1]));
-            keySpell.setDefaultThird(parts[2]);
-            keySpell.setDefaultFourth(parts[3].equals("true"));
 
 
             // Потом поменяю //////////

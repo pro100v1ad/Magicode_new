@@ -7,9 +7,17 @@ public class KeySpell extends Spell {
     private int currentFirst, currentSecond;
     private String currentThird;
     private boolean currentFourth;
+    private String[] saveChangeText;
 
-    public KeySpell() {
+    public KeySpell(String[] saveChangeText) {
         setDefaultValues();
+
+        this.name = saveChangeText[0];
+
+        saveChangeText = new String[saveChangeText.length-1];
+        for(int i = 0; i < saveChangeText.length-1; i++) {
+            this.saveChangeText[i] = saveChangeText[i+1];
+        }
 
         currentFirst = defaultFirst;
         currentSecond = defaultSecond;
@@ -27,7 +35,6 @@ public class KeySpell extends Spell {
     }
 
 
-
     public int getCurrentFirst() {
         return currentFirst;
     }
@@ -42,6 +49,10 @@ public class KeySpell extends Spell {
 
     public boolean getCurrentFourth() {
         return currentFourth;
+    }
+
+    public String[] getSaveChangeText() {
+        return saveChangeText;
     }
 
     public void update() {
