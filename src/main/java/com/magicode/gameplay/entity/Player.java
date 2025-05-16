@@ -259,7 +259,7 @@ public class Player extends Entity implements Serializable {
         if(gp.sceneLoader.getCutScene()) {
             return;
         }
-        if(gp.state.equals(GamePanel.GameState.StartMenu)) {
+        if(gp.state.equals(GamePanel.GameState.StartMenu) || gp.state.equals(GamePanel.GameState.GameOpenBoard)) {
             return;
         }
         // Определяет направление движения все 8
@@ -353,7 +353,7 @@ public class Player extends Entity implements Serializable {
         if(gp.sceneLoader.getCutScene()) {
             return;
         }
-        if(gp.state.equals(GamePanel.GameState.StartMenu)) {
+        if(gp.state.equals(GamePanel.GameState.StartMenu) || gp.state.equals(GamePanel.GameState.GameOpenBoard)) {
             return;
         }
         int playerWidth = (int)(GamePanel.tileSize*2/2);

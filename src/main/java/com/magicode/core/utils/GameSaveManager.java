@@ -61,7 +61,7 @@ public class GameSaveManager {
                             Chest chest = (Chest) structures[i];
                             writer.write("chest_" + chest.getX() + "_" + chest.getY() + "_" + chest.getW() + "_" + chest.getH() +
                                     "_" + chest.getCode() + ":" + chest.getRadius() + ":" + chest.getObjectName() + "_" + chest.getLock() + "_" + chest.getDirection()
-                                    + "_" + chest.getState() + " ");
+                                    + "_" + chest.getState() + "_" + chest.getFilePath() + " ");
                         }
                         if(structures[i].getName().equals("tree") || structures[i].getName().equals("stone") || structures[i].getName().equals("bush")) {
                             Decoration decoration = (Decoration) structures[i];

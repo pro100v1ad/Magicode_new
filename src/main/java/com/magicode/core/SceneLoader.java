@@ -234,7 +234,7 @@ public class SceneLoader {
                     //Формат: name_x_y_w_h_code:radius_isLock_direction_state - для сундука
                     structures[i] = new Chest(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
                             Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
-                            structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7]);
+                            structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7], structure[9]);
                 }
                 if(structure[0].equals("tree") || structure[0].equals("bush") || structure[0].equals("stone")) {
                     // Формат name_x_y_w_h - для декораций
@@ -428,7 +428,7 @@ public class SceneLoader {
                             else if (structure[0].equals("chest")) {
                                 structures[index++] = new Chest(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
                                         Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
-                                        structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7]);
+                                        structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7], structure[9]);
                             }
                             else if (structure[0].equals("tree") || structure[0].equals("bush") || structure[0].equals("stone")) {
                                 structures[index++] = new Decoration(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
@@ -580,7 +580,8 @@ public class SceneLoader {
                             Chest chest = (Chest) structure;
                             objects[index] = chest.openChest(objects[index]);
                         } else {
-                            board = new Board(gp, 175, 150);
+                            Chest chest = (Chest) structure;
+                            board = new Board(gp, 175, 150, chest.getFilePath());
                             gp.state = GamePanel.GameState.GameOpenBoard;
                         }
                     } else if(structure.getName().equals("portal")) {

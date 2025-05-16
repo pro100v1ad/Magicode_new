@@ -15,8 +15,9 @@ public class Chest extends Structure {
     private GamePanel gp;
     private int objectCode;
     private String objectName;
+    private String filePath;
 
-    public Chest(GamePanel gp, int x, int y, int w, int h, String code, boolean isLock, boolean state, String direction) {
+    public Chest(GamePanel gp, int x, int y, int w, int h, String code, boolean isLock, boolean state, String direction, String filePath) {
         this.gp = gp;
         this.name = "chest";
         String[] parts = code.split(":"); // Немного изменил парсинг (для работы третьего опционального параметра)
@@ -30,6 +31,7 @@ public class Chest extends Structure {
         this.w = w;
         this.h = h;
 
+        this.filePath = (filePath.equals("null")) ? null : filePath;
 
         this.isLock = isLock;
         this.state = state;
@@ -76,6 +78,11 @@ public class Chest extends Structure {
     public String getObjectName() {
         return objectName;
     }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
 
     public GameObject openChest(GameObject object) {
         isLock = false;
