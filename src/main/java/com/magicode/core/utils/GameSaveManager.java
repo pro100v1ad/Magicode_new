@@ -10,6 +10,8 @@ import main.java.com.magicode.gameplay.world.objects.Book;
 import main.java.com.magicode.gameplay.world.objects.Key;
 import main.java.com.magicode.gameplay.world.objects.Wrench;
 import main.java.com.magicode.gameplay.world.structures.*;
+import main.java.com.magicode.spells.Spell;
+import main.java.com.magicode.spells.spells.KeySpell;
 
 import java.io.*;
 
@@ -19,10 +21,11 @@ public class GameSaveManager {
     private final String saveFilePathPlayer = "saves/playerSave.txt";
     private final String saveFilePathObjects = "saves/objectSave.txt";
     private final String saveFilePathEnemy = "saves/enemySave.txt";
+    private final String saveFilePathSpells = "saves/spellsSave.txt";
     private final String saveFilePathSceneInfo = "saves/sceneInfo.txt";
 
     // Сохранение игры
-    public void saveGame(Layer[][] worldMap, Structure[] structures, Player player, SceneChanger sceneChanger, GameObject[] objects, Enemy[] enemies) {
+    public void saveGame(Layer[][] worldMap, Structure[] structures, Player player, SceneChanger sceneChanger, GameObject[] objects, Enemy[] enemies, Spell[] spells) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFilePathBackground))) {
             writer.write(worldMap[0].length + " " + worldMap.length + "\n");
             for(int i = 0; i < worldMap.length; i++) {
@@ -101,10 +104,6 @@ public class GameSaveManager {
 
             writer.write((int)player.getMaxMana() + "_" + (int)player.getMana() + "\n");
 
-            writer.write(player.getKeySpell().getDefaultFirst() + "_" + player.getKeySpell().getDefaultSecond() + "_" +
-                    player.getKeySpell().getDefaultThird() + "_" + player.getKeySpell().getDefaultFourth());
-
-
 
 
             System.out.println("Player сохранен в файл: " + saveFilePathStructure);
@@ -168,9 +167,32 @@ public class GameSaveManager {
                 }
             }
 
-            System.out.println("enemy сохранен в файл: " + saveFilePathObjects);
+            System.out.println("enemy сохранен в файл: " + saveFilePathEnemy);
         } catch (IOException e) {
             System.err.println("Ошибка при сохранении врагов: " + e.getMessage());
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFilePathSpells))) {
+            if(spells == null) {
+                writer.write("");
+            } else {
+                writer.write(spells.length + "\n");
+                for (Spell spell : spells) { // Сохранение объектов
+                    if (spell == null) continue;
+                    if (spell.getName().equals("key")) {
+                        KeySpell keySpell = (KeySpell) spell;
+                        writer.write("key_");
+                        for(String string: keySpell.getSaveChangeText()) {
+                            writer.write(string + "_");
+                        }
+                    }
+
+                }
+            }
+
+            System.out.println("spells сохранен в файл: " + saveFilePathSpells);
+        } catch (IOException e) {
+            System.err.println("Ошибка при сохранении заклинаний: " + e.getMessage());
         }
 
 
@@ -196,6 +218,9 @@ public class GameSaveManager {
     public String getSaveFilePathEnemy() {
         return saveFilePathEnemy;
     }
+    public String getSaveFilePathSpells() {
+        return saveFilePathSpells;
+    }
 
     // Проверка и создание папки для сохранений
     public void ensureSaveDirectoryExists() {
@@ -214,9 +239,11 @@ public class GameSaveManager {
         File file4 = new File(saveFilePathSceneInfo);
         File file5 = new File(saveFilePathObjects);
         File file6 = new File(saveFilePathEnemy);
+        File file7 = new File(saveFilePathSpells);
 
         // Проверяем, существуют ли оба файла
-        return file1.exists() && file2.exists() && file3.exists() && file4.exists() && file5.exists() && file6.exists();
+        return file1.exists() && file2.exists() && file3.exists() && file4.exists() && file5.exists() && file6.exists()
+                && file7.exists();
     }
 
 

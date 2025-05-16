@@ -12,6 +12,8 @@ import main.java.com.magicode.gameplay.world.objects.Book;
 import main.java.com.magicode.gameplay.world.objects.Key;
 import main.java.com.magicode.gameplay.world.objects.Wrench;
 import main.java.com.magicode.gameplay.world.structures.*;
+import main.java.com.magicode.spells.Spell;
+import main.java.com.magicode.spells.spells.KeySpell;
 import main.java.com.magicode.ui.gamestate.Board;
 
 import java.awt.*;
@@ -29,6 +31,7 @@ public class SceneLoader {
     private Layer[][] worldMap;
     private Structure[] structures;
     private GameObject[] objects;
+    private Spell[] spells;
     public static final String DEFAULT_BACKGROUND = "/resources/levels/scenes/start/background";
     public static final String DEFAULT_STRUCTURE = "/resources/levels/scenes/start/structure";
     private int sceneWidth;
@@ -41,7 +44,7 @@ public class SceneLoader {
     private Board board;
 
     public SceneLoader(GamePanel gp, boolean isStart, String backgroundPath,
-                       String structurePath, String objectPath, String enemiesPath) {
+                       String structurePath, String objectPath, String enemiesPath, String spellsPath) {
         this.gp = gp;
 
         if(isStart) {
@@ -51,15 +54,46 @@ public class SceneLoader {
                 loadScene(backgroundPath, structurePath);
             }
             loadEnemies(enemiesPath);
+            loadSaveSpells(null);
         } else {
             loadSaveScene(backgroundPath, structurePath, objectPath);
             loadSaveEnemies(enemiesPath);
+            loadSaveSpells(spellsPath);
         }
 
         cooldown = 0;
         isCooldown = false;
     }
 
+    public void loadSaveSpells(String spellsPath) {
+        System.out.println("Начало загрузки сохраненных заклинаний. Путь: " + spellsPath);
+        if(spellsPath == null) return;
+        try (BufferedReader reader = new BufferedReader(new FileReader(spellsPath))) {
+            String line;
+            line = reader.readLine();
+            if (line == null) {
+                System.out.println("Файл пуст");
+                return;// Если файл закончился раньше, чем ожидалось
+            }
+            int enemyCount = Integer.parseInt(line);
+            // Создаем массив нужного размера
+            spells = new Spell[enemyCount];
+            int index = 0;
+
+            while((line = reader.readLine()) != null) {
+                String[] parts = line.split("_");
+                if(parts[0].equals("key")) {
+                    spells[index++] = new KeySpell(parts);
+                }
+            }
+
+
+
+
+        } catch (Exception e) {
+            System.err.println("Критическая ошибка загрузки сохраненных заклинаний: ");
+        }
+    }
 
     private void loadSaveEnemies(String enemiesPath) {
 
@@ -504,6 +538,10 @@ public class SceneLoader {
         return isCutScene;
     }
 
+    public Spell[] getSpells() {
+        return spells;
+    }
+
     public void setWorldMap(Layer[][] worldMap) {
         this.worldMap = worldMap;
         if (collision != null) {
@@ -596,11 +634,17 @@ public class SceneLoader {
                     isCooldown = true;
                     if(structure.getName().equals("chest")) {
                         Chest chest = (Chest) structure;
-                        if(chest.checkValues(gp.player.getKeySpell().getCurrentFirst(),
-                                gp.player.getKeySpell().getCurrentSecond(),
-                                gp.player.getKeySpell().getCurrentThird(),
-                                gp.player.getKeySpell().getCurrentFourth())) {
-                            chest.unblockChest();
+                        KeySpell keySpell;
+                        for(Spell spell: spells) {
+                            if(spell.getName().equals("key")) {
+                                keySpell = (KeySpell) spell;
+                                if(chest.checkValues(keySpell.getCurrentFirst(),
+                                        keySpell.getCurrentSecond(),
+                                        keySpell.getCurrentThird(),
+                                        keySpell.getCurrentFourth())) {
+                                    chest.unblockChest();
+                                }
+                            }
                         }
 
                     }

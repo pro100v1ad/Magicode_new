@@ -20,7 +20,7 @@ public class SceneChanger {
 
         if(isStart) {
             numberActiveScene = 0;
-            gp.sceneLoader = new SceneLoader(gp, true, null, null, null, null); // Добавлен null для enemiesPath
+            gp.sceneLoader = new SceneLoader(gp, true, null, null, null, null, null); // Добавлен null для enemiesPath
             loadSceneInfo();
         } else {
             if(filePath != null) {
@@ -29,7 +29,8 @@ public class SceneChanger {
                         gp.saveManager.getSaveFilePathBackground(),
                         gp.saveManager.getSaveFilePathStructure(),
                         gp.saveManager.getSaveFilePathObjects(),
-                        gp.saveManager.getSaveFilePathEnemy()); // Добавлен null для enemiesPath
+                        gp.saveManager.getSaveFilePathEnemy(),
+                        gp.saveManager.getSaveFilePathSpells()); // Добавлен null для enemiesPath
             }
             loadSceneInfo();
         }
@@ -95,7 +96,8 @@ public class SceneChanger {
                 sceneInfo[index].split(" ")[0] + "background",
                 sceneInfo[index].split(" ")[0] + "structure",
                 null,
-                sceneInfo[index].split(" ")[0] + "enemies");
+                sceneInfo[index].split(" ")[0] + "enemies",
+                null);
         gp.player.setWorldX(Integer.parseInt(sceneInfo[index].split(" ")[1]));
         gp.player.setWorldY(Integer.parseInt(sceneInfo[index].split(" ")[2]));
     }

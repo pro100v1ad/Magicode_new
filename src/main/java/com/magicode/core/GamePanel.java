@@ -331,7 +331,7 @@ public class GamePanel extends JComponent {
     }
 
     public void saveGame() {
-        saveManager.saveGame(sceneLoader.getWorldMap(), sceneLoader.getStructures(), player, sceneChanger, sceneLoader.getObjects(), sceneLoader.getEnemies());
+        saveManager.saveGame(sceneLoader.getWorldMap(), sceneLoader.getStructures(), player, sceneChanger, sceneLoader.getObjects(), sceneLoader.getEnemies(), sceneLoader.getSpells());
         startMenu.setState(true);
     }
 
