@@ -15,12 +15,16 @@ public class EditArea extends GUI {
     private long lastCursorBlink;
     private boolean cursorVisible = true;
 
+    private Color color;
+
     public EditArea(int markerLine, int markerPos, int markerWidth, String name) {
         this.name = name;
         this.markerLine = markerLine;// Какая строка текста (индекс в массиве text[])
         this.markerPos = markerPos;// Позиция в строке (примерно 3-й символ)
         this.markerWidth = markerWidth;// Ширина в символах
         this.markerHeight = Tablet.getLineSpace();// Высота как у строки
+
+        this.color = Color.GREEN;
 
     }
 
@@ -102,7 +106,7 @@ public class EditArea extends GUI {
 
             // Рисуем текст
 
-            g.setColor(Color.WHITE);
+            g.setColor(color);
 
             g.setFont(my_font.deriveFont(15.0f));
             String textToShow = isEditing ? currentText : getOriginalText();
@@ -131,5 +135,13 @@ public class EditArea extends GUI {
 
     public String getCurrentText() {
         return currentText;
+    }
+
+    public void setCurrentText(String string) {
+        this.currentText = string;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 }

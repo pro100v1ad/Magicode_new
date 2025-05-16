@@ -1,6 +1,9 @@
 package main.java.com.magicode.ui.gamestate;
 
 import main.java.com.magicode.core.GamePanel;
+import main.java.com.magicode.gameplay.world.objects.Key;
+import main.java.com.magicode.spells.Spell;
+import main.java.com.magicode.spells.spells.KeySpell;
 import main.java.com.magicode.ui.GUI;
 import main.java.com.magicode.ui.gamestate.tablet.EditArea;
 import main.java.com.magicode.ui.gamestate.tablet.TextRedactor;
@@ -44,6 +47,15 @@ public class Tablet extends GUI {
     private Button[] buttons;
     private int countButton;
 
+    private int N;
+    private int plus;
+    private int minus;
+    private int exclamationMark;
+
+    private int currentN;
+    private int currentPlus;
+    private int currentMinus;
+    private int currentExclamationMark;
 
     public Tablet(GamePanel gp) {
         this.gp = gp;
@@ -57,6 +69,8 @@ public class Tablet extends GUI {
         posButtonSaveX = 848;
         posButtonSaveY = 608;
         buttonSave = new Button(gp, posButtonSaveX, posButtonSaveY, "Сохранить", 32, true);
+
+        setDefaultValues();
 
         //text
         countRowsVisible = 27;
@@ -90,6 +104,20 @@ public class Tablet extends GUI {
         buttons[countButton++].setStaticLineColor(new Color(88, 88, 88));
     }
 
+    public void setDefaultValues() {
+
+        N = 10;
+        plus = 10;
+        minus = 10;
+        exclamationMark = 10;
+
+        currentN = N;
+        currentPlus = plus;
+        currentMinus = minus;
+        currentExclamationMark = exclamationMark;
+
+    }
+
     public String[] getText() {
         if (text == null) {
             return null;
@@ -99,6 +127,22 @@ public class Tablet extends GUI {
 
     public void setText(String[] text) {
         this.text = text != null ? Arrays.copyOf(text, text.length) : null;
+    }
+
+    public int getN() {
+        return N;
+    }
+
+    public int getPlus() {
+        return plus;
+    }
+
+    public int getMinus() {
+        return minus;
+    }
+
+    public int getExclamationMark() {
+        return exclamationMark;
     }
 
     public static int getLineSpace() {
@@ -120,7 +164,6 @@ public class Tablet extends GUI {
     public void click() {
         click = true;
     }
-
 
     private void drawText(Graphics2D g) {
         g.setColor(textColor);
@@ -330,6 +373,36 @@ public class Tablet extends GUI {
 
         updateLeftPartsTablet();
 
+
+        // Обработка логики заклинаний.
+
+        for (EditArea editArea : editAreas) {
+            if(editArea != null) {
+                if(editArea.getName().contains("key")) {
+                    Spell[] spells = gp.sceneLoader.getSpells();
+                    if(spells != null) {
+                        for (Spell spell : spells) {
+                            if(spell != null) {
+                                if (spell.getName().equals("key")) {
+                                    KeySpell keySpell = (KeySpell) spell;
+                                    if (keySpell.update(editArea.getCurrentText(),
+                                            Integer.parseInt(editArea.getName().charAt(editArea.getName().length() - 1) + ""))) {
+
+
+                                        // Добавить проверку на количество использованных символов + - ! и чисел
+
+                                        editArea.setColor(Color.GREEN);
+                                    } else {
+                                        editArea.setColor(Color.RED);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     public void updateLeftPartsTablet() {
@@ -371,10 +444,10 @@ public class Tablet extends GUI {
 
     public void drawRightPartsTablet(Graphics2D g) {
 
-        int N = gp.player.getN();
-        int plus = gp.player.getPlus();
-        int minus = gp.player.getMinus();
-        int exclamationMark = gp.player.getExclamationMark();
+        int N = this.currentN;
+        int plus = this.currentPlus;
+        int minus = this.currentMinus;
+        int exclamationMark = this.currentExclamationMark;
 
         g.setColor(Color.WHITE);
         g.setFont(my_font.deriveFont(32f));

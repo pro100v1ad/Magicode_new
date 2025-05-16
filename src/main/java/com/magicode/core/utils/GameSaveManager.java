@@ -98,8 +98,6 @@ public class GameSaveManager {
 
             writer.write(player.getCountBook() + "\n");
 
-            writer.write(player.getN() + "_" + player.getPlus() + "_" + player.getMinus() + "_" + player.getExclamationMark() + "\n");
-
             writer.write((int)player.getMaxHealth() + "_" + (int)player.getHealth() + "\n");
 
             writer.write((int)player.getMaxMana() + "_" + (int)player.getMana() + "\n");

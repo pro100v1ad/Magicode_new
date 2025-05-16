@@ -2,6 +2,8 @@ package main.java.com.magicode.spells.spells;
 
 import main.java.com.magicode.spells.Spell;
 
+import java.util.Arrays;
+
 public class KeySpell extends Spell {
 
     private int currentFirst, currentSecond;
@@ -20,6 +22,8 @@ public class KeySpell extends Spell {
             this.saveChangeText[i] = saveChangeText[i+2];
         }
 
+        System.out.println(Arrays.toString(saveChangeText));
+
         currentFirst = defaultFirst;
         currentSecond = defaultSecond;
         currentThird = defaultThird;
@@ -36,14 +40,79 @@ public class KeySpell extends Spell {
     }
 
     public boolean first(String string) {
-
+        if(string.equals("null")) return true;
+        if(string.length() < 2) return false;
         char operator = string.charAt(0);
+        int num = Integer.parseInt(Character.isDigit(string.charAt(1)) ? string.charAt(1) + "" : "0");
 
-        int num = string.charAt(1);
 
+        if(operator != '+' && operator != '-' || num == 0) return false;
+
+        switch (operator) {
+            case '+': {
+                currentFirst = defaultFirst + num;
+                break;
+            }
+            case '-': {
+                currentFirst = defaultFirst - num;
+                break;
+            }
+        }
 
         return true;
     }
+
+    public boolean second(String string) {
+        if(string.equals("null")) return true;
+        if(string.length() < 2) return false;
+        char operator = string.charAt(0);
+        int num = Integer.parseInt(Character.isDigit(string.charAt(1)) ? string.charAt(1) + "" : "0");
+
+        if(operator != '+' && operator != '-' || num == 0) return false;
+
+        switch (operator) {
+            case '+': {
+                currentSecond = defaultSecond + num;
+                break;
+            }
+            case '-': {
+                currentSecond = defaultSecond - num;
+                break;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean third(String string) {
+
+        if(string.equals("null")) return true;
+        if(string.length() < 2) return false;
+        char operator = string.charAt(0);
+        char num = (Character.isDigit(string.charAt(1)) || Character.isLetter(string.charAt(1))) ? string.charAt(1) : '0';
+
+        if(operator != '+' || num == '0') return false;
+
+        currentThird = defaultThird + num;
+
+        return true;
+    }
+
+    public boolean fourth(String string) {
+        if(string.equals("null")) return true;
+        if(string.isEmpty()) return false;
+        char operator = string.charAt(0);
+
+        if(operator != '!') {
+            return false;
+        }
+
+        currentFourth = !defaultFourth;
+
+        return true;
+    }
+
+
 
 
     public int getCurrentFirst() {
@@ -66,8 +135,19 @@ public class KeySpell extends Spell {
         return saveChangeText;
     }
 
-    public void update() {
+    @Override
+    public boolean update(String string, int index) {
 
+        boolean flag = true;
+
+        switch (index) {
+            case 1: flag = first(string); break;
+            case 2: flag = second(string); break;
+            case 3: flag = third(string); break;
+            case 4: flag = fourth(string); break;
+        }
+
+        return flag;
     }
 
 }

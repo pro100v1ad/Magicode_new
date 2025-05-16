@@ -29,10 +29,7 @@ public class Player extends Entity implements Serializable {
     private double maxMana;
     private double mana;
 
-    private int N;
-    private int plus;
-    private int minus;
-    private int exclamationMark;
+
 
     private int countBook;
 
@@ -134,10 +131,7 @@ public class Player extends Entity implements Serializable {
 //        worldX = 10;
 //        worldY = 10;
 
-        N = 10;
-        plus = 10;
-        minus = 10;
-        exclamationMark = 10;
+
 
         countBook = 0;
 
@@ -178,21 +172,6 @@ public class Player extends Entity implements Serializable {
         this.health = health;
     }
 
-    public int getN() {
-        return N;
-    }
-
-    public int getPlus() {
-        return plus;
-    }
-
-    public int getMinus() {
-        return minus;
-    }
-
-    public int getExclamationMark() {
-        return exclamationMark;
-    }
 
     public int getCountBook() {
         return countBook;
@@ -227,12 +206,12 @@ public class Player extends Entity implements Serializable {
                 gp.directory.addInfo();
             }
 
-            line = reader.readLine();
-            parts = line.split("_");
-            N = Integer.parseInt(parts[0]);
-            plus = Integer.parseInt(parts[1]);
-            minus = Integer.parseInt(parts[2]);
-            exclamationMark = Integer.parseInt(parts[3]);
+//            line = reader.readLine();
+//            parts = line.split("_");
+//            N = Integer.parseInt(parts[0]);
+//            plus = Integer.parseInt(parts[1]);
+//            minus = Integer.parseInt(parts[2]);
+//            exclamationMark = Integer.parseInt(parts[3]);
 
             line = reader.readLine();
             parts = line.split("_");

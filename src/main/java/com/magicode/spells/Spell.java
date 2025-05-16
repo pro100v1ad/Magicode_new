@@ -1,5 +1,7 @@
 package main.java.com.magicode.spells;
 
+import java.awt.*;
+
 public abstract class Spell {
 
     protected int defaultFirst, defaultSecond;
@@ -50,5 +52,13 @@ public abstract class Spell {
 
     public String getName() {
         return name;
+    }
+
+    public boolean update(String string, int index) {
+        return true;
+    }
+
+    public void draw(Graphics2D g) {
+
     }
 }

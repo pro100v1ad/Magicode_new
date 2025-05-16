@@ -49,9 +49,9 @@ public class SceneLoader {
         this.gp = gp;
 
         if(isStart) {
-            if(backgroundPath == null || structurePath == null) {
+            if(backgroundPath == null && structurePath == null && spellsPath == null) {
                 loadScene(DEFAULT_BACKGROUND, DEFAULT_STRUCTURE);
-//                loadSpells(DEFAULT_SPELLS);
+                loadSpells(DEFAULT_SPELLS);
             } else {
                 loadScene(backgroundPath, structurePath);
             }
@@ -60,7 +60,7 @@ public class SceneLoader {
         } else {
             loadSaveScene(backgroundPath, structurePath, objectPath);
             loadSaveEnemies(enemiesPath);
-//            loadSaveSpells(spellsPath);
+            loadSaveSpells(spellsPath);
         }
 
         cooldown = 0;
@@ -672,6 +672,7 @@ public class SceneLoader {
                         Chest chest = (Chest) structure;
                         KeySpell keySpell;
                         if (spells != null) {
+                            System.out.println("Точно не лох!");
                             for (Spell spell : spells) {
                                 if (spell != null && spell.getName().equals("key")) {
                                     keySpell = (KeySpell) spell;
@@ -766,6 +767,7 @@ public class SceneLoader {
             board.update();
         }
     }
+
 
     public void drawBackground(Graphics2D g) {
         int worldCol = 0;
