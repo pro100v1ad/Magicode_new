@@ -28,7 +28,7 @@ public class Board extends GUI {
         this.posX = posX;
         this.posY = posY;
 
-        this.posButtonExitX = posX + 380 - 64;
+        this.posButtonExitX = posX + 380*2 - 64;
         this.posButtonExitY = posY + 8;
 
 
@@ -47,14 +47,18 @@ public class Board extends GUI {
 
         int mX = GamePanel.mouseX;
         int mY = GamePanel.mouseY;
-
+        if(GamePanel.keys[6]) {
+            gp.state = GamePanel.GameState.Game;
+            GamePanel.keys[6] = false;
+            return;
+        }
         if(mX > posButtonExitX && mX < posButtonExitX + 64 && mY > posButtonExitY && mY < posButtonExitY + 64) {
-            boardExit = gp.textureAtlas.textures[15][1].getTexture();
+            boardExit = gp.textureAtlas.textures[15][2].getTexture();
             if(click) {
                 gp.state = GamePanel.GameState.Game;
             }
         } else {
-            boardExit = gp.textureAtlas.textures[15][2].getTexture();
+            boardExit = gp.textureAtlas.textures[15][1].getTexture();
         }
 
         click = false;
@@ -65,8 +69,7 @@ public class Board extends GUI {
         if(!gp.state.equals(GamePanel.GameState.GameOpenBoard)) {
             return;
         }
-
-        g.drawImage(boardImage, posX, posY, 384, 192, null);
+        g.drawImage(boardImage, posX, posY, 384*2, 192*2, null);
         g.drawImage(boardExit, posButtonExitX, posButtonExitY, 64, 64, null);
 
     }

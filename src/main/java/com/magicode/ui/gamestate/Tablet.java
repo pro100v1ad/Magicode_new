@@ -267,6 +267,12 @@ public class Tablet extends GUI {
         int mX = GamePanel.mouseX;
         int mY = GamePanel.mouseY;
 
+        if(GamePanel.keys[6]) {
+            click = false;
+            gp.state = GamePanel.GameState.Game;
+            GamePanel.keys[6] = false;
+        }
+
         if(mX >= posButtonExitX && mX <= posButtonExitX + GamePanel.tileSize*2
                 && mY >= posButtonExitY && mY <= posButtonExitY + GamePanel.tileSize*2) {
             if(click) {

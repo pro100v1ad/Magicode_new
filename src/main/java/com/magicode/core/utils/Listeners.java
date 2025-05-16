@@ -115,6 +115,22 @@ public class Listeners implements MouseListener, MouseMotionListener, KeyListene
         if(key == KeyEvent.VK_F) {
             GamePanel.keys[5] = true;
         }
+        if(key == KeyEvent.VK_ESCAPE) {
+            if(GamePanel.keyCooldown == 0) {
+                GamePanel.keys[6] = true;
+            }
+        }
+        if(key == KeyEvent.VK_E) {
+            if(GamePanel.keyCooldown == 0) {
+                GamePanel.keys[7] = true;
+            }
+        }
+        if(key == KeyEvent.VK_U) {
+            if(GamePanel.keyCooldown == 0) {
+                GamePanel.keys[8] = true;
+            }
+        }
+
 
         if (shouldCaptureInput) {
             if (key == KeyEvent.VK_BACK_SPACE) {
@@ -151,9 +167,14 @@ public class Listeners implements MouseListener, MouseMotionListener, KeyListene
         if(key == KeyEvent.VK_F) {
             GamePanel.keys[5] = false;
         }
-
-
-        if(key == KeyEvent.VK_F5) {
+        if(key == KeyEvent.VK_ESCAPE) {
+            GamePanel.keys[6] = false;
+        }
+        if(key == KeyEvent.VK_E) {
+            GamePanel.keys[7] = false;
+        }
+        if(key == KeyEvent.VK_U) {
+            GamePanel.keys[8] = false;
         }
 
 

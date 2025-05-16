@@ -37,9 +37,8 @@ public class GamePanel extends JComponent {
 
     public static boolean[] keys = new boolean[256]; // Содержит список состояния нажатия всех необходимых клавиш
     public static boolean[] mouseButtons = new boolean[3]; // Для левой, средней и правой кнопок
-    public static boolean mouseClick = false;
     public static int mouseX, mouseY; // У вас они уже есть
-    public static int scroll = 0;
+    public static int keyCooldown;
 
     public static final int MAS_HEIGHT = 45;
     public static final int MAS_WIDTH = 72;
@@ -328,6 +327,7 @@ public class GamePanel extends JComponent {
 
     public void exitGame() {
         System.out.println("Выход из игры!");
+        System.exit(0);
     }
 
     public void saveGame() {
@@ -346,11 +346,23 @@ public class GamePanel extends JComponent {
         if(state.equals(GameState.GameOpenDirectory)){
             directory.click();
         }
+        if(state.equals(GameState.GameOpenBoard)) {
+            sceneLoader.getBoard().click();
+        }
     }
 
-    public Enemy[] getEnemies() {
-        return sceneLoader.getEnemies();
+    public void keyCooldown() {
+        if(keyCooldown > 0) {
+            keyCooldown++;
+            if(keyCooldown == 20) keyCooldown = 0;
+        } else {
+            if(keys[6] || keys[7] || keys[8]) {
+                keyCooldown++;
+            }
+
+        }
     }
+
 
     public int getWorldWidth() {
         return sceneLoader.getSceneWidth();
@@ -377,6 +389,9 @@ public class GamePanel extends JComponent {
     }
 
     public void update2() {
+
+        keyCooldown();
+
         if(state.equals(GameState.StartMenu)) {
             startMenu.update();
         }
@@ -385,7 +400,7 @@ public class GamePanel extends JComponent {
             menuInGame.update();
         }
 
-        if(state.equals(GameState.Game)) {
+        if(state.equals(GameState.Game) || state.equals(GameState.GameOpenBoard)) {
             sceneLoader.update();
         }
 
@@ -396,6 +411,8 @@ public class GamePanel extends JComponent {
             directory.update();
         }
 
+
+
     }
     public void render1(){
         if(state.equals(GamePanel.GameState.StartMenu)) {
@@ -404,10 +421,10 @@ public class GamePanel extends JComponent {
 
 
         // Game
-        if(state.equals(GameState.Game)) { // Так как оно может быть еще не создано
+        if(state.equals(GameState.Game) || state.equals(GameState.GameOpenBoard)) { // Так как оно может быть еще не создано
             sceneLoader.draw(g);
             player.draw(g);
-//            sceneLoader.getInteraction().drawInteractionZones(g);
+            sceneLoader.getInteraction().drawInteractionZones(g);
         }
 
         if(state.equals(GameState.GameMenu) || state.equals(GameState.Game)) { // так как оно может быть еще не создано

@@ -12,6 +12,7 @@ import main.java.com.magicode.gameplay.world.objects.Book;
 import main.java.com.magicode.gameplay.world.objects.Key;
 import main.java.com.magicode.gameplay.world.objects.Wrench;
 import main.java.com.magicode.gameplay.world.structures.*;
+import main.java.com.magicode.ui.gamestate.Board;
 
 import java.awt.*;
 import java.io.*;
@@ -37,6 +38,7 @@ public class SceneLoader {
     private boolean isCooldown;
     private boolean isCutScene;
     private Enemy[] enemies;
+    private Board board;
 
     public SceneLoader(GamePanel gp, boolean isStart, String backgroundPath,
                        String structurePath, String objectPath, String enemiesPath) {
@@ -531,6 +533,10 @@ public class SceneLoader {
         this.objects = objects;
     }
 
+    public Board getBoard() {
+        return board;
+    }
+
     public void update() {
 
         if(gp.state.equals(GamePanel.GameState.StartMenu)) {
@@ -551,11 +557,11 @@ public class SceneLoader {
 
         if(cooldown == 0) {
             Structure structure = interaction.isPlayerInInteractionZone(structures);
-            if(structure != null && structure.getState()) {
+            if(structure != null) {
                 if(GamePanel.keys[5]) { // Если открыть-закрыть дверь
 
                     isCooldown = true;
-                    if(structure.getName().equals("door")) {
+                    if(structure.getName().equals("door") && structure.getState()) {
                         Door door = (Door) structure;
                         door.changeLock();
                     } else if(structure.getName().equals("hatch")) {
@@ -563,19 +569,20 @@ public class SceneLoader {
                         scene = new CutScene(gp, hatch.getRoute());
                         isCutScene = true;
                     } else if(structure.getName().equals("chest")) {
-                        int index = 0;
-                        for(int i = 0; i < structures.length; i++) { // Это я пытался придумать как мне несколько объектов загружать в массив объектов
-                            // Додумался лишь до того, что если массив структур и объектов одного размера. То и по индексу объекты будут равны со структурой которая их создает
-                            // Эт не сильно оптимально, т.к. те структуры что не создают объект есть, а в массиве объектов место под это выделено, и получается что оно всегда пустует
-                            // Нужно что-то более умное придумать для этого. Чтобы каждый новый объект добавлялся в конец массива. И при удалении одного объекта его места в массиве мог занять другой.
-                            // Коммент сотри когда прочитаешь.
-                            if(structures[i].equals(structure)) {
-                                index = i;
-                                break;
+                        if(structure.getState()) {
+                            int index = 0;
+                            for (int i = 0; i < structures.length; i++) {
+                                if (structures[i].equals(structure)) {
+                                    index = i;
+                                    break;
+                                }
                             }
+                            Chest chest = (Chest) structure;
+                            objects[index] = chest.openChest(objects[index]);
+                        } else {
+                            board = new Board(gp, 175, 150);
+                            gp.state = GamePanel.GameState.GameOpenBoard;
                         }
-                        Chest chest = (Chest) structure;
-                        objects[index] = chest.openChest(objects[index]);
                     } else if(structure.getName().equals("portal")) {
                         gp.sceneChanger.setNumberActiveScene(gp.sceneChanger.getNumberActiveScene() + 1);
                     }
@@ -646,6 +653,14 @@ public class SceneLoader {
                 }
             }
         }
+
+        updateBoard();
+    }
+
+    public void updateBoard() {
+        if(board != null) {
+            board.update();
+        }
     }
 
     public void drawBackground(Graphics2D g) {
@@ -712,6 +727,7 @@ public class SceneLoader {
         drawStructure(g);
         drawObjects(g);
         drawEnemies(g);
+        drawBoard(g);
     }
 
     private void drawEnemies(Graphics2D g) {
@@ -720,6 +736,12 @@ public class SceneLoader {
             if(enemy != null) {
                 enemy.draw(g);
             }
+        }
+    }
+
+    private void drawBoard(Graphics2D g) {
+        if(board != null) {
+            board.draw(g);
         }
     }
 }

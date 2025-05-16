@@ -70,10 +70,10 @@ public class MenuInGame {
                 button[1].click();
                 click = false;
             }
-            if(button[0].update()) { // если true ,то нажата кнопка
+            if(button[0].update() || GamePanel.keys[6]) { // если true ,то нажата кнопка
                 state = false;
                 gp.state = GamePanel.GameState.Game;
-
+                GamePanel.keys[6] = false;
             }
             if(button[1].update()) {
                 state = false;
@@ -83,6 +83,24 @@ public class MenuInGame {
         } else {
             int mX = GamePanel.mouseX;
             int mY = GamePanel.mouseY;
+            if(GamePanel.keys[6]) {
+                click = false;
+                gp.state = GamePanel.GameState.GameMenu;
+                state = true;
+                GamePanel.keys[6] = false;
+            }
+            if(GamePanel.keys[7]) {
+                click = false;
+                gp.state = GamePanel.GameState.GameOpenTablet;
+                state = false;
+                GamePanel.keys[7] = false;
+            }
+            if(GamePanel.keys[8]) {
+                click = false;
+                gp.state = GamePanel.GameState.GameOpenDirectory;
+                state = false;
+                GamePanel.keys[8] = false;
+            }
             if(mX >= posButtonMenuX && mX <= posButtonMenuX + GamePanel.tileSize*2
                     && mY >= posButtonMenuY && mY <= posButtonMenuY + GamePanel.tileSize*2) {
                 buttonMenuImage = gp.textureAtlas.textures[14][1].getTexture();
