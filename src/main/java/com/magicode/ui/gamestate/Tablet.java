@@ -10,6 +10,8 @@ import main.java.com.magicode.ui.gamestate.tablet.TextRedactor;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.*;
 
 public class Tablet extends GUI {
@@ -127,6 +129,10 @@ public class Tablet extends GUI {
 
     public void setText(String[] text) {
         this.text = text != null ? Arrays.copyOf(text, text.length) : null;
+    }
+
+    public EditArea[] getEditAreas() {
+        return editAreas;
     }
 
     public int getN() {
@@ -305,6 +311,52 @@ public class Tablet extends GUI {
         }
     }
 
+    public void loadSaveValues(String filePath) {
+        try(BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            line = reader.readLine();
+            if (line == null) {
+                System.out.println("Файл данных планшета, пуст!");
+                return;// Если файл закончился раньше, чем ожидалось
+            }
+
+            String[] parts = line.split("_");
+            N = Integer.parseInt(parts[0]);
+            plus = Integer.parseInt(parts[1]);
+            minus = Integer.parseInt(parts[2]);
+            exclamationMark = Integer.parseInt(parts[3]);
+
+            //Загрузка сохраненных данных, что ввел игрок.
+            int count = Integer.parseInt(reader.readLine());
+
+            for(int i = 0; i < count; i++) {
+                // key_1_+1 - формат загрузки
+                line = reader.readLine();
+                parts = line.split("_");
+                if(parts[0].equals("key")) {
+                    for(EditArea editArea : editAreas) {
+                        if(editArea == null) continue;
+                        if(editArea.getName().contains("key")
+                                && (editArea.getName().charAt(editArea.getName().length() - 1) + "").equals(parts[1])) {
+                            if(parts[2].equals("null")) {
+                                editArea.setCurrentText("");
+                            } else {
+                                editArea.setCurrentText(parts[2]);
+                            }
+
+                        }
+                    }
+                }
+
+                // Тута остальные заклинания
+            }
+
+            System.out.println("Данные планшета успешно загружены!");
+        } catch (Exception e) {
+            System.out.println("Ошибка загрузки данных в планшете!");
+        }
+    }
+
     public void update() {
 
         int mX = GamePanel.mouseX;
@@ -375,6 +427,10 @@ public class Tablet extends GUI {
 
 
         // Обработка логики заклинаний.
+        int curN = N;
+        int curPlus = plus;
+        int curMinus = minus;
+        int curExclamationMark = exclamationMark;
 
         for (EditArea editArea : editAreas) {
             if(editArea != null) {
@@ -389,19 +445,35 @@ public class Tablet extends GUI {
                                             Integer.parseInt(editArea.getName().charAt(editArea.getName().length() - 1) + ""))) {
 
 
-                                        // Добавить проверку на количество использованных символов + - ! и чисел
+                                        if(editArea.getCurrentText().charAt(0) == '+') {
+                                            curPlus--;
+                                        }
+                                        if(editArea.getCurrentText().charAt(0) == '-') {
+                                            curMinus--;
+                                        }
+                                        if(editArea.getCurrentText().charAt(0) == '!') {
+                                            curExclamationMark--;
+                                        }
 
                                         editArea.setColor(Color.GREEN);
                                     } else {
                                         editArea.setColor(Color.RED);
                                     }
+
                                 }
+
+                                // Сюда добавить остальные заклинания при добавлении их
                             }
                         }
                     }
                 }
             }
         }
+
+        currentN = curN;
+        currentPlus = curPlus;
+        currentMinus = curMinus;
+        currentExclamationMark = curExclamationMark;
 
     }
 

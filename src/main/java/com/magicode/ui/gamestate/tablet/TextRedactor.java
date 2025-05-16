@@ -16,7 +16,7 @@ public class TextRedactor {
 
         this.tablet = tablet;
 
-        editAreas = new EditArea[10];
+        editAreas = new EditArea[10]; // При увеличении к-ва заклинаний менять это поле!
         countEditAreas = 0;
         String[] text = new String[8];
         text[0] = "public Spells {";

@@ -12,6 +12,8 @@ import main.java.com.magicode.gameplay.world.objects.Wrench;
 import main.java.com.magicode.gameplay.world.structures.*;
 import main.java.com.magicode.spells.Spell;
 import main.java.com.magicode.spells.spells.KeySpell;
+import main.java.com.magicode.ui.gamestate.Tablet;
+import main.java.com.magicode.ui.gamestate.tablet.EditArea;
 
 import java.io.*;
 
@@ -22,10 +24,11 @@ public class GameSaveManager {
     private final String saveFilePathObjects = "saves/objectSave.txt";
     private final String saveFilePathEnemy = "saves/enemySave.txt";
     private final String saveFilePathSpells = "saves/spellsSave.txt";
+    private final String saveFilePathTabletInfo = "saves/tabletInfo.txt";
     private final String saveFilePathSceneInfo = "saves/sceneInfo.txt";
 
     // Сохранение игры
-    public void saveGame(Layer[][] worldMap, Structure[] structures, Player player, SceneChanger sceneChanger, GameObject[] objects, Enemy[] enemies, Spell[] spells) {
+    public void saveGame(Layer[][] worldMap, Structure[] structures, Player player, SceneChanger sceneChanger, GameObject[] objects, Enemy[] enemies, Spell[] spells, Tablet tablet) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFilePathBackground))) {
             writer.write(worldMap[0].length + " " + worldMap.length + "\n");
             for(int i = 0; i < worldMap.length; i++) {
@@ -195,6 +198,37 @@ public class GameSaveManager {
         }
 
 
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFilePathTabletInfo))) {
+            if(tablet == null) {
+                writer.write("");
+            } else {
+                writer.write(tablet.getN() + "_" + tablet.getPlus() + "_" + tablet.getMinus() + "_" + tablet.getExclamationMark() + "\n");
+                writer.write(tablet.getEditAreas().length + "\n");
+                for(EditArea editArea: tablet.getEditAreas()) {
+                    if(editArea != null) {
+                        if(editArea.getName().contains("key")) {
+                            writer.write("key_" + editArea.getName().charAt(editArea.getName().length() - 1));
+
+                            if((editArea.getCurrentText().isEmpty())) {
+                                writer.write("_null\n");
+                            } else {
+                                writer.write("_" + editArea.getCurrentText() + "\n");
+                            }
+
+                        }
+
+                        // Сюда остальные заклинания
+                    }
+                }
+
+            }
+
+            System.out.println("Данные планшета сохранены в файл: " + saveFilePathTabletInfo);
+        } catch (IOException e) {
+            System.err.println("Ошибка при сохранении данных планшета: " + e.getMessage());
+        }
+
+
 
     }
 
@@ -220,6 +254,9 @@ public class GameSaveManager {
     public String getSaveFilePathSpells() {
         return saveFilePathSpells;
     }
+    public String getSaveFilePathTabletInfo() {
+        return saveFilePathTabletInfo;
+    }
 
     // Проверка и создание папки для сохранений
     public void ensureSaveDirectoryExists() {
@@ -239,10 +276,11 @@ public class GameSaveManager {
         File file5 = new File(saveFilePathObjects);
         File file6 = new File(saveFilePathEnemy);
         File file7 = new File(saveFilePathSpells);
+        File file8 = new File(saveFilePathTabletInfo);
 
         // Проверяем, существуют ли оба файла
         return file1.exists() && file2.exists() && file3.exists() && file4.exists() && file5.exists() && file6.exists()
-                && file7.exists();
+                && file7.exists() && file8.exists();
     }
 
 

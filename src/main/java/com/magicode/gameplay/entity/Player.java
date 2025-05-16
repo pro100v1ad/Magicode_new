@@ -206,12 +206,6 @@ public class Player extends Entity implements Serializable {
                 gp.directory.addInfo();
             }
 
-//            line = reader.readLine();
-//            parts = line.split("_");
-//            N = Integer.parseInt(parts[0]);
-//            plus = Integer.parseInt(parts[1]);
-//            minus = Integer.parseInt(parts[2]);
-//            exclamationMark = Integer.parseInt(parts[3]);
 
             line = reader.readLine();
             parts = line.split("_");

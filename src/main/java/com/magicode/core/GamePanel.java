@@ -97,8 +97,6 @@ public class GamePanel extends JComponent {
         textureAtlas = new TextureAtlas(100, 100);
 
         startMenu = new StartMenu(this, saveManager.checkIfFilesExist());
-        tablet = new Tablet(this);
-        directory = new Directory(this);
         listeners = new Listeners(this);
 
         setWhoHaveCollision();
@@ -313,6 +311,8 @@ public class GamePanel extends JComponent {
     public void startNewGame() {
 //        sceneLoader = new SceneLoader(this, null, null);
         sceneChanger = new SceneChanger(this, true, null);
+        tablet = new Tablet(this);
+        directory = new Directory(this);
         player = new Player(this, null);
         menuInGame = new MenuInGame(this);
     }
@@ -320,6 +320,9 @@ public class GamePanel extends JComponent {
     public void continueGame() {
 //        sceneLoader = new SceneLoader(this, saveManager.getSaveFilePathBackground(), saveManager.getSaveFilePathStructure());
         sceneChanger = new SceneChanger(this, false, saveManager.getSaveFilePathSceneInfo());
+        tablet = new Tablet(this);
+        directory = new Directory(this);
+        tablet.loadSaveValues(saveManager.getSaveFilePathTabletInfo());
         player = new Player(this, saveManager.getSaveFilePathPlayer());
         menuInGame = new MenuInGame(this);
 
@@ -331,7 +334,7 @@ public class GamePanel extends JComponent {
     }
 
     public void saveGame() {
-        saveManager.saveGame(sceneLoader.getWorldMap(), sceneLoader.getStructures(), player, sceneChanger, sceneLoader.getObjects(), sceneLoader.getEnemies(), sceneLoader.getSpells());
+        saveManager.saveGame(sceneLoader.getWorldMap(), sceneLoader.getStructures(), player, sceneChanger, sceneLoader.getObjects(), sceneLoader.getEnemies(), sceneLoader.getSpells(), tablet);
         startMenu.setState(true);
     }
 
