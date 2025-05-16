@@ -12,11 +12,12 @@ public class KeySpell extends Spell {
     public KeySpell(String[] saveChangeText) {
         setDefaultValues();
 
-        this.name = saveChangeText[0];
+        this.isVisible = saveChangeText[0].equals("true");
+        this.name = saveChangeText[1];
 
-        saveChangeText = new String[saveChangeText.length-1];
-        for(int i = 0; i < saveChangeText.length-1; i++) {
-            this.saveChangeText[i] = saveChangeText[i+1];
+        this.saveChangeText = new String[saveChangeText.length-1];
+        for(int i = 0; i < saveChangeText.length-2; i++) {
+            this.saveChangeText[i] = saveChangeText[i+2];
         }
 
         currentFirst = defaultFirst;
@@ -32,6 +33,16 @@ public class KeySpell extends Spell {
         defaultThird = "key";
         defaultFourth = false;
 
+    }
+
+    public boolean first(String string) {
+
+        char operator = string.charAt(0);
+
+        int num = string.charAt(1);
+
+
+        return true;
     }
 
 

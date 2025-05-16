@@ -6,6 +6,7 @@ public abstract class Spell {
     protected String defaultThird;
     protected boolean defaultFourth;
     protected String name;
+    protected boolean isVisible;
 
     public Spell() {
 
@@ -41,6 +42,10 @@ public abstract class Spell {
 
     public void setDefaultFourth(boolean defaultFourth) {
         this.defaultFourth = defaultFourth;
+    }
+
+    public boolean getVisible() {
+        return isVisible;
     }
 
     public String getName() {

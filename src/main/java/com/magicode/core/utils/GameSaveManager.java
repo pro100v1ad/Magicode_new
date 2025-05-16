@@ -181,10 +181,11 @@ public class GameSaveManager {
                     if (spell == null) continue;
                     if (spell.getName().equals("key")) {
                         KeySpell keySpell = (KeySpell) spell;
-                        writer.write("key_");
+                        writer.write(keySpell.getVisible() + "_key");
                         for(String string: keySpell.getSaveChangeText()) {
-                            writer.write(string + "_");
+                            writer.write("_" + string);
                         }
+                        writer.write("\n");
                     }
 
                 }
