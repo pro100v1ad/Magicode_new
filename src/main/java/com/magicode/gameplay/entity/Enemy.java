@@ -106,4 +106,8 @@ public abstract class Enemy extends Entity {
         return name;
     }
 
+    public double getDamage() {
+        return damage;
+    }
+
 }

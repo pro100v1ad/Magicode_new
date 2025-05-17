@@ -171,6 +171,22 @@ public class Collision {
 
     }
 
+    public boolean checkEntityCollision(Entity entity1, Entity entity2) {
+        Rectangle rect1 = new Rectangle(
+                (int)entity1.getWorldX(),
+                (int)entity1.getWorldY(),
+                entity1.getCollisionWidth(),
+                entity1.getCollisionHeight()
+        );
+        Rectangle rect2 = new Rectangle(
+                (int)entity2.getWorldX(),
+                (int)entity2.getWorldY(),
+                entity2.getCollisionWidth(),
+                entity2.getCollisionHeight()
+        );
+        return rect1.intersects(rect2);
+    }
+
     public boolean checkCollisionUpEnemy(Entity entity) {
         int x = (int)entity.getWorldX();
         int y = (int)entity.getWorldY();

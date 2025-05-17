@@ -36,6 +36,8 @@ public class Player extends Entity implements Serializable {
     private Bar healthBar;
     private Bar manaBar;
 
+    private long lastDamageTime = 0;
+    private final long damageCooldown = 1000;
 
     public Player(GamePanel gp, String playerFilePath, String spellFilePath){
         this.gp = gp;
@@ -309,6 +311,16 @@ public class Player extends Entity implements Serializable {
         if(gp.state.equals(GamePanel.GameState.StartMenu) || gp.state.equals(GamePanel.GameState.GameOpenBoard)) {
             return;
         }
+
+        // Проверка коллизии с врагами
+        if(gp.getEnemies() != null) { // Добавьте проверку на null
+            for (Enemy enemy : gp.getEnemies()) {
+                if (enemy != null && gp.getCollision().checkEntityCollision(this, enemy)) {
+                    handleEnemyCollision(enemy);
+                }
+            }
+        }
+
         // Определяет направление движения все 8
         if (GamePanel.keys[0] && GamePanel.keys[3]) {
             direction = "up_right";
@@ -395,6 +407,36 @@ public class Player extends Entity implements Serializable {
 
     }
 
+    private void handleEnemyCollision(Enemy enemy) {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastDamageTime >= damageCooldown) {
+            // Наносим урон
+            health -= enemy.getDamage();
+            lastDamageTime = currentTime;
+
+            // Отталкивание игрока
+            pushPlayerAwayFromEnemy(enemy);
+        }
+    }
+
+    private void pushPlayerAwayFromEnemy(Enemy enemy) {
+        double pushForce = 15;
+        double dx = worldX - enemy.getWorldX();
+        double dy = worldY - enemy.getWorldY();
+        double distance = Math.sqrt(dx*dx + dy*dy);
+
+        if (distance > 0) {
+            double pushX = (dx / distance) * pushForce;
+            double pushY = (dy / distance) * pushForce;
+
+            worldX += pushX;
+            worldY += pushY;
+
+            // Проверяем, чтобы игрок не вышел за границы
+            worldX = Math.max(0, Math.min(worldX, gp.getWorldWidth()*GamePanel.tileSize - collisionWidth));
+            worldY = Math.max(0, Math.min(worldY, gp.getWorldHeight()*GamePanel.tileSize - collisionHeight));
+        }
+    }
 
     public void draw(Graphics2D g) {
         if(gp.sceneLoader.getCutScene()) {

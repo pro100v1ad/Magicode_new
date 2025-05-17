@@ -54,6 +54,19 @@ public class Slime extends Enemy {
 
     }
 
+    private void checkPlayerCollisionAndDamage() {
+        // Проверяем коллизию с игроком
+        if (gp.getCollision().checkEntityCollision(this, gp.player)) {
+            long currentTime = System.currentTimeMillis();
+            // Проверяем, прошло ли достаточно времени с последнего урона
+            if (currentTime - lastDamageTime >= damageCooldown) {
+                // Наносим урон игроку
+                gp.player.setHealth((int)gp.player.getHealth() - damage);
+                lastDamageTime = currentTime; // Обновляем время последнего урона
+            }
+        }
+    }
+
     private void updateAggressiveMovement() {
         double playerX = gp.player.getWorldX();
         double playerY = gp.player.getWorldY();
@@ -190,7 +203,7 @@ public class Slime extends Enemy {
             updateAggressiveMovement();
         }
 
-        // checkPlayerCollisionAndDamage();
+        checkPlayerCollisionAndDamage();
 
         // Обновление анимации
         switch(direction) {

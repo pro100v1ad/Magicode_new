@@ -48,6 +48,7 @@ public class GamePanel extends JComponent {
     public static int tileSize = (int)(originalTileSize*scale);
     public static int WIDTH = MAS_WIDTH*originalTileSize;
     public static int HEIGHT = MAS_HEIGHT*originalTileSize;
+    private Enemy[] enemies;
 
     private volatile long thread1WorkTime = 0;
     private volatile long thread2WorkTime = 0;
@@ -315,6 +316,7 @@ public class GamePanel extends JComponent {
         directory = new Directory(this);
         player = new Player(this, null, null);
         menuInGame = new MenuInGame(this);
+        enemies = sceneLoader.getEnemies();
     }
 
     public void continueGame() {
@@ -325,7 +327,7 @@ public class GamePanel extends JComponent {
         tablet.loadSaveValues(saveManager.getSaveFilePathTabletInfo());
         player = new Player(this, saveManager.getSaveFilePathPlayer(), saveManager.getSaveFilePathSpells());
         menuInGame = new MenuInGame(this);
-
+        enemies = sceneLoader.getEnemies();
     }
 
     public void exitGame() {
@@ -470,6 +472,13 @@ public class GamePanel extends JComponent {
 
         sound.setFile(i);
         sound.play();
+    }
+
+    public Enemy[] getEnemies() {
+        if (sceneLoader != null) {
+            return sceneLoader.getEnemies();
+        }
+        return null;
     }
 
 }
