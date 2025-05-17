@@ -129,7 +129,6 @@ public class Player extends Entity implements Serializable {
     }
 
     public void loadSaveSpells(String spellsPath) {
-        System.out.println("Начало загрузки сохраненных заклинаний. Путь: " + spellsPath);
         if(spellsPath == null) {
             return;
         }
@@ -137,7 +136,7 @@ public class Player extends Entity implements Serializable {
             String line;
             line = reader.readLine();
             if (line == null) {
-                System.out.println("Файл пуст");
+                System.out.println("Файл saveSpells пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
             int enemyCount = Integer.parseInt(line);
@@ -169,7 +168,7 @@ public class Player extends Entity implements Serializable {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line = br.readLine();
             if (line == null) {
-                System.out.println("Файл пуст");
+                System.out.println("Файл spells пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
 
@@ -185,8 +184,6 @@ public class Player extends Entity implements Serializable {
                 }
             }
 
-
-            System.out.println("Заклинания загружены из файла: " + spellPath);
         } catch (IOException e) {
             System.err.println("Ошибка при загрузке заклинаний: " + e.getMessage());
         }
@@ -262,7 +259,7 @@ public class Player extends Entity implements Serializable {
             String line;
             line = reader.readLine();
             if (line == null) {
-                System.out.println("Файл пуст");
+                System.out.println("Файл savePlayer пуст");
                 return false;// Если файл закончился раньше, чем ожидалось
             }
 
@@ -294,7 +291,6 @@ public class Player extends Entity implements Serializable {
             speed = (pixelsPerSecond * GamePanel.scale) / GamePanel.UPDATE_RATE; // scale минимум 1/4 и максимум 2.
             ///////////////////
 
-            System.out.println("Игрок успешно загружен!");
         } catch (Exception e) {
             System.out.println("Ошибка загрузки игрока!");
             return false;

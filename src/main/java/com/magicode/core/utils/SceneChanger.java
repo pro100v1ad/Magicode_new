@@ -47,7 +47,6 @@ public class SceneChanger {
 
             numberActiveScene = Integer.parseInt(line);
 
-            System.out.println("Информация о сцене успешно загружен!");
         } catch (Exception e) {
             System.out.println("Ошибка загрузки информации о сцене!");
         }
@@ -62,7 +61,7 @@ public class SceneChanger {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line = br.readLine();
             if (line == null) {
-                System.out.println("Файл пуст");
+                System.out.println("Файл sceneInfo пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
             sceneInfo = new String[3];
@@ -70,8 +69,6 @@ public class SceneChanger {
             sceneInfo[1] = br.readLine();
             sceneInfo[2] = br.readLine();
 
-
-            System.out.println("Успешная загрузка информации о сценах: " + FILEPATH);
         }
         catch (IOException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
             System.err.println("Ошибка загрузки информации о сценах: " + e.getMessage());

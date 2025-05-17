@@ -25,6 +25,7 @@ public class GameSaveManager {
     private final String saveFilePathEnemy = "saves/enemySave.txt";
     private final String saveFilePathSpells = "saves/spellsSave.txt";
     private final String saveFilePathTabletInfo = "saves/tabletInfo.txt";
+    private final String saveFilePathOpenSpellsInfo = "saves/openSpellsInfo.txt";
     private final String saveFilePathSceneInfo = "saves/sceneInfo.txt";
 
     // Сохранение игры
@@ -39,8 +40,6 @@ public class GameSaveManager {
             }
 
 
-
-            System.out.println("BackGround сохранен в файл: " + saveFilePathBackground);
         } catch (IOException e) {
             System.err.println("Ошибка при сохранении заднего фона: " + e.getMessage());
         }
@@ -90,7 +89,6 @@ public class GameSaveManager {
             }
 
 
-            System.out.println("Structure сохранен в файл: " + saveFilePathStructure);
         } catch (IOException e) {
             System.err.println("Ошибка при сохранении структур: " + e.getMessage());
         }
@@ -106,8 +104,6 @@ public class GameSaveManager {
             writer.write((int)player.getMaxMana() + "_" + (int)player.getMana() + "\n");
 
 
-
-            System.out.println("Player сохранен в файл: " + saveFilePathStructure);
         } catch (IOException e) {
             System.err.println("Ошибка при сохранении игрока: " + e.getMessage());
         }
@@ -116,7 +112,6 @@ public class GameSaveManager {
 
             writer.write(sceneChanger.getNumberActiveScene() + "");
 
-            System.out.println("sceneInfo сохранен в файл: " + saveFilePathSceneInfo);
         } catch (IOException e) {
             System.err.println("Ошибка при сохранении информации о сцене: " + e.getMessage());
         }
@@ -145,8 +140,6 @@ public class GameSaveManager {
 
                 }
             }
-
-            System.out.println("objects сохранен в файл: " + saveFilePathObjects);
         } catch (IOException e) {
             System.err.println("Ошибка при сохранении объектов: " + e.getMessage());
         }
@@ -168,7 +161,6 @@ public class GameSaveManager {
                 }
             }
 
-            System.out.println("enemy сохранен в файл: " + saveFilePathEnemy);
         } catch (IOException e) {
             System.err.println("Ошибка при сохранении врагов: " + e.getMessage());
         }
@@ -192,7 +184,6 @@ public class GameSaveManager {
                 }
             }
 
-            System.out.println("spells сохранен в файл: " + saveFilePathSpells);
         } catch (IOException e) {
             System.err.println("Ошибка при сохранении заклинаний: " + e.getMessage());
         }
@@ -223,12 +214,26 @@ public class GameSaveManager {
 
             }
 
-            System.out.println("Данные планшета сохранены в файл: " + saveFilePathTabletInfo);
         } catch (IOException e) {
             System.err.println("Ошибка при сохранении данных планшета: " + e.getMessage());
         }
 
 
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFilePathOpenSpellsInfo))) {
+            if(tablet == null) {
+                writer.write("");
+            } else {
+                int count = tablet.getTextRedactor().getCountOpenSpells();
+                writer.write(count + "\n");
+                for(int i = 0; i < count; i++) {
+                    writer.write(tablet.getTextRedactor().getSpellsPath()[i] + "\n");
+                }
+
+            }
+
+        } catch (IOException e) {
+            System.err.println("Ошибка при сохранении данных открытых заклинаний: " + e.getMessage());
+        }
 
     }
 
@@ -257,6 +262,9 @@ public class GameSaveManager {
     public String getSaveFilePathTabletInfo() {
         return saveFilePathTabletInfo;
     }
+    public String getSaveFilePathOpenSpellsInfo() {
+        return saveFilePathOpenSpellsInfo;
+    }
 
     // Проверка и создание папки для сохранений
     public void ensureSaveDirectoryExists() {
@@ -277,10 +285,11 @@ public class GameSaveManager {
         File file6 = new File(saveFilePathEnemy);
         File file7 = new File(saveFilePathSpells);
         File file8 = new File(saveFilePathTabletInfo);
+        File file9 = new File(saveFilePathOpenSpellsInfo);
 
         // Проверяем, существуют ли оба файла
         return file1.exists() && file2.exists() && file3.exists() && file4.exists() && file5.exists() && file6.exists()
-                && file7.exists() && file8.exists();
+                && file7.exists() && file8.exists() && file9.exists();
     }
 
 

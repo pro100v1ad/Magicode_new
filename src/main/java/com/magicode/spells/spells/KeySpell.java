@@ -22,7 +22,6 @@ public class KeySpell extends Spell {
             this.saveChangeText[i] = saveChangeText[i+2];
         }
 
-        System.out.println(Arrays.toString(saveChangeText));
 
         currentFirst = defaultFirst;
         currentSecond = defaultSecond;
@@ -146,6 +145,11 @@ public class KeySpell extends Spell {
             case 3: flag = third(string); break;
             case 4: flag = fourth(string); break;
         }
+
+//        System.out.println("\n\n" + currentFirst);
+//        System.out.println(currentSecond);
+//        System.out.println(currentThird);
+//        System.out.println(currentFourth);
 
         return flag;
     }

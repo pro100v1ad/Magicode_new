@@ -311,7 +311,7 @@ public class GamePanel extends JComponent {
     public void startNewGame() {
 //        sceneLoader = new SceneLoader(this, null, null);
         sceneChanger = new SceneChanger(this, true, null);
-        tablet = new Tablet(this);
+        tablet = new Tablet(this, null);
         directory = new Directory(this);
         player = new Player(this, null, null);
         menuInGame = new MenuInGame(this);
@@ -320,7 +320,7 @@ public class GamePanel extends JComponent {
     public void continueGame() {
 //        sceneLoader = new SceneLoader(this, saveManager.getSaveFilePathBackground(), saveManager.getSaveFilePathStructure());
         sceneChanger = new SceneChanger(this, false, saveManager.getSaveFilePathSceneInfo());
-        tablet = new Tablet(this);
+        tablet = new Tablet(this, saveManager.getSaveFilePathOpenSpellsInfo());
         directory = new Directory(this);
         tablet.loadSaveValues(saveManager.getSaveFilePathTabletInfo());
         player = new Player(this, saveManager.getSaveFilePathPlayer(), saveManager.getSaveFilePathSpells());

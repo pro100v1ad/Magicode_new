@@ -59,7 +59,7 @@ public class Tablet extends GUI {
     private int currentMinus;
     private int currentExclamationMark;
 
-    public Tablet(GamePanel gp) {
+    public Tablet(GamePanel gp, String filePath) {
         this.gp = gp;
 
         imageTablet = gp.textureAtlas.textures[15][0].getTexture();
@@ -83,9 +83,6 @@ public class Tablet extends GUI {
         textColor = Color.WHITE;
 
 
-        textRedactor = new TextRedactor(this);
-        editAreas = textRedactor.getEditAreas();
-
         //Левая часть планшета
 
         buttons = new Button[5];
@@ -94,10 +91,9 @@ public class Tablet extends GUI {
         buttons[0].setBackgroundColor(new Color(0, 0, 0, 0));
         buttons[0].setStaticLineColor(new Color(88, 88, 88));
 
-
-        textRedactor.addSpell("/resources/spells/key");
-        textRedactor.addSpell("/resources/spells/repair");
-        textRedactor.addSpell("/resources/spells/gun");
+        textRedactor = new TextRedactor(this, filePath);
+        editAreas = textRedactor.getEditAreas();
+//        textRedactor.addSpell("/resources/spells/gun");
     }
 
     public void addButton(String name) {
@@ -133,6 +129,10 @@ public class Tablet extends GUI {
 
     public EditArea[] getEditAreas() {
         return editAreas;
+    }
+
+    public TextRedactor getTextRedactor() {
+        return textRedactor;
     }
 
     public int getN() {
@@ -332,6 +332,7 @@ public class Tablet extends GUI {
             for(int i = 0; i < count; i++) {
                 // key_1_+1 - формат загрузки
                 line = reader.readLine();
+                if (line == null) continue;
                 parts = line.split("_");
                 if(parts[0].equals("key")) {
                     for(EditArea editArea : editAreas) {
@@ -351,7 +352,6 @@ public class Tablet extends GUI {
                 // Тута остальные заклинания
             }
 
-            System.out.println("Данные планшета успешно загружены!");
         } catch (Exception e) {
             System.out.println("Ошибка загрузки данных в планшете!");
         }

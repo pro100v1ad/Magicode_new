@@ -65,8 +65,6 @@ public class SceneLoader {
 
     private void loadSaveEnemies(String enemiesPath) {
 
-        System.out.println("Начало загрузки врагов. Путь: " + enemiesPath);
-
         if (enemiesPath == null) {
             System.out.println("Враги на локации отсутствуют (путь не указан)");
             return;
@@ -76,7 +74,6 @@ public class SceneLoader {
             String line;
             line = reader.readLine();
             if (line == null) {
-                System.out.println("Файл пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
 
@@ -111,7 +108,6 @@ public class SceneLoader {
     // Метод загрузки врагов
     private void loadEnemies(String enemiesPath) {
 
-        System.out.println("Начало загрузки врагов. Путь: " + enemiesPath);
 
         if (enemiesPath == null) {
             System.out.println("Враги на локации отсутствуют (путь не указан)");
@@ -161,7 +157,7 @@ public class SceneLoader {
             String line;
             line = reader.readLine();
             if (line == null) {
-                System.out.println("Файл пуст");
+                System.out.println("Файл saveScene пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
 
@@ -198,8 +194,6 @@ public class SceneLoader {
 
             setWorldMap(worldMap);
 
-
-            System.out.println("Задний фон загружен из файла: " + backgroundPath);
         } catch (IOException e) {
             System.err.println("Ошибка при загрузке заднего фона: " + e.getMessage());
         }
@@ -208,7 +202,7 @@ public class SceneLoader {
             String line;
             line = reader.readLine();
             if (line == null) {
-                System.out.println("Файл пуст");
+                System.out.println("Файл structure пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
 
@@ -268,9 +262,6 @@ public class SceneLoader {
 
             }
 
-
-
-            System.out.println("Структуры загружены из файла: " + structurePath);
         } catch (IOException e) {
             System.err.println("Ошибка при загрузке структур: " + e.getMessage());
         }
@@ -280,7 +271,7 @@ public class SceneLoader {
             String line;
             line = reader.readLine();
             if (line == null) {
-                System.out.println("Файл пуст");
+                System.out.println("Файл object пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
 
@@ -303,7 +294,6 @@ public class SceneLoader {
 
             interaction.loadObjects(objects);
 
-            System.out.println("Объекты загружены из файла: " + objectPath);
         } catch (IOException e) {
             System.err.println("Ошибка при загрузке объектов: " + e.getMessage());
         }
@@ -321,7 +311,7 @@ public class SceneLoader {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line = br.readLine();
             if (line == null) {
-                System.out.println("Файл пуст");
+                System.out.println("Файл background пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
 
@@ -367,9 +357,7 @@ public class SceneLoader {
 
             setWorldMap(worldMap);
 
-            System.out.println("Успешная загрузка сцены: " + backgroundPath);
-//            System.out.println("Сцена загрузилась за: " + ((System.nanoTime()-startTime)/1000000) + " миллисекунд!");
-        }// Вместо общего Exception лучше ловить конкретные исключения
+        }
         catch (IOException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
             System.err.println("Ошибка загрузки сцены: " + e.getMessage());
             e.printStackTrace();
@@ -465,7 +453,6 @@ public class SceneLoader {
                 }
             }
 
-            System.out.println("Успешная загрузка структур: " + backgroundPath);
         } catch (IOException | NumberFormatException e) {
             System.err.println("Ошибка загрузки структур: " + e.getMessage());
             e.printStackTrace();
@@ -602,7 +589,6 @@ public class SceneLoader {
                         KeySpell keySpell;
                         Spell[] spells = gp.player.getSpells();
                         if (spells != null) {
-                            System.out.println("Точно не лох!");
                             for (Spell spell : spells) {
                                 if (spell != null && spell.getName().equals("key")) {
                                     keySpell = (KeySpell) spell;
@@ -615,8 +601,6 @@ public class SceneLoader {
                                 }
                             }
 
-                        } else {
-                            System.out.println("ЛОХ!");
                         }
                     }
 
@@ -666,6 +650,7 @@ public class SceneLoader {
                                     if (objects[i].equals(object)) {
                                         objects[i] = null;
                                         System.out.println("Гаечный ключ подобран!");
+                                        gp.tablet.getTextRedactor().addSpell("/resources/spells/repair");
                                         break;
                                     }
                                 }
