@@ -12,7 +12,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 public class Chest extends Structure {
 
@@ -25,6 +24,8 @@ public class Chest extends Structure {
     private int[] needDefaultFirst, needDefaultSecond;
     private String[] needDefaultThird;
     private boolean[] needDefaultFourth;
+
+    private String[] condition;
 
     public Chest(GamePanel gp, int x, int y, int w, int h, String code, boolean isLock, boolean state, String direction, String filePath) {
         this.gp = gp;
@@ -68,12 +69,7 @@ public class Chest extends Structure {
                 System.out.println("Файл пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
-            String[] parts = line.split("_");
-            needDefaultFirst = parseNullableIntArray(parts[0]);
-            needDefaultSecond = parseNullableIntArray(parts[1]);
-            needDefaultThird = parseNullableStringArray(parts[2]);
-            needDefaultFourth = parseNullableBooleanArray(parts[3]);
-
+            condition = line.split(" ");
 
         }
         catch (IOException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
@@ -82,46 +78,7 @@ public class Chest extends Structure {
         }
     }
 
-    // Парсинг int[] или null
-    private static int[] parseNullableIntArray(String str) {
-        if (str.equals("null")) {
-            return null;
-        }
-        if (str.indexOf(':') != -1) {
-            String[] elements = str.split(":");
-            int[] result = new int[elements.length];
-            for (int i = 0; i < elements.length; i++) {
-                result[i] = Integer.parseInt(elements[i]);
-            }
-            return result;
-        } else {
-            return new int[]{Integer.parseInt(str)};
-        }
-    }
 
-    // Парсинг String[] или null
-    private static String[] parseNullableStringArray(String str) {
-        if (str.equals("null")) {
-            return null;
-        }
-        if (str.indexOf(':') != -1) {
-            return str.split(":");
-        } else {
-            return new String[]{str};
-        }
-    }
-
-    // Парсинг boolean[] или null
-    private static boolean[] parseNullableBooleanArray(String str) {
-        if (str.equals("null")) {
-            return null;
-        }
-        if (str.indexOf(':') != -1) {
-            return new boolean[]{true, false};
-        } else {
-            return new boolean[]{Boolean.parseBoolean(str)};
-        }
-    }
 
     private void loadImage() {
         if(direction.equals("up")) {
@@ -188,52 +145,42 @@ public class Chest extends Structure {
     }
 
     public boolean checkValues(int first, int second, String third, boolean fourth) {
-        boolean flag1 = false;
-        boolean flag2 = false;
-        boolean flag3 = false;
-        boolean flag4 = false;
 
-        // Проверка для first и second (должны быть на одинаковых индексах)
-        if (needDefaultFirst != null && needDefaultSecond != null) {
-            // Ищем минимальную длину, чтобы не выйти за границы массивов
-            int minLength = Math.min(needDefaultFirst.length, needDefaultSecond.length);
-            for (int i = 0; i < minLength; i++) {
-                if (needDefaultFirst[i] == first && needDefaultSecond[i] == second) {
-                    flag1 = true;
-                    flag2 = true;
-                    break; // Нашли совпадение на одном индексе - можно выходить
-                }
+        for(int i = 0; i < condition.length; i++) {
+            if(condition[i].equals("==")) {
+            //  Добавить логику
             }
-        } else {
-            // Если один из массивов null, считаем проверку пройденной
-            flag1 = (needDefaultFirst == null);
-            flag2 = (needDefaultSecond == null);
         }
 
-        // Остальные проверки (как в оригинале)
-        if (needDefaultThird != null && third != null) {
-            for (int i = 0; i < needDefaultThird.length; i++) {
-                if (needDefaultThird[i] != null && needDefaultThird[i].equals(third)) {
-                    flag3 = true;
-                    break;
-                }
+        return true;
+    }
+
+    public int calculate(String[] condition, int first, int second, String third, boolean fourth) {
+        if((condition[0].equals("arg1") || condition[0].equals("arg2"))
+                && (condition[2].equals("arg1") || condition[2].equals("arg2"))) {
+            if(condition[1].equals("+")) {
+                return first + second;
             }
-        } else {
-            flag3 = true;
+            if(condition[1].equals("-") && condition[0].equals("arg1")) {// когда первый аргумент arg1
+                return first - second;
+            }
+            if(condition[1].equals("-")) { // когда первый аргумент arg2
+                return second - first;
+            }
+            if(condition[1].equals("*")) {
+                return first * second;
+            }
+            if(condition[1].equals("/") && condition[0].equals("arg1")) {// когда первый аргумент arg1
+                return first / second;
+            }
+            if(condition[1].equals("/")) { // когда первый аргумент arg2
+                return second / first;
+            }
+
         }
 
-        if (needDefaultFourth != null) {
-            for (int i = 0; i < needDefaultFourth.length; i++) {
-                if (needDefaultFourth[i] == fourth) {
-                    flag4 = true;
-                    break;
-                }
-            }
-        } else {
-            flag4 = true;
-        }
-
-        return flag1 && flag2 && flag3 && flag4;
+        // Добавить проверку для других условий
+        return 0;
     }
 
     public GameObject openChest(GameObject object) {

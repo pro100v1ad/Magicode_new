@@ -1,4 +1,4 @@
-4:3_4:5_null_null
+arg1 + arg2 == 8
 if(arg1 + arg2 == 8) {
     openDoor();
 }

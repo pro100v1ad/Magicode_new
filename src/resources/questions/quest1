@@ -1,4 +1,4 @@
-5:4_5:6_null_null
+arg1 + arg2 == 10
 if(arg1 + arg2 == 10) {
     openDoor();
 }

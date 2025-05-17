@@ -1,4 +1,4 @@
-null_null_key2_null
+arg3 == "key2"
 if(third == "key2") {
     openDoor();
 }
