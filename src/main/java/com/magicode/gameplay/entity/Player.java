@@ -413,28 +413,6 @@ public class Player extends Entity implements Serializable {
             // Наносим урон
             health -= enemy.getDamage();
             lastDamageTime = currentTime;
-
-            // Отталкивание игрока
-            pushPlayerAwayFromEnemy(enemy);
-        }
-    }
-
-    private void pushPlayerAwayFromEnemy(Enemy enemy) {
-        double pushForce = 15;
-        double dx = worldX - enemy.getWorldX();
-        double dy = worldY - enemy.getWorldY();
-        double distance = Math.sqrt(dx*dx + dy*dy);
-
-        if (distance > 0) {
-            double pushX = (dx / distance) * pushForce;
-            double pushY = (dy / distance) * pushForce;
-
-            worldX += pushX;
-            worldY += pushY;
-
-            // Проверяем, чтобы игрок не вышел за границы
-            worldX = Math.max(0, Math.min(worldX, gp.getWorldWidth()*GamePanel.tileSize - collisionWidth));
-            worldY = Math.max(0, Math.min(worldY, gp.getWorldHeight()*GamePanel.tileSize - collisionHeight));
         }
     }
 

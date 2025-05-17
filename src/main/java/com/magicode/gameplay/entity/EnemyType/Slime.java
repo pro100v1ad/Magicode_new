@@ -32,7 +32,7 @@ public class Slime extends Enemy {
         speed = 1.25;
         maxHealth = 50;
         health = maxHealth;
-        damage = 10;
+        damage = 1;
         detectionRange = GamePanel.tileSize * 5;
         aggressive = false;
 
