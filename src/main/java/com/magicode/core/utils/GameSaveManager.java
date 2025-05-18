@@ -77,7 +77,8 @@ public class GameSaveManager {
                         if(structures[i].getName().equals("bridge")) {
                             Bridge bridge = (Bridge) structures[i];
                             writer.write("bridge_" + bridge.getX() + "_" + bridge.getY() + "_" + bridge.getLen() + "_" +
-                                    bridge.getDirection() + "_" + bridge.getBreak() + "_" + bridge.getFilePath() + " ");
+                                    bridge.getCode() + ":" + bridge.getRadius() + "_" +bridge.getDirection() + "_" +
+                                    bridge.getBreak() + "_" + bridge.getFilePath() + " ");
                         }
                         if(structures[i].getName().equals("portal")) {
                             Portal portal = (Portal) structures[i];

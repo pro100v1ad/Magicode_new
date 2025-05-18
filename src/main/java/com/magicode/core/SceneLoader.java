@@ -241,7 +241,7 @@ public class SceneLoader {
                 if(structure[0].equals("bridge")) {
                     //Формат name_x_y_len_direction_isBreak
                     structures[i] = new Bridge(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
-                            Integer.parseInt(structure[3]), structure[4], structure[5].equals("true"), structure[0], structure[6]);
+                            Integer.parseInt(structure[3]), structure[4], structure[5], structure[6].equals("true"), structure[0], structure[7]);
                 }
                 if(structure[0].equals("portal")) {
                     //Формат name_x_y_w_h_code:radius_direction
@@ -427,7 +427,7 @@ public class SceneLoader {
                             }
                             else if (structure[0].equals("bridge")) {
                                 structures[index++] = new Bridge(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
-                                        Integer.parseInt(structure[3]), structure[4], structure[5].equals("true"), structure[0], structure[6]);
+                                        Integer.parseInt(structure[3]), structure[4], structure[5], structure[6].equals("true"), structure[0], structure[7]);
                             }
                             else if (structure[0].equals("portal")) {
                                 structures[index++] = new Portal(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
@@ -549,7 +549,7 @@ public class SceneLoader {
         if(cooldown == 0) {
             Structure structure = interaction.isPlayerInInteractionZone(structures);
             if(structure != null) {
-                if(GamePanel.keys[5]) { // Если открыть-закрыть дверь
+                if(GamePanel.keys[5]) {
 
                     isCooldown = true;
                     if(structure.getName().equals("door")) {
@@ -583,7 +583,16 @@ public class SceneLoader {
                         }
                     } else if(structure.getName().equals("portal")) {
                         gp.sceneChanger.setNumberActiveScene(gp.sceneChanger.getNumberActiveScene() + 1);
+                    } else if(structure.getName().equals("bridge")) {
+                        Bridge bridge = (Bridge) structure;
+                        if(bridge.getBreak()) {
+                            board = new Board(gp, 175, 150, bridge.getFilePath());
+                            gp.state = GamePanel.GameState.GameOpenBoard;
+                        }
+
                     }
+
+
 
                     collision.reloadMap(worldMap, structures);
                     interaction.reloadMap(structures, objects);
@@ -659,7 +668,8 @@ public class SceneLoader {
                             }
                         }
                     }
-
+                    collision.reloadMap(worldMap, structures);
+                    interaction.reloadMap(structures, objects);
                 }
             }
 

@@ -21,9 +21,12 @@ public class Bridge extends Structure {
     private String condition;
 
 
-    public Bridge(GamePanel gp, int x, int y, int bridgeLength, String direction, boolean isBreak, String name, String filePath) {
+    public Bridge(GamePanel gp, int x, int y, int bridgeLength, String code, String direction, boolean isBreak, String name, String filePath) {
         this.gp = gp;
-        
+
+        this.code = Integer.parseInt(code.split(":")[0]);
+        this.radius = Integer.parseInt(code.split(":")[1]);
+
         this.name = name;
         this.len = bridgeLength;
         this.isBreak = isBreak;
