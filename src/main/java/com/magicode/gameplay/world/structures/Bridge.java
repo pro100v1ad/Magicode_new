@@ -5,6 +5,10 @@ import main.java.com.magicode.gameplay.world.Structure;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class Bridge extends Structure {
 
@@ -13,7 +17,11 @@ public class Bridge extends Structure {
     private BufferedImage[] images;
     private GamePanel gp;
 
-    public Bridge(GamePanel gp, int x, int y, int bridgeLength, String direction, boolean isBreak, String name) {
+    private String filePath;
+    private String condition;
+
+
+    public Bridge(GamePanel gp, int x, int y, int bridgeLength, String direction, boolean isBreak, String name, String filePath) {
         this.gp = gp;
         
         this.name = name;
@@ -22,14 +30,45 @@ public class Bridge extends Structure {
         this.direction = direction;
         this.x = x;
         this.y = y;
-        
 
+        this.filePath = (filePath.equals("null")) ? null : filePath;
+
+
+        loadDefaultValue();
         loadTextures();
 
     }
 
+    private void loadDefaultValue() {
+        if(filePath == null) {
+            return;
+        }
+        try (InputStream is = getClass().getResourceAsStream(filePath)) {
+            if (is == null) {
+                System.out.println("Ошибка: файл не найден! " + filePath);
+                return;
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String line = br.readLine();
+            if (line == null) {
+                System.out.println("Файл пуст");
+                return;// Если файл закончился раньше, чем ожидалось
+            }
+            condition = line;
+
+        }
+        catch (IOException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            System.err.println("Ошибка загрузки информации о задании для моста: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     public boolean getBreak() {
         return isBreak;
+    }
+
+    public String getFilePath() {
+        return filePath;
     }
 
     public int getLen() {
@@ -65,6 +104,34 @@ public class Bridge extends Structure {
         return h;
     }
 
+    public void repair() {
+        isBreak = false;
+        loadTextures();
+    }
+
+
+    public boolean checkValues(int first, int second, String third, boolean fourth) {
+
+        if(condition == null) return false;
+
+        if(condition.equals("arg1 + arg2 == 10")) {
+            return first + second == 10;
+        }
+        if(condition.equals("arg1 + arg2 == 8")) {
+            return first + second == 8;
+        }
+        if(condition.equals("arg1 + 1 > arg2 - 1")) {
+            return first + 1 > second - 1;
+        }
+        if(condition.equals("arg4")) {
+            return fourth;
+        }
+        if(condition.equals("arg3 == \"key2\"")) {
+            return third.equals("key2");
+        }
+
+        return false;
+    }
 
     protected void loadTextures() {
         images = new BufferedImage[4];

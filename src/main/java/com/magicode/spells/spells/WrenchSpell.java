@@ -5,17 +5,16 @@ import main.java.com.magicode.spells.Spell;
 
 import java.awt.*;
 
-public class KeySpell extends Spell {
+public class WrenchSpell extends Spell {
 
     private int currentFirst, currentSecond;
     private String currentThird;
     private boolean currentFourth;
     private String[] saveChangeText;
 
-
     private GamePanel gp;
 
-    public KeySpell(GamePanel gp, String[] saveChangeText) {
+    public WrenchSpell(GamePanel gp, String[] saveChangeText) {
         this.gp = gp;
         setDefaultValues();
 
@@ -37,13 +36,13 @@ public class KeySpell extends Spell {
         rechargeTime = (int)(5 * GamePanel.UPDATE_RATE); // 5 секунд
         isRecharge = false;
 
-        posIconX = 300;
+        posIconX = 232;
         posIconY = 625;
-        wordToUse = "K";
+        wordToUse = "R";
 
         rechargeBackgroundIconSpell = gp.textureAtlas.textures[17][1].getTexture();
         rechargeFrame = gp.textureAtlas.textures[17][2].getTexture();
-        rechargeIconSpell = gp.textureAtlas.textures[13][0].getTexture();
+        rechargeIconSpell = gp.textureAtlas.textures[13][2].getTexture();
     }
 
     public void setDefaultValues() {
@@ -184,12 +183,23 @@ public class KeySpell extends Spell {
             case 4: flag = fourth(string); break;
         }
 
-//        System.out.println("\n\n" + currentFirst);
-//        System.out.println(currentSecond);
-//        System.out.println(currentThird);
-//        System.out.println(currentFourth);
 
         return flag;
+    }
+
+    @Override
+    public void draw(Graphics2D g) {
+
+        g.drawImage(rechargeBackgroundIconSpell, posIconX, posIconY, GamePanel.tileSize*2, GamePanel.tileSize*2, null);
+        g.setColor(new Color(255, 255, 255, 100));
+        g.fillRect(posIconX+4, posIconY+4, GamePanel.tileSize*2-8, (int)((GamePanel.tileSize*2-8)*((float)currentRechargeTime/rechargeTime)));
+        g.drawImage(rechargeIconSpell, posIconX+10, posIconY+10, (int)(GamePanel.tileSize*2.5)-6, (int)(GamePanel.tileSize*2.5)-6, null);
+        g.drawImage(rechargeFrame, posIconX, posIconY, GamePanel.tileSize*2, GamePanel.tileSize*2, null);
+
+        g.setFont(my_font.deriveFont(16f));
+        g.setColor(new Color(160, 190, 250));
+        g.drawString(wordToUse, (int)(posIconX + GamePanel.tileSize*3.0/2)-2, (int)(posIconY+GamePanel.tileSize*3.5/2)-2);
+
     }
 
 }

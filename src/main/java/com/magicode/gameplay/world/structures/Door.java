@@ -105,7 +105,7 @@ public class Door extends Structure {
 
         }
         catch (IOException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
-            System.err.println("Ошибка загрузки информации о задании для сундука: " + e.getMessage());
+            System.err.println("Ошибка загрузки информации о задании для двери: " + e.getMessage());
             e.printStackTrace();
         }
     }

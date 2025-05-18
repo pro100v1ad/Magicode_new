@@ -14,6 +14,7 @@ import main.java.com.magicode.gameplay.world.objects.Wrench;
 import main.java.com.magicode.gameplay.world.structures.*;
 import main.java.com.magicode.spells.Spell;
 import main.java.com.magicode.spells.spells.KeySpell;
+import main.java.com.magicode.spells.spells.WrenchSpell;
 import main.java.com.magicode.ui.gamestate.Board;
 
 import java.awt.*;
@@ -240,7 +241,7 @@ public class SceneLoader {
                 if(structure[0].equals("bridge")) {
                     //Формат name_x_y_len_direction_isBreak
                     structures[i] = new Bridge(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
-                            Integer.parseInt(structure[3]), structure[4], structure[5].equals("true"), structure[0]);
+                            Integer.parseInt(structure[3]), structure[4], structure[5].equals("true"), structure[0], structure[6]);
                 }
                 if(structure[0].equals("portal")) {
                     //Формат name_x_y_w_h_code:radius_direction
@@ -426,7 +427,7 @@ public class SceneLoader {
                             }
                             else if (structure[0].equals("bridge")) {
                                 structures[index++] = new Bridge(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
-                                        Integer.parseInt(structure[3]), structure[4], structure[5].equals("true"), structure[0]);
+                                        Integer.parseInt(structure[3]), structure[4], structure[5].equals("true"), structure[0], structure[6]);
                             }
                             else if (structure[0].equals("portal")) {
                                 structures[index++] = new Portal(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
@@ -636,6 +637,30 @@ public class SceneLoader {
                     interaction.reloadMap(structures, objects);
 
                 }
+                if(GamePanel.keys[10]) { // R
+                    isCooldown = true;
+
+                    if(structure.getName().equals("bridge")) {
+                        Bridge bridge = (Bridge) structure;
+                        WrenchSpell wrenchSpell;
+                        Spell[] spells = gp.player.getSpells();
+                        if(spells != null) {
+                            for(Spell spell: spells) {
+                                if(spell != null && spell.getName().equals("wrench")) {
+                                    wrenchSpell = (WrenchSpell) spell;
+                                    if (bridge.checkValues(wrenchSpell.getCurrentFirst(),
+                                            wrenchSpell.getCurrentSecond(),
+                                            wrenchSpell.getCurrentThird(),
+                                            wrenchSpell.getCurrentFourth()) && !wrenchSpell.getIsRecharge() && gp.player.getMana() >= 10) {
+                                        bridge.repair();
+                                        wrenchSpell.setIsRecharge(true);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
             }
 
             if(!isCooldown) {
@@ -678,6 +703,7 @@ public class SceneLoader {
                                         objects[i] = null;
                                         System.out.println("Гаечный ключ подобран!");
                                         gp.tablet.getTextRedactor().addSpell("/resources/spells/repair");
+                                        gp.player.addSpell("wrench", "true_wrench_null_null_null_null".split("_"));
                                         break;
                                     }
                                 }

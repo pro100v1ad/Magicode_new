@@ -1,8 +1,8 @@
 4
-3_24_2_repairArg1
-4_25_2_repairArg2
-5_27_2_repairArg3
-6_22_1_repairArg4
+3_24_2_wrenchArg1
+4_25_2_wrenchArg2
+5_27_2_wrenchArg3
+6_22_1_wrenchArg4
 13
 
     public void repair() {

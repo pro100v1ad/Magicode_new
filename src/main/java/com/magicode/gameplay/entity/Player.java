@@ -5,6 +5,7 @@ import main.java.com.magicode.core.utils.Animation;
 import main.java.com.magicode.core.utils.ResourceLoader;
 import main.java.com.magicode.spells.Spell;
 import main.java.com.magicode.spells.spells.KeySpell;
+import main.java.com.magicode.spells.spells.WrenchSpell;
 import main.java.com.magicode.ui.gamestate.Directory;
 import main.java.com.magicode.ui.interface_.Bar;
 
@@ -29,6 +30,7 @@ public class Player extends Entity implements Serializable {
     private double mana;
 
     private Spell[] spells;
+    private int countSpells;
     public static final String DEFAULT_SPELLS = "/resources/levels/scenes/start/spells";
 
     private int countBook;
@@ -50,9 +52,9 @@ public class Player extends Entity implements Serializable {
         collisionHeight = GamePanel.tileSize*2;
         collisionCode = 2;
 
-
         loadAnimation();
 
+        countSpells = 0;
         if(playerFilePath != null && spellFilePath != null) {
             loadPlayerFromFile(playerFilePath);
             loadSaveSpells(spellFilePath);
@@ -144,14 +146,19 @@ public class Player extends Entity implements Serializable {
             int enemyCount = Integer.parseInt(line);
             // Создаем массив нужного размера
             spells = new Spell[enemyCount];
-            int index = 0;
+            countSpells = 0;
 
             while((line = reader.readLine()) != null) {
                 String[] parts = line.split("_");
                 if(parts[1].equals("key")) {
-                    spells[index++] = new KeySpell(gp, parts);
+                    addSpell("key", parts);
+                }
+                if(parts[1].equals("wrench")) {
+                    addSpell("wrench", parts);
                 }
             }
+
+
 
 
 
@@ -174,20 +181,30 @@ public class Player extends Entity implements Serializable {
                 return;// Если файл закончился раньше, чем ожидалось
             }
 
-            int enemyCount = Integer.parseInt(line);
+            int count = Integer.parseInt(line);
             // Создаем массив нужного размера
-            spells = new Spell[enemyCount];
-            int index = 0;
+            spells = new Spell[count];
+            countSpells = 0;
 
             while((line = br.readLine()) != null) {
                 String[] parts = line.split("_");
                 if(parts[1].equals("key")) {
-                    spells[index++] = new KeySpell(gp, parts);
+                    addSpell("key", parts);
                 }
             }
 
         } catch (IOException e) {
             System.err.println("Ошибка при загрузке заклинаний: " + e.getMessage());
+        }
+    }
+
+    public void addSpell(String name, String[] parts) {
+        if(name.equals("key")) {
+            spells[countSpells++] = new KeySpell(gp, parts);
+        }
+
+        if(name.equals("wrench")) {
+            spells[countSpells++] = new WrenchSpell(gp, parts);
         }
     }
 

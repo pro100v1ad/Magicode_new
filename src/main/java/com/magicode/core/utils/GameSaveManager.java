@@ -12,6 +12,7 @@ import main.java.com.magicode.gameplay.world.objects.Wrench;
 import main.java.com.magicode.gameplay.world.structures.*;
 import main.java.com.magicode.spells.Spell;
 import main.java.com.magicode.spells.spells.KeySpell;
+import main.java.com.magicode.spells.spells.WrenchSpell;
 import main.java.com.magicode.ui.gamestate.Tablet;
 import main.java.com.magicode.ui.gamestate.tablet.EditArea;
 
@@ -76,7 +77,7 @@ public class GameSaveManager {
                         if(structures[i].getName().equals("bridge")) {
                             Bridge bridge = (Bridge) structures[i];
                             writer.write("bridge_" + bridge.getX() + "_" + bridge.getY() + "_" + bridge.getLen() + "_" +
-                                    bridge.getDirection() + "_" + bridge.getBreak() + " ");
+                                    bridge.getDirection() + "_" + bridge.getBreak() + "_" + bridge.getFilePath() + " ");
                         }
                         if(structures[i].getName().equals("portal")) {
                             Portal portal = (Portal) structures[i];
@@ -180,6 +181,14 @@ public class GameSaveManager {
                         }
                         writer.write("\n");
                     }
+                    if (spell.getName().equals("wrench")) {
+                        WrenchSpell wrenchSpell = (WrenchSpell) spell;
+                        writer.write(wrenchSpell.getVisible() + "_wrench");
+                        for(String string: wrenchSpell.getSaveChangeText()) {
+                            writer.write("_" + string);
+                        }
+                        writer.write("\n");
+                    }
 
                 }
             }
@@ -207,6 +216,18 @@ public class GameSaveManager {
                             }
 
                         }
+
+                        if(editArea.getName().contains("wrench")) {
+                            writer.write("wrench_" + editArea.getName().charAt(editArea.getName().length() - 1));
+
+                            if((editArea.getCurrentText().isEmpty())) {
+                                writer.write("_null\n");
+                            } else {
+                                writer.write("_" + editArea.getCurrentText() + "\n");
+                            }
+
+                        }
+
 
                         // Сюда остальные заклинания
                     }

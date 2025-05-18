@@ -4,6 +4,7 @@ import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.gameplay.world.objects.Key;
 import main.java.com.magicode.spells.Spell;
 import main.java.com.magicode.spells.spells.KeySpell;
+import main.java.com.magicode.spells.spells.WrenchSpell;
 import main.java.com.magicode.ui.GUI;
 import main.java.com.magicode.ui.gamestate.tablet.EditArea;
 import main.java.com.magicode.ui.gamestate.tablet.TextRedactor;
@@ -349,6 +350,22 @@ public class Tablet extends GUI {
                     }
                 }
 
+                if(parts[0].equals("wrench")) {
+                    for(EditArea editArea : editAreas) {
+                        if(editArea == null) continue;
+                        if(editArea.getName().contains("wrench")
+                                && (editArea.getName().charAt(editArea.getName().length() - 1) + "").equals(parts[1])) {
+                            if(parts[2].equals("null")) {
+                                editArea.setCurrentText("");
+                            } else {
+                                editArea.setCurrentText(parts[2]);
+                            }
+
+                        }
+                    }
+                }
+
+
                 // Тута остальные заклинания
             }
 
@@ -467,6 +484,39 @@ public class Tablet extends GUI {
                         }
                     }
                 }
+                if(editArea.getName().contains("wrench")) {
+                    Spell[] spells = gp.player.getSpells();
+                    if(spells != null) {
+                        for(Spell spell: spells) {
+                            if(spell != null) {
+                                if (spell.getName().equals("wrench")) {
+                                    WrenchSpell wrenchSpell = (WrenchSpell) spell;
+                                    if (wrenchSpell.update(editArea.getCurrentText(),
+                                            Integer.parseInt(editArea.getName().charAt(editArea.getName().length() - 1) + ""))) {
+
+
+                                        if(editArea.getCurrentText().charAt(0) == '+') {
+                                            curPlus--;
+                                        }
+                                        if(editArea.getCurrentText().charAt(0) == '-') {
+                                            curMinus--;
+                                        }
+                                        if(editArea.getCurrentText().charAt(0) == '!') {
+                                            curExclamationMark--;
+                                        }
+
+                                        editArea.setColor(Color.GREEN);
+                                    } else {
+                                        editArea.setColor(Color.RED);
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                }
+
+
             }
         }
 
