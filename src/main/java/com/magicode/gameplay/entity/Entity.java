@@ -10,6 +10,7 @@ public class Entity {
     protected double maxHealth;
     protected double health;
     protected double regeneration;
+    protected double damage;
 
     protected int collisionX;
     protected int collisionY;
@@ -54,5 +55,5 @@ public class Entity {
     public int getCollisionWidth() {
         return collisionWidth;
     }
-
+    public double getDamage() {return damage;}
 }

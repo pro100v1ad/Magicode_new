@@ -32,7 +32,7 @@ public class Slime extends Enemy {
         speed = 1.25;
         maxHealth = 50;
         health = maxHealth;
-        damage = 10;
+        damage = 1;
         detectionRange = GamePanel.tileSize * 5;
         aggressive = false;
 
@@ -52,6 +52,19 @@ public class Slime extends Enemy {
         Images[2] = resourceLoader.loadImage("/resources/enemies/slime/Slimes3.png");
         animations[0] = new Animation(Images, 5);
 
+    }
+
+    private void checkPlayerCollisionAndDamage() {
+        // Проверяем коллизию с игроком
+        if (gp.getCollision().checkEntityCollision(this, gp.player)) {
+            long currentTime = System.currentTimeMillis();
+            // Проверяем, прошло ли достаточно времени с последнего урона
+            if (currentTime - lastDamageTime >= damageCooldown) {
+                // Наносим урон игроку
+                gp.player.setHealth((int)gp.player.getHealth() - damage);
+                lastDamageTime = currentTime; // Обновляем время последнего урона
+            }
+        }
     }
 
     private void updateAggressiveMovement() {
@@ -190,7 +203,7 @@ public class Slime extends Enemy {
             updateAggressiveMovement();
         }
 
-        // checkPlayerCollisionAndDamage();
+        checkPlayerCollisionAndDamage();
 
         // Обновление анимации
         switch(direction) {
