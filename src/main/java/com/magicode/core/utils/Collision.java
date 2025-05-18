@@ -28,6 +28,10 @@ public class Collision {
 
     }
 
+    public int[][] getCollisionMap() {
+        return collisionMap;
+    }
+
     public void reloadMap(Layer[][] worldMap, Structure[] structures) {
         for(int i = 0; i < mapY; i++) {
             for(int j = 0; j < mapX; j++) {

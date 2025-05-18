@@ -2,6 +2,7 @@ package main.java.com.magicode.gameplay.entity;
 
 import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.core.utils.Animation;
+import main.java.com.magicode.core.utils.BulletManager;
 import main.java.com.magicode.core.utils.ResourceLoader;
 import main.java.com.magicode.spells.Spell;
 import main.java.com.magicode.spells.spells.KeySpell;
@@ -24,7 +25,6 @@ public class Player extends Entity implements Serializable {
 
     private final int screenX;
     private final int screenY;
-    private String lastDirection = "";
 
     private double maxMana;
     private double mana;
@@ -41,9 +41,13 @@ public class Player extends Entity implements Serializable {
     private long lastDamageTime = 0;
     private final long damageCooldown = 1000;
 
+    private BulletManager bulletManager;
+    private boolean click;
+
     public Player(GamePanel gp, String playerFilePath, String spellFilePath) {
         this.gp = gp;
         resourceLoader = new ResourceLoader();
+        bulletManager = new BulletManager();
 
         screenX = GamePanel.WIDTH/2 - GamePanel.tileSize;
         screenY = GamePanel.HEIGHT/2 - GamePanel.tileSize*2;
@@ -208,11 +212,11 @@ public class Player extends Entity implements Serializable {
         }
     }
 
+    public void click() {
+        click = true;
+    }
+
     public void setDefaultValues() {
-//        worldX = 10;
-//        worldY = 10;
-
-
 
         countBook = 0;
 
@@ -275,15 +279,13 @@ public class Player extends Entity implements Serializable {
         this.mana = mana;
     }
 
-
-
-    public boolean loadPlayerFromFile(String filePath) {
+    public void loadPlayerFromFile(String filePath) {
         try(BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             line = reader.readLine();
             if (line == null) {
                 System.out.println("Файл savePlayer пуст");
-                return false;// Если файл закончился раньше, чем ожидалось
+                return ;// Если файл закончился раньше, чем ожидалось
             }
 
             String[] parts = line.split("_");
@@ -316,11 +318,8 @@ public class Player extends Entity implements Serializable {
 
         } catch (Exception e) {
             System.out.println("Ошибка загрузки игрока!");
-            return false;
         }
 
-
-        return true;
     }
 
 
@@ -426,6 +425,34 @@ public class Player extends Entity implements Serializable {
         healthBar.setCurrentValue((int)health);
         manaBar.setCurrentValue((int)mana);
 
+        bulletManager.updateAllBullets();
+
+        if(click) {
+            // Координаты точек
+            double x1 = screenX + (float)GamePanel.tileSize/2 + 8, y1 = screenY + (float)GamePanel.tileSize + 8;
+            double x2 = GamePanel.mouseX, y2 = GamePanel.mouseY;
+
+            // Вычисляем разницу координат
+            double deltaX = x2 - x1;
+            double deltaY = y2 - y1;
+
+            // Вычисляем угол в радианах с помощью Math.atan2
+            double angleRad = Math.atan2(deltaY, deltaX);
+
+            // Преобразуем радианы в градусы
+            double angleDeg = Math.toDegrees(angleRad);
+
+            // Угол может быть отрицательным (приводим к диапазону [0, 360))
+            if (angleDeg < 0) {
+                angleDeg += 360;
+            }
+
+            int radius = 16;
+            Bullet bullet = new Bullet(gp, (int)worldX + collisionWidth/2, (int)worldY + collisionHeight/2, angleDeg, 10, radius);
+            bulletManager.addBullet(bullet);
+        }
+
+        click = false;
     }
 
     private void handleEnemyCollision(Enemy enemy) {
@@ -461,6 +488,7 @@ public class Player extends Entity implements Serializable {
         healthBar.draw(g);
         manaBar.draw(g);
 
+        bulletManager.drawAllBullets(g);
     }
 
 }
