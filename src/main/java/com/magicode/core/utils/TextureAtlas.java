@@ -97,6 +97,8 @@ public class TextureAtlas {
         textures[16][2].loadTexture("/resources/gui/directory/DirectoryArrowRight.png");
 
         textures[17][0].loadTexture("/resources/gui/interface_/bar.png");
+        textures[17][1].loadTexture("/resources/gui/interface_/rechargeIcons/rechargeBackground.png");
+        textures[17][2].loadTexture("/resources/gui/interface_/rechargeIcons/rechargeFrame.png");
 
         textures[18][0].loadTexture("/resources/structures/decoration/bush.png");
         textures[18][1].loadTexture("/resources/structures/decoration/stone.png");

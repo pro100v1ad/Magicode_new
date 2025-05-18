@@ -25,7 +25,7 @@ public class Chest extends Structure {
     private String[] needDefaultThird;
     private boolean[] needDefaultFourth;
 
-    private String[] condition;
+    private String condition;
 
     public Chest(GamePanel gp, int x, int y, int w, int h, String code, boolean isLock, boolean state, String direction, String filePath) {
         this.gp = gp;
@@ -69,7 +69,7 @@ public class Chest extends Structure {
                 System.out.println("Файл пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
-            condition = line.split(" ");
+            condition = line;
 
         }
         catch (IOException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
@@ -146,42 +146,25 @@ public class Chest extends Structure {
 
     public boolean checkValues(int first, int second, String third, boolean fourth) {
 
-        for(int i = 0; i < condition.length; i++) {
-            if(condition[i].equals("==")) {
-            //  Добавить логику
-            }
+        if(condition.equals("arg1 + arg2 == 10")) {
+            return first + second == 10;
+        }
+        if(condition.equals("arg1 + arg2 == 8")) {
+            return first + second == 8;
+        }
+        if(condition.equals("arg1 + 1 > arg2 - 1")) {
+            return first + 1 > second - 1;
+        }
+        if(condition.equals("arg4")) {
+            return fourth;
+        }
+        if(condition.equals("arg3 == \"key2\"")) {
+            return third.equals("key2");
         }
 
-        return true;
+        return false;
     }
 
-    public int calculate(String[] condition, int first, int second, String third, boolean fourth) {
-        if((condition[0].equals("arg1") || condition[0].equals("arg2"))
-                && (condition[2].equals("arg1") || condition[2].equals("arg2"))) {
-            if(condition[1].equals("+")) {
-                return first + second;
-            }
-            if(condition[1].equals("-") && condition[0].equals("arg1")) {// когда первый аргумент arg1
-                return first - second;
-            }
-            if(condition[1].equals("-")) { // когда первый аргумент arg2
-                return second - first;
-            }
-            if(condition[1].equals("*")) {
-                return first * second;
-            }
-            if(condition[1].equals("/") && condition[0].equals("arg1")) {// когда первый аргумент arg1
-                return first / second;
-            }
-            if(condition[1].equals("/")) { // когда первый аргумент arg2
-                return second / first;
-            }
-
-        }
-
-        // Добавить проверку для других условий
-        return 0;
-    }
 
     public GameObject openChest(GameObject object) {
         isLock = false;

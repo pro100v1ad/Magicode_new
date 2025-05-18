@@ -595,8 +595,9 @@ public class SceneLoader {
                                     if (chest.checkValues(keySpell.getCurrentFirst(),
                                             keySpell.getCurrentSecond(),
                                             keySpell.getCurrentThird(),
-                                            keySpell.getCurrentFourth())) {
+                                            keySpell.getCurrentFourth()) && !keySpell.getIsRecharge() && gp.player.getMana() >= 10) {
                                         chest.unblockChest();
+                                        keySpell.setIsRecharge(true);
                                     }
                                 }
                             }
@@ -675,6 +676,16 @@ public class SceneLoader {
         }
 
         updateBoard();
+
+        Spell[] spells = gp.player.getSpells();
+        if(spells != null) {
+            for(Spell spell: spells) {
+                if(spell != null) {
+                    spell.recharge();
+                }
+            }
+        }
+
     }
 
     public void updateBoard() {
@@ -683,6 +694,16 @@ public class SceneLoader {
         }
     }
 
+    public void drawRechargeIconSpells(Graphics2D g) {
+        Spell[] spells = gp.player.getSpells();
+        if(spells != null) {
+            for(Spell spell: spells) {
+                if(spell != null) {
+                    spell.draw(g);
+                }
+            }
+        }
+    }
 
     public void drawBackground(Graphics2D g) {
         int worldCol = 0;
@@ -749,6 +770,7 @@ public class SceneLoader {
         drawObjects(g);
         drawEnemies(g);
         drawBoard(g);
+        drawRechargeIconSpells(g);
     }
 
     private void drawEnemies(Graphics2D g) {

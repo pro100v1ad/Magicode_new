@@ -1,8 +1,9 @@
 package main.java.com.magicode.spells.spells;
 
+import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.spells.Spell;
 
-import java.util.Arrays;
+import java.awt.*;
 
 public class KeySpell extends Spell {
 
@@ -11,7 +12,11 @@ public class KeySpell extends Spell {
     private boolean currentFourth;
     private String[] saveChangeText;
 
-    public KeySpell(String[] saveChangeText) {
+
+    private GamePanel gp;
+
+    public KeySpell(GamePanel gp, String[] saveChangeText) {
+        this.gp = gp;
         setDefaultValues();
 
         this.isVisible = saveChangeText[0].equals("true");
@@ -27,6 +32,17 @@ public class KeySpell extends Spell {
         currentSecond = defaultSecond;
         currentThird = defaultThird;
         currentFourth = defaultFourth;
+
+        currentRechargeTime = 0;
+        rechargeTime = (int)(5 * GamePanel.UPDATE_RATE); // 5 секунд
+        isRecharge = false;
+
+        posIconX = 300;
+        posIconY = 625;
+
+        rechargeBackgroundIconSpell = gp.textureAtlas.textures[17][1].getTexture();
+        rechargeFrame = gp.textureAtlas.textures[17][2].getTexture();
+        rechargeIconSpell = gp.textureAtlas.textures[13][0].getTexture();
     }
 
     public void setDefaultValues() {
@@ -132,6 +148,27 @@ public class KeySpell extends Spell {
 
     public String[] getSaveChangeText() {
         return saveChangeText;
+    }
+
+    public boolean getIsRecharge() {
+        return isRecharge;
+    }
+    public void setIsRecharge(boolean recharge) {
+        isRecharge = recharge;
+        gp.player.setMana(gp.player.getMana() - 10);
+    }
+
+    @Override
+    public void recharge() {
+
+        if(isRecharge) {
+            currentRechargeTime++;
+            if(currentRechargeTime == rechargeTime) {
+                currentRechargeTime = 0;
+                isRecharge = false;
+            }
+        }
+
     }
 
     @Override

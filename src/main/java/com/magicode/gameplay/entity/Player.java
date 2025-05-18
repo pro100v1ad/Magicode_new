@@ -37,7 +37,7 @@ public class Player extends Entity implements Serializable {
     private Bar manaBar;
 
 
-    public Player(GamePanel gp, String playerFilePath, String spellFilePath){
+    public Player(GamePanel gp, String playerFilePath, String spellFilePath) {
         this.gp = gp;
         resourceLoader = new ResourceLoader();
 
@@ -147,7 +147,7 @@ public class Player extends Entity implements Serializable {
             while((line = reader.readLine()) != null) {
                 String[] parts = line.split("_");
                 if(parts[1].equals("key")) {
-                    spells[index++] = new KeySpell(parts);
+                    spells[index++] = new KeySpell(gp, parts);
                 }
             }
 
@@ -180,7 +180,7 @@ public class Player extends Entity implements Serializable {
             while((line = br.readLine()) != null) {
                 String[] parts = line.split("_");
                 if(parts[1].equals("key")) {
-                    spells[index++] = new KeySpell(parts);
+                    spells[index++] = new KeySpell(gp, parts);
                 }
             }
 
@@ -250,6 +250,10 @@ public class Player extends Entity implements Serializable {
 
     public double getMaxMana() {
         return maxMana;
+    }
+
+    public void setMana(double mana) {
+        this.mana = mana;
     }
 
 
@@ -387,8 +391,8 @@ public class Player extends Entity implements Serializable {
 
 //        System.out.println("Player - x: " + worldX + ", y: " + worldY);
 
-        if(health < maxHealth) health += 0.01;
-        if(mana < maxMana) mana += 0.01;
+        if(health < maxHealth) health += 0.02;
+        if(mana < maxMana) mana += 0.02;
 
         healthBar.setCurrentValue((int)health);
         manaBar.setCurrentValue((int)mana);
