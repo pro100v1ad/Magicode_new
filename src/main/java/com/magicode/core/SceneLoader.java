@@ -215,7 +215,7 @@ public class SceneLoader {
                     //Формат: name_x_y_w_h_code:radius_isLock_direction_state - для двери
                     structures[i] = new Door(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
                             Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
-                            structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7]);
+                            structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7], structure[9]);
                 }
 
                 if(structure[0].equals("hatch")) {
@@ -408,7 +408,7 @@ public class SceneLoader {
                             if (structure[0].equals("door")) {
                                 structures[index++] = new Door(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
                                         Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
-                                        structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7]);
+                                        structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7], structure[9]);
                             }
                             else if (structure[0].equals("hatch")) {
                                 structures[index++] = new Hatch(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
@@ -551,9 +551,15 @@ public class SceneLoader {
                 if(GamePanel.keys[5]) { // Если открыть-закрыть дверь
 
                     isCooldown = true;
-                    if(structure.getName().equals("door") && structure.getState()) {
-                        Door door = (Door) structure;
-                        door.changeLock();
+                    if(structure.getName().equals("door")) {
+                        if(structure.getState()) {
+                            Door door = (Door) structure;
+                            door.changeLock();
+                        } else {
+                            Door door = (Door) structure;
+                            board = new Board(gp, 175, 150, door.getFilePath());
+                            gp.state = GamePanel.GameState.GameOpenBoard;
+                        }
                     } else if(structure.getName().equals("hatch")) {
                         Hatch hatch = (Hatch) structure;
                         scene = new CutScene(gp, hatch.getRoute());
@@ -602,6 +608,26 @@ public class SceneLoader {
                                 }
                             }
 
+                        }
+                    }
+
+                    if(structure.getName().equals("door")) {
+                        Door door = (Door) structure;
+                        KeySpell keySpell;
+                        Spell[] spells = gp.player.getSpells();
+                        if (spells != null) {
+                            for (Spell spell : spells) {
+                                if (spell != null && spell.getName().equals("key")) {
+                                    keySpell = (KeySpell) spell;
+                                    if (door.checkValues(keySpell.getCurrentFirst(),
+                                            keySpell.getCurrentSecond(),
+                                            keySpell.getCurrentThird(),
+                                            keySpell.getCurrentFourth()) && !keySpell.getIsRecharge() && gp.player.getMana() >= 10) {
+                                        door.unlock();
+                                        keySpell.setIsRecharge(true);
+                                    }
+                                }
+                            }
                         }
                     }
 

@@ -21,10 +21,6 @@ public class Chest extends Structure {
     private String objectName;
     private String filePath;
 
-    private int[] needDefaultFirst, needDefaultSecond;
-    private String[] needDefaultThird;
-    private boolean[] needDefaultFourth;
-
     private String condition;
 
     public Chest(GamePanel gp, int x, int y, int w, int h, String code, boolean isLock, boolean state, String direction, String filePath) {
@@ -49,10 +45,6 @@ public class Chest extends Structure {
         loadDefaultValue();
         loadImage();
 
-//        System.out.println(Arrays.toString(needDefaultFirst));
-//        System.out.println(Arrays.toString(needDefaultSecond));
-//        System.out.println(Arrays.toString(needDefaultThird));
-//        System.out.println(Arrays.toString(needDefaultFourth));
     }
     private void loadDefaultValue() {
         if(filePath == null) {
@@ -123,21 +115,6 @@ public class Chest extends Structure {
         return filePath;
     }
 
-    public int[] getNeedDefaultFirst() {
-        return needDefaultFirst;
-    }
-
-    public int[] getNeedDefaultSecond() {
-        return needDefaultSecond;
-    }
-
-    public String[] getNeedDefaultThird() {
-        return needDefaultThird;
-    }
-
-    public boolean[] getNeedDefaultFourth() {
-        return needDefaultFourth;
-    }
 
     public void unblockChest() {
         this.state = true;

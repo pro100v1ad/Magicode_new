@@ -55,7 +55,7 @@ public class GameSaveManager {
                             Door door = (Door) structures[i];
                             writer.write("door_" + door.getX() + "_" + door.getY() + "_" + door.getW() + "_" + door.getH() +
                                     "_" + door.getCode() + ":" + door.getRadius() + "_" + door.getLock() + "_" + door.getDirection()
-                                    + "_" + door.getState() + " ");
+                                    + "_" + door.getState() + "_" + door.getFilePath() + " ");
                         }
                         if (structures[i].getName().equals("hatch")) {
                             Hatch hatch = (Hatch) structures[i];
