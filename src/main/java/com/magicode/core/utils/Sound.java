@@ -13,7 +13,16 @@ public class Sound {
 
     public Sound() {
         // Указываем пути к звуковым файлам относительно ресурсов
-        soundFiles[0] = "/resources/sounds/Merchant.wav";
+        soundFiles[0] = "sounds/sound/Menu.mp3";
+        soundFiles[1] = "/resources/sounds/Merchant.wav";
+        soundFiles[2] = "/resources/sounds/Dungeon.wav";
+        soundFiles[3] = "/resources/sounds/FinalBattle.wav";
+        soundFiles[4] = "/resources/sounds/gameover.wav";
+        soundFiles[5] = "/resources/sounds/parry.wav";
+        soundFiles[6] = "/resources/sounds/repair.wav";
+        soundFiles[7] = "/resources/sounds/stairs.wav";
+        soundFiles[8] = "/resources/sounds/hitmonster.wav";
+        soundFiles[9] = "/resources/sounds/receivedamage.wav";
     }
 
     public void setFile(int i) {

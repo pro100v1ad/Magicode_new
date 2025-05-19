@@ -97,5 +97,6 @@ public class SceneChanger {
                 null);
         gp.player.setWorldX(Integer.parseInt(sceneInfo[index].split(" ")[1]));
         gp.player.setWorldY(Integer.parseInt(sceneInfo[index].split(" ")[2]));
+        gp.changeMusic();
     }
 }

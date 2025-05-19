@@ -112,8 +112,6 @@ public class GamePanel extends JComponent {
         addMouseMotionListener(listeners);
         addMouseWheelListener(listeners);
 
-
-
     }
     public void setWhoHaveCollision() {
         whoHaveCollision[0] = 1;
@@ -159,8 +157,25 @@ public class GamePanel extends JComponent {
         whoHaveCollision[40] = 238;
     }
 
-    public void setupGame() {
-//        playMusic(0);
+    public void changeMusic() {
+        stopMusic();
+        switch(state){
+            case StartMenu:
+                playMusic(0);
+                break;
+            case GameOpenTablet:
+            case GameOpenDirectory:
+            case GameMenu:
+            case GameOpenBoard:
+            case Game:
+                if(sceneChanger.getNumberActiveScene() == 1)
+                    playMusic(1);
+                if(sceneChanger.getNumberActiveScene() == 2)
+                    playMusic(2);
+                if(sceneChanger.getNumberActiveScene() == 3)
+                    playMusic(3);
+                break;
+        }
     }
 
 

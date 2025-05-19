@@ -19,7 +19,7 @@ public class Main {
         f.setResizable(false);
 
 
-        panel.setupGame();
+        panel.changeMusic();
         panel.start();
 
 
