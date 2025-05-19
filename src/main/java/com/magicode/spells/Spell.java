@@ -23,6 +23,8 @@ public abstract class Spell extends GUI {
     protected BufferedImage rechargeBackgroundIconSpell;
     protected int posIconX, posIconY;
     protected String wordToUse;
+    protected int wordX, wordY;
+    protected float fontSize;
 
     public Spell() {
 
@@ -86,9 +88,9 @@ public abstract class Spell extends GUI {
         g.drawImage(rechargeIconSpell, posIconX+8, posIconY+8, GamePanel.tileSize*2-16, GamePanel.tileSize*2-16, null);
         g.drawImage(rechargeFrame, posIconX, posIconY, GamePanel.tileSize*2, GamePanel.tileSize*2, null);
 
-        g.setFont(my_font.deriveFont(16f));
+        g.setFont(my_font.deriveFont(fontSize));
         g.setColor(new Color(160, 190, 250));
-        g.drawString(wordToUse, (int)(posIconX + GamePanel.tileSize*3.0/2)-2, (int)(posIconY+GamePanel.tileSize*3.5/2)-2);
+        g.drawString(wordToUse, wordX, wordY);
 
     }
 }

@@ -28,12 +28,16 @@ public class GunSpell extends Spell {
 
 
         currentRechargeTime = 0;
-        rechargeTime = (int)(5 * GamePanel.UPDATE_RATE); // 5 секунд
+        rechargeTime = (int)(currentReload/2 * GamePanel.UPDATE_RATE); // 5 секунд
         isRecharge = false;
 
-        posIconX = 100;
+        posIconX = 164;
         posIconY = 625;
-        wordToUse = "Space";
+        wordToUse = "SPACE";
+
+        wordX = (int)(posIconX + GamePanel.tileSize*3.0/2)-24;
+        wordY = (int)(posIconY+GamePanel.tileSize*3.5/2)-2;
+        fontSize = 10f;
 
         rechargeBackgroundIconSpell = gp.textureAtlas.textures[17][1].getTexture();
         rechargeFrame = gp.textureAtlas.textures[17][2].getTexture();

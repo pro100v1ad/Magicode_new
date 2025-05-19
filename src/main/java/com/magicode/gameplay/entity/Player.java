@@ -43,7 +43,7 @@ public class Player extends Entity implements Serializable {
     private final long damageCooldown = 1000;
 
     private BulletManager bulletManager;
-    private boolean click;
+    private boolean shoot;
 
     public Player(GamePanel gp, String playerFilePath, String spellFilePath) {
         this.gp = gp;
@@ -220,9 +220,6 @@ public class Player extends Entity implements Serializable {
         }
     }
 
-    public void click() {
-        click = true;
-    }
 
     public void setDefaultValues() {
 
@@ -286,6 +283,10 @@ public class Player extends Entity implements Serializable {
 
     public void setMana(double mana) {
         this.mana = mana;
+    }
+
+    public void shoot() {
+        shoot = true;
     }
 
     public void loadPlayerFromFile(String filePath) {
@@ -429,14 +430,14 @@ public class Player extends Entity implements Serializable {
 //        System.out.println("Player - x: " + worldX + ", y: " + worldY);
 
         if(health < maxHealth) health += 0.02;
-        if(mana < maxMana) mana += 0.02;
+        if(mana < maxMana) mana += 0.08;
 
         healthBar.setCurrentValue((int)health);
         manaBar.setCurrentValue((int)mana);
 
         bulletManager.updateAllBullets();
 
-        if(click) {
+        if(shoot) {
             // Координаты точек
             double x1 = screenX + (float)GamePanel.tileSize/2 + 8, y1 = screenY + (float)GamePanel.tileSize + 8;
             double x2 = GamePanel.mouseX, y2 = GamePanel.mouseY;
@@ -459,9 +460,10 @@ public class Player extends Entity implements Serializable {
             int radius = 16;
             Bullet bullet = new Bullet(gp, (int)worldX + collisionWidth/2, (int)worldY + collisionHeight/2, angleDeg, 10, radius);
             bulletManager.addBullet(bullet);
+            shoot = false;
         }
 
-        click = false;
+        shoot = false;
     }
 
     private void handleEnemyCollision(Enemy enemy) {

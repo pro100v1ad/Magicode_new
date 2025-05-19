@@ -360,7 +360,6 @@ public class GamePanel extends JComponent {
         if(state.equals(GameState.StartMenu)) startMenu.click();
         if(state.equals(GameState.GameMenu) || state.equals(GameState.Game)) {
             menuInGame.click();
-            player.click();
         }
         if(state.equals(GameState.GameOpenTablet)) {
             tablet.click();

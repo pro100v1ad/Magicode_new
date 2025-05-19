@@ -41,6 +41,10 @@ public class KeySpell extends Spell {
         posIconY = 625;
         wordToUse = "K";
 
+        wordX = (int)(posIconX + GamePanel.tileSize*3.0/2)-2;
+        wordY = (int)(posIconY+GamePanel.tileSize*3.5/2)-2;
+        fontSize = 16f;
+
         rechargeBackgroundIconSpell = gp.textureAtlas.textures[17][1].getTexture();
         rechargeFrame = gp.textureAtlas.textures[17][2].getTexture();
         rechargeIconSpell = gp.textureAtlas.textures[13][0].getTexture();
