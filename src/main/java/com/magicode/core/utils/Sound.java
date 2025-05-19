@@ -13,7 +13,7 @@ public class Sound {
 
     public Sound() {
         // Указываем пути к звуковым файлам относительно ресурсов
-        soundFiles[0] = "/resources/sounds/Magicode.wav";
+        soundFiles[0] = "/resources/sounds/Merchant.wav";
     }
 
     public void setFile(int i) {
