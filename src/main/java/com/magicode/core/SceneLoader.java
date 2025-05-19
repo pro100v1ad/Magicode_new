@@ -678,30 +678,6 @@ public class SceneLoader {
                     interaction.reloadMap(structures, objects);
                 }
 
-                if(GamePanel.keys[11]) { // Space
-                    isCooldown = true;
-
-                    if(structure.getName().equals("gun")) {
-//                        Bridge bridge = (Bridge) structure;
-                        GunSpell gunSpell;
-                        Spell[] spells = gp.player.getSpells();
-                        if(spells != null) {
-                            for(Spell spell: spells) {
-                                if(spell != null && spell.getName().equals("wrench")) {
-                                    gunSpell = (GunSpell) spell;
-//                                    if (bridge.checkValues(gunSpell.getCurrentDamage(),
-//                                            gunSpell.getCurrentReload()
-//                                                    && !gunSpell.getIsRecharge() && gp.player.getMana() >= 10) {
-//                                        bridge.repair();
-//                                        gunSpell.setIsRecharge(true);
-//                                    }
-                                }
-                            }
-                        }
-                    }
-                    collision.reloadMap(worldMap, structures);
-                    interaction.reloadMap(structures, objects);
-                }
             }
 
             if(!isCooldown) {
@@ -772,6 +748,24 @@ public class SceneLoader {
 
             }
 
+        }
+
+        if(GamePanel.keys[11]) { // Space
+            isCooldown = true;
+
+            GunSpell gunSpell;
+            Spell[] spells = gp.player.getSpells();
+            if(spells != null) {
+                for(Spell spell: spells) {
+                    if(spell != null && spell.getName().equals("gun")) {
+                        gunSpell = (GunSpell) spell;
+                        if (!gunSpell.getIsRecharge() && gp.player.getMana() >= 10) {
+                            gp.player.shoot();
+                            gunSpell.setIsRecharge(true);
+                        }
+                    }
+                }
+            }
         }
 
         if (enemies != null) {
