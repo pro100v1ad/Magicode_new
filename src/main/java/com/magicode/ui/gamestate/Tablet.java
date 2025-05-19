@@ -3,6 +3,7 @@ package main.java.com.magicode.ui.gamestate;
 import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.gameplay.world.objects.Key;
 import main.java.com.magicode.spells.Spell;
+import main.java.com.magicode.spells.spells.GunSpell;
 import main.java.com.magicode.spells.spells.KeySpell;
 import main.java.com.magicode.spells.spells.WrenchSpell;
 import main.java.com.magicode.ui.GUI;
@@ -365,7 +366,20 @@ public class Tablet extends GUI {
                     }
                 }
 
+                if(parts[0].equals("gun")) {
+                    for(EditArea editArea : editAreas) {
+                        if(editArea == null) continue;
+                        if(editArea.getName().contains("gun")
+                                && (editArea.getName().charAt(editArea.getName().length() - 1) + "").equals(parts[1])) {
+                            if(parts[2].equals("null")) {
+                                editArea.setCurrentText("");
+                            } else {
+                                editArea.setCurrentText(parts[2]);
+                            }
 
+                        }
+                    }
+                }
                 // Тута остальные заклинания
             }
 
@@ -479,11 +493,11 @@ public class Tablet extends GUI {
 
                                 }
 
-                                // Сюда добавить остальные заклинания при добавлении их
                             }
                         }
                     }
                 }
+
                 if(editArea.getName().contains("wrench")) {
                     Spell[] spells = gp.player.getSpells();
                     if(spells != null) {
@@ -516,6 +530,37 @@ public class Tablet extends GUI {
                     }
                 }
 
+                if(editArea.getName().contains("gun")) {
+                    Spell[] spells = gp.player.getSpells();
+                    if(spells != null) {
+                        for(Spell spell: spells) {
+                            if(spell != null) {
+                                if (spell.getName().equals("gun")) {
+                                    GunSpell gunSpell = (GunSpell) spell;
+                                    if (gunSpell.update(editArea.getCurrentText(),
+                                            Integer.parseInt(editArea.getName().charAt(editArea.getName().length() - 1) + ""))) {
+
+
+                                        if(editArea.getCurrentText().charAt(0) == '+') {
+                                            curPlus--;
+                                        }
+                                        if(editArea.getCurrentText().charAt(0) == '-') {
+                                            curMinus--;
+                                        }
+                                        if(editArea.getCurrentText().charAt(0) == '!') {
+                                            curExclamationMark--;
+                                        }
+
+                                        editArea.setColor(Color.GREEN);
+                                    } else {
+                                        editArea.setColor(Color.RED);
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                }
 
             }
         }

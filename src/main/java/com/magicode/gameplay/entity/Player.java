@@ -5,6 +5,7 @@ import main.java.com.magicode.core.utils.Animation;
 import main.java.com.magicode.core.utils.BulletManager;
 import main.java.com.magicode.core.utils.ResourceLoader;
 import main.java.com.magicode.spells.Spell;
+import main.java.com.magicode.spells.spells.GunSpell;
 import main.java.com.magicode.spells.spells.KeySpell;
 import main.java.com.magicode.spells.spells.WrenchSpell;
 import main.java.com.magicode.ui.gamestate.Directory;
@@ -160,6 +161,9 @@ public class Player extends Entity implements Serializable {
                 if(parts[1].equals("wrench")) {
                     addSpell("wrench", parts);
                 }
+                if(parts[1].equals("gun")) {
+                    addSpell("gun", parts);
+                }
             }
 
 
@@ -210,6 +214,10 @@ public class Player extends Entity implements Serializable {
         if(name.equals("wrench")) {
             spells[countSpells++] = new WrenchSpell(gp, parts);
         }
+
+        if(name.equals("gun")) {
+            spells[countSpells++] = new GunSpell(gp,parts);
+        }
     }
 
     public void click() {
@@ -232,6 +240,7 @@ public class Player extends Entity implements Serializable {
         worldY = GamePanel.tileSize*17;
         float pixelsPerSecond = 200f;
         speed = (pixelsPerSecond * GamePanel.scale) / GamePanel.UPDATE_RATE; // scale минимум 1/4 и максимум 2.
+
     }
 
     public Spell[] getSpells() {

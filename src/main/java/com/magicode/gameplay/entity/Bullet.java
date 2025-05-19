@@ -4,7 +4,6 @@ import main.java.com.magicode.core.GamePanel;
 
 import java.awt.*;
 
-import static java.lang.Math.sqrt;
 
 public class Bullet extends Entity{
 

@@ -7,10 +7,12 @@ import main.java.com.magicode.gameplay.world.GameObject;
 import main.java.com.magicode.gameplay.world.Layer;
 import main.java.com.magicode.gameplay.world.Structure;
 import main.java.com.magicode.gameplay.world.objects.Book;
+import main.java.com.magicode.gameplay.world.objects.Gun;
 import main.java.com.magicode.gameplay.world.objects.Key;
 import main.java.com.magicode.gameplay.world.objects.Wrench;
 import main.java.com.magicode.gameplay.world.structures.*;
 import main.java.com.magicode.spells.Spell;
+import main.java.com.magicode.spells.spells.GunSpell;
 import main.java.com.magicode.spells.spells.KeySpell;
 import main.java.com.magicode.spells.spells.WrenchSpell;
 import main.java.com.magicode.ui.gamestate.Tablet;
@@ -138,6 +140,10 @@ public class GameSaveManager {
                         Wrench wrench = (Wrench) object;
                         writer.write("wrench_" + wrench.getPosX() + "_" + wrench.getPosY() + "_" + wrench.getCode() + "\n");
                     }
+                    if (object.getName().equals("gun")) {
+                        Gun gun = (Gun) object;
+                        writer.write("gun_" + gun.getPosX() + "_" + gun.getPosY() + "_" + gun.getCode() + "\n");
+                    }
 
 
                 }
@@ -190,6 +196,14 @@ public class GameSaveManager {
                         }
                         writer.write("\n");
                     }
+                    if (spell.getName().equals("gun")) {
+                        GunSpell gunSpell = (GunSpell) spell;
+                        writer.write(gunSpell.getVisible() + "_gun");
+                        for(String string: gunSpell.getSaveChangeText()) {
+                            writer.write("_" + string);
+                        }
+                        writer.write("\n");
+                    }
 
                 }
             }
@@ -220,6 +234,17 @@ public class GameSaveManager {
 
                         if(editArea.getName().contains("wrench")) {
                             writer.write("wrench_" + editArea.getName().charAt(editArea.getName().length() - 1));
+
+                            if((editArea.getCurrentText().isEmpty())) {
+                                writer.write("_null\n");
+                            } else {
+                                writer.write("_" + editArea.getCurrentText() + "\n");
+                            }
+
+                        }
+
+                        if(editArea.getName().contains("gun")) {
+                            writer.write("gun_" + editArea.getName().charAt(editArea.getName().length() - 1));
 
                             if((editArea.getCurrentText().isEmpty())) {
                                 writer.write("_null\n");

@@ -9,10 +9,12 @@ import main.java.com.magicode.gameplay.world.GameObject;
 import main.java.com.magicode.gameplay.world.Layer;
 import main.java.com.magicode.gameplay.world.Structure;
 import main.java.com.magicode.gameplay.world.objects.Book;
+import main.java.com.magicode.gameplay.world.objects.Gun;
 import main.java.com.magicode.gameplay.world.objects.Key;
 import main.java.com.magicode.gameplay.world.objects.Wrench;
 import main.java.com.magicode.gameplay.world.structures.*;
 import main.java.com.magicode.spells.Spell;
+import main.java.com.magicode.spells.spells.GunSpell;
 import main.java.com.magicode.spells.spells.KeySpell;
 import main.java.com.magicode.spells.spells.WrenchSpell;
 import main.java.com.magicode.ui.gamestate.Board;
@@ -289,6 +291,9 @@ public class SceneLoader {
                 }
                 if(parts[0].equals("wrench")) {
                     objects[i] = new Wrench(gp, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3]));
+                }
+                if(parts[0].equals("gun")) {
+                    objects[i] = new Gun(gp, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3]));
                 }
 
             }
@@ -671,6 +676,31 @@ public class SceneLoader {
                     collision.reloadMap(worldMap, structures);
                     interaction.reloadMap(structures, objects);
                 }
+
+                if(GamePanel.keys[11]) { // Space
+                    isCooldown = true;
+
+                    if(structure.getName().equals("gun")) {
+//                        Bridge bridge = (Bridge) structure;
+                        GunSpell gunSpell;
+                        Spell[] spells = gp.player.getSpells();
+                        if(spells != null) {
+                            for(Spell spell: spells) {
+                                if(spell != null && spell.getName().equals("wrench")) {
+                                    gunSpell = (GunSpell) spell;
+//                                    if (bridge.checkValues(gunSpell.getCurrentDamage(),
+//                                            gunSpell.getCurrentReload()
+//                                                    && !gunSpell.getIsRecharge() && gp.player.getMana() >= 10) {
+//                                        bridge.repair();
+//                                        gunSpell.setIsRecharge(true);
+//                                    }
+                                }
+                            }
+                        }
+                    }
+                    collision.reloadMap(worldMap, structures);
+                    interaction.reloadMap(structures, objects);
+                }
             }
 
             if(!isCooldown) {
@@ -718,6 +748,20 @@ public class SceneLoader {
                                     }
                                 }
 
+                            }
+                        }
+
+                        if(object.getName().equals("gun")) {
+                            for(int i = 0; i < objects.length; i++) {
+                                if(objects[i] != null) {
+                                    if (objects[i].equals(object)) {
+                                        objects[i] = null;
+                                        System.out.println("Пушка подобрана!");
+                                        gp.tablet.getTextRedactor().addSpell("/resources/spells/gun");
+                                        gp.player.addSpell("gun", "true_gun_null_null".split("_"));
+                                        break;
+                                    }
+                                }
                             }
                         }
 
