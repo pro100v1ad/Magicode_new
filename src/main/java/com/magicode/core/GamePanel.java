@@ -159,22 +159,12 @@ public class GamePanel extends JComponent {
 
     public void changeMusic() {
         stopMusic();
-        switch(state){
-            case StartMenu:
-                playMusic(0);
-                break;
-            case GameOpenTablet:
-            case GameOpenDirectory:
-            case GameMenu:
-            case GameOpenBoard:
-            case Game:
-                if(sceneChanger.getNumberActiveScene() == 1)
-                    playMusic(1);
-                if(sceneChanger.getNumberActiveScene() == 2)
-                    playMusic(2);
-                if(sceneChanger.getNumberActiveScene() == 3)
-                    playMusic(3);
-                break;
+        if (sceneChanger.getNumberActiveScene() == 0) {
+            playMusic(1);
+        } else if (sceneChanger.getNumberActiveScene() == 1){
+            playMusic(2);
+    } else if(sceneChanger.getNumberActiveScene() == 2) {
+            playMusic(3);
         }
     }
 
@@ -326,12 +316,14 @@ public class GamePanel extends JComponent {
 
     public void startNewGame() {
 //        sceneLoader = new SceneLoader(this, null, null);
+
         sceneChanger = new SceneChanger(this, true, null);
         tablet = new Tablet(this, null);
         directory = new Directory(this);
         player = new Player(this, null, null);
         menuInGame = new MenuInGame(this);
         enemies = sceneLoader.getEnemies();
+        changeMusic();
     }
 
     public void continueGame() {
@@ -343,6 +335,7 @@ public class GamePanel extends JComponent {
         player = new Player(this, saveManager.getSaveFilePathPlayer(), saveManager.getSaveFilePathSpells());
         menuInGame = new MenuInGame(this);
         enemies = sceneLoader.getEnemies();
+        changeMusic();
     }
 
     public void exitGame() {
@@ -353,6 +346,8 @@ public class GamePanel extends JComponent {
     public void saveGame() {
         saveManager.saveGame(sceneLoader.getWorldMap(), sceneLoader.getStructures(), player, sceneChanger, sceneLoader.getObjects(), sceneLoader.getEnemies(), player.getSpells(), tablet);
         startMenu.setState(true);
+        stopMusic();
+        playMusic(0);
     }
 
 
@@ -476,8 +471,8 @@ public class GamePanel extends JComponent {
     public void playMusic(int i) {
 
         sound.setFile(i);
-        sound.play();
-        sound.loop();
+        sound.play(i);
+        sound.loop(i);
 
     }
 
@@ -489,7 +484,7 @@ public class GamePanel extends JComponent {
     public void playSE(int i) {
 
         sound.setFile(i);
-        sound.play();
+        sound.play(i);
     }
 
     public Enemy[] getEnemies() {

@@ -120,6 +120,7 @@ public class Chest extends Structure {
     public void unblockChest() {
         this.state = true;
         loadImage();
+        gp.playSE(6);
     }
 
     public boolean checkValues(int first, int second, String third, boolean fourth) {
@@ -149,6 +150,7 @@ public class Chest extends Structure {
         code = 0;
         radius = 0;
         loadImage();
+        gp.playSE(10);
         return setObjectByCode(object, objectName);
     }
 

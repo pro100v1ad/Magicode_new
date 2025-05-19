@@ -19,10 +19,8 @@ public class Main {
         f.setResizable(false);
 
 
-        panel.changeMusic();
+        panel.playMusic(0);
         panel.start();
-
-
     }
 
     public static void setTitle(String name) {

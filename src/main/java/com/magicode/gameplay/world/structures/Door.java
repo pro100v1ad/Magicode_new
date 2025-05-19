@@ -84,6 +84,7 @@ public class Door extends Structure {
     public void changeLock() {
         isLock = !isLock;
         loadImage();
+        gp.playSE(6);
     }
 
     private void loadDefaultValue() {
@@ -113,6 +114,7 @@ public class Door extends Structure {
     public void unlock() {
         state = true;
         loadImage();
+        gp.playSE(8);
     }
 
     public boolean checkValues(int first, int second, String third, boolean fourth) {

@@ -13,7 +13,7 @@ public class Sound {
 
     public Sound() {
         // Указываем пути к звуковым файлам относительно ресурсов
-        soundFiles[0] = "sounds/sound/Menu.mp3";
+        soundFiles[0] = "/resources/sounds/Menu.wav";
         soundFiles[1] = "/resources/sounds/Merchant.wav";
         soundFiles[2] = "/resources/sounds/Dungeon.wav";
         soundFiles[3] = "/resources/sounds/FinalBattle.wav";
@@ -23,6 +23,7 @@ public class Sound {
         soundFiles[7] = "/resources/sounds/stairs.wav";
         soundFiles[8] = "/resources/sounds/hitmonster.wav";
         soundFiles[9] = "/resources/sounds/receivedamage.wav";
+        soundFiles[10] = "/resources/sounds/chest.wav";
     }
 
     public void setFile(int i) {
@@ -44,18 +45,20 @@ public class Sound {
         }
     }
 
-    public void play() {
+    public void play(int i) {
         if (clip == null) {
             System.out.println("Ошибка: звуковой файл не загружен!");
+            System.out.println("Ошибка была в файле:" + i);
             return;
         }
         clip.setFramePosition(0);
         clip.start();
     }
 
-    public void loop() {
+    public void loop(int i) {
         if (clip == null) {
-            System.out.println("Ошибка: звуковой файл не загружен!");
+            System.out.println("Ошибка: звуковой файл не загружен для лупа!");
+            System.out.println("Ошибка была в файле:" + i);
             return;
         }
         clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -63,7 +66,7 @@ public class Sound {
 
     public void stop() {
         if (clip == null) {
-            System.out.println("Ошибка: звуковой файл не загружен!");
+            System.out.println("Ошибка: звуковой файл не загружен для стопа!");
             return;
         }
         clip.stop();

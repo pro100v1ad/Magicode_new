@@ -588,6 +588,7 @@ public class SceneLoader {
                         }
                     } else if(structure.getName().equals("portal")) {
                         gp.sceneChanger.setNumberActiveScene(gp.sceneChanger.getNumberActiveScene() + 1);
+                        gp.changeMusic();
                     } else if(structure.getName().equals("bridge")) {
                         Bridge bridge = (Bridge) structure;
                         if(bridge.getBreak()) {
