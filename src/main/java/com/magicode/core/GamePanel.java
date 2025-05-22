@@ -73,7 +73,8 @@ public class GamePanel extends JComponent {
     private Thread thread2;
     private BufferedImage image;
     private Graphics2D g;
-    private Sound sound = new Sound();
+    private Sound soundMusic = new Sound();
+    private Sound soundSE = new Sound();
 // Конец объявления классов необходимых для работы игры
     public GameSaveManager saveManager;
 
@@ -469,21 +470,21 @@ public class GamePanel extends JComponent {
 
     public void playMusic(int i) {
 
-        sound.setFile(i);
-        sound.play(i);
-        sound.loop(i);
+        soundMusic.setFile(i);
+        soundMusic.play(i);
+        soundMusic.loop(i);
 
     }
 
     public void stopMusic() {
-
-        sound.stop();
+        soundMusic.stop();
     }
+
 
     public void playSE(int i) {
 
-        sound.setFile(i);
-        sound.play(i);
+        soundSE.setFile(i);
+        soundSE.play(i);
     }
 
     public Enemy[] getEnemies() {
