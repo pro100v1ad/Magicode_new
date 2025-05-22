@@ -158,6 +158,9 @@ public class TextureAtlas {
         textures[21][0].loadTexture("/resources/structures/portal/portalHor.png");
         textures[21][1].loadTexture("/resources/structures/portal/portalVert.png");
 
+        textures[22][0].loadTexture("/resources/bullets/friendlyBullet.png");
+        textures[22][1].loadTexture("/resources/bullets/angryBullet.png");
+
 
 
 

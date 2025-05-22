@@ -458,7 +458,7 @@ public class Player extends Entity implements Serializable {
             }
 
             int radius = 16;
-            Bullet bullet = new Bullet(gp, (int)worldX + collisionWidth/2, (int)worldY + collisionHeight/2, angleDeg, 10, radius);
+            Bullet bullet = new Bullet(gp, (int)worldX + collisionWidth/2, (int)worldY + collisionHeight/2, angleDeg, 10, radius, true);
             bulletManager.addBullet(bullet);
             shoot = false;
         }

@@ -3,6 +3,7 @@ package main.java.com.magicode.gameplay.entity;
 import main.java.com.magicode.core.GamePanel;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 
 public class Bullet extends Entity{
@@ -10,10 +11,11 @@ public class Bullet extends Entity{
 
     private int radius;
     private double angle;
+    private BufferedImage image;
 
     private GamePanel gp;
 
-    public Bullet(GamePanel gp, int worldX, int worldY, double angle, int speed, int radius) {
+    public Bullet(GamePanel gp, int worldX, int worldY, double angle, int speed, int radius, boolean typeBullet) {
         this.gp = gp;
         this.angle = angle;
 
@@ -23,6 +25,11 @@ public class Bullet extends Entity{
         this.speed = speed;
         this.radius = radius;
 
+        if(typeBullet) {
+            image = gp.textureAtlas.textures[22][0].getTexture();
+        } else {
+            image = gp.textureAtlas.textures[22][1].getTexture();
+        }
 
     }
 
@@ -98,7 +105,8 @@ public class Bullet extends Entity{
                 worldY - GamePanel.tileSize * 4 < gp.player.getWorldY() + gp.player.getScreenY())
         {
 
-            g.fillOval(screenX, screenY, radius, radius);
+//            g.fillOval(screenX, screenY, radius, radius);
+            g.drawImage(image, screenX, screenY, radius, radius, null);
         }
 
     }
