@@ -29,11 +29,11 @@ public class Slime extends Enemy {
     protected void setDefaultValues() {
         worldX = GamePanel.tileSize * 10;
         worldY = GamePanel.tileSize * 10;
-        speed = 1.25;
+        speed = 3.75;
         maxHealth = 50;
         health = maxHealth;
-        damage = 1;
-        detectionRange = GamePanel.tileSize * 5;
+        damage = 3;
+        detectionRange = GamePanel.tileSize * 15;
         aggressive = false;
 
         collisionWidth = (int)(GamePanel.tileSize*1.7/1.5);

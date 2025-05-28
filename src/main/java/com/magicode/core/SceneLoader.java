@@ -759,7 +759,7 @@ public class SceneLoader {
                 for(Spell spell: spells) {
                     if(spell != null && spell.getName().equals("gun")) {
                         gunSpell = (GunSpell) spell;
-                        if (!gunSpell.getIsRecharge() && gp.player.getMana() >= 10) {
+                        if (!gunSpell.getIsRecharge() && gp.player.getMana() >= 10 && gunSpell.getState()) {
                             gp.player.shoot();
                             gunSpell.setIsRecharge(true);
                         }

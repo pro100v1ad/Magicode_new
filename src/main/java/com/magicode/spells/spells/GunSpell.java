@@ -7,6 +7,7 @@ public class GunSpell extends Spell {
 
     private int currentDamage, currentReload;
     private String[] saveChangeText;
+    private boolean state; // Работает ли пушка
 
     private GamePanel gp;
 
@@ -48,7 +49,7 @@ public class GunSpell extends Spell {
 
         defaultFirst = 5;
         defaultSecond = 3;
-
+        state = true;
 
     }
 
@@ -128,6 +129,14 @@ public class GunSpell extends Spell {
             }
         }
 
+    }
+
+    public boolean getState() {
+        return state;
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
     }
 
     @Override

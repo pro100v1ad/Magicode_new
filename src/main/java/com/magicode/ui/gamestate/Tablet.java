@@ -540,7 +540,9 @@ public class Tablet extends GUI {
                                     if (gunSpell.update(editArea.getCurrentText(),
                                             Integer.parseInt(editArea.getName().charAt(editArea.getName().length() - 1) + ""))) {
 
-
+                                        if(Character.isDigit(editArea.getCurrentText().charAt(1))) {
+                                            curN -= Integer.parseInt(editArea.getCurrentText().charAt(1) + "");
+                                        }
                                         if(editArea.getCurrentText().charAt(0) == '+') {
                                             curPlus--;
                                         }
@@ -551,7 +553,14 @@ public class Tablet extends GUI {
                                             curExclamationMark--;
                                         }
 
-                                        editArea.setColor(Color.GREEN);
+                                        if(curN >= 0) {
+                                            editArea.setColor(Color.GREEN);
+                                            gunSpell.setState(true);
+                                        }
+                                        else {
+                                            editArea.setColor(Color.RED);
+                                            gunSpell.setState(false);
+                                        }
                                     } else {
                                         editArea.setColor(Color.RED);
                                     }
