@@ -45,6 +45,9 @@ public class Player extends Entity implements Serializable {
     private BulletManager bulletManager;
     private boolean shoot;
 
+    private boolean isInvulnerable = false; // Добавляем флаг бессмертия
+    private long invulnerabilityEndTime = 0; // Время окончания бессмертия
+
     public Player(GamePanel gp, String playerFilePath, String spellFilePath) {
         this.gp = gp;
         resourceLoader = new ResourceLoader();
@@ -336,6 +339,17 @@ public class Player extends Entity implements Serializable {
 
     }
 
+    public void takeDamage(int damage) {
+        long currentTime = System.currentTimeMillis();
+
+        // Если игрок не в режиме бессмертия, наносим урон
+        if (!isInvulnerable) {
+            health -= damage;
+            isInvulnerable = true; // Включаем бессмертие
+            invulnerabilityEndTime = currentTime + damageCooldown; // Устанавливаем время окончания
+        }
+    }
+
 
     public void update() {
 //        System.out.println("Pos: " + worldX + " : " + worldY);
@@ -440,6 +454,7 @@ public class Player extends Entity implements Serializable {
         manaBar.setCurrentValue((int)mana);
 
         bulletManager.updateAllBullets();
+        bulletManager.checkBulletFromPlayer(this);
 
         if(shoot) {
             // Координаты точек
@@ -462,9 +477,15 @@ public class Player extends Entity implements Serializable {
             }
 
             int radius = 16;
-            Bullet bullet = new Bullet(gp, (int)worldX + collisionWidth/2, (int)worldY + collisionHeight/2, angleDeg, 10, radius, false);
+            Bullet bullet = new Bullet(gp, (int)worldX + collisionWidth/2, (int)worldY + collisionHeight/2, angleDeg, 10, radius, false, 10);
             bulletManager.addBullet(bullet);
             shoot = false;
+        }
+
+        // Проверяем, закончилось ли бессмертие
+        long currentTime = System.currentTimeMillis();
+        if (isInvulnerable && currentTime >= invulnerabilityEndTime) {
+            isInvulnerable = false;
         }
 
         shoot = false;

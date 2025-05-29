@@ -15,7 +15,7 @@ public class Bullet extends Entity{
 
     private GamePanel gp;
 
-    public Bullet(GamePanel gp, int worldX, int worldY, double angle, int speed, int radius, boolean typeBullet) {
+    public Bullet(GamePanel gp, int worldX, int worldY, double angle, int speed, int radius, boolean typeBullet, int damage) {
         this.gp = gp;
         this.angle = angle;
 
@@ -25,6 +25,8 @@ public class Bullet extends Entity{
         this.speed = speed;
         this.radius = radius;
 
+        this.damage = damage;
+
         if(typeBullet) {
             image = gp.textureAtlas.textures[22][0].getTexture();
         } else {
@@ -33,31 +35,9 @@ public class Bullet extends Entity{
 
     }
 
-
-
-    /*
-    //TEMP
-        // Координаты точек
-        double x1 = screenX, y1 = screenY;
-        double x2 = GamePanel.mouseX, y2 = GamePanel.mouseY;
-
-        // Вычисляем разницу координат
-        double deltaX = x2 - x1;
-        double deltaY = y2 - y1;
-
-        // Вычисляем угол в радианах с помощью Math.atan2
-        double angleRad = Math.atan2(deltaY, deltaX);
-
-        // Преобразуем радианы в градусы
-        double angleDeg = Math.toDegrees(angleRad);
-
-        // Угол может быть отрицательным (приводим к диапазону [0, 360))
-        if (angleDeg < 0) {
-            angleDeg += 360;
-        }
-
-        System.out.println("Угол поворота линии: " + angleDeg + "°");
-     */
+    public int getRadius() {
+        return radius;
+    }
 
     public boolean update() {
         // Двигаем пулю по углу
@@ -89,10 +69,9 @@ public class Bullet extends Entity{
 
         return false;
 
-
-
-
     }
+
+
     public void draw(Graphics2D g) {
 
         g.setColor(Color.YELLOW);
