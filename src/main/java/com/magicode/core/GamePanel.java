@@ -5,10 +5,7 @@ import main.java.com.magicode.Main;
 import main.java.com.magicode.core.utils.*;
 import main.java.com.magicode.gameplay.entity.Enemy;
 import main.java.com.magicode.gameplay.entity.Player;
-import main.java.com.magicode.ui.gamestate.MenuInGame;
-import main.java.com.magicode.ui.gamestate.StartMenu;
-import main.java.com.magicode.ui.gamestate.Tablet;
-import main.java.com.magicode.ui.gamestate.Directory;
+import main.java.com.magicode.ui.gamestate.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,6 +27,7 @@ public class GamePanel extends JComponent {
         GameOpenTablet,
         GameOpenDirectory,
         GameOpenBoard,
+        GameOpenEndBoard,
         GameMenu;
     }
 
@@ -82,6 +80,7 @@ public class GamePanel extends JComponent {
     public MenuInGame menuInGame;
     public Tablet tablet;
     public Directory directory;
+    public EndBoard endBoard;
 
     // Объявление классов Необходимых в процессе разработки
     public Listeners listeners;
@@ -339,6 +338,19 @@ public class GamePanel extends JComponent {
         changeMusic();
     }
 
+    public void endOfGamePanel(boolean isWin) {
+        state = GameState.GameOpenEndBoard;
+        endBoard = new EndBoard(this, 175, 150, isWin);
+    }
+
+    public void endGame() {
+        state = GameState.StartMenu;
+        startMenu.setState(false);
+        player = null;
+        stopMusic();
+        playMusic(0);
+    }
+
     public void exitGame() {
         System.out.println("Выход из игры!");
         System.exit(0);
@@ -366,6 +378,9 @@ public class GamePanel extends JComponent {
         }
         if(state.equals(GameState.GameOpenBoard)) {
             sceneLoader.getBoard().click();
+        }
+        if(state.equals(GameState.GameOpenEndBoard)) {
+            endBoard.click();
         }
     }
 
@@ -401,6 +416,7 @@ public class GamePanel extends JComponent {
     public void update1() {
         if(state.equals(GameState.Game)) {
             player.update();
+            if(player.getHealth() <= 0) endOfGamePanel(false);
         }
 
 
@@ -429,7 +445,12 @@ public class GamePanel extends JComponent {
             directory.update();
         }
 
+        if(state.equals(GameState.GameOpenEndBoard)) {
+            if(endBoard != null) {
+                endBoard.update();
+            }
 
+        }
 
     }
     public void render1(){
@@ -455,6 +476,12 @@ public class GamePanel extends JComponent {
 
         if(state.equals(GameState.GameOpenDirectory)) {
             directory.draw(g);
+        }
+
+        if(state.equals(GameState.GameOpenEndBoard)) {
+            if(endBoard != null) {
+                endBoard.draw(g);
+            }
         }
 
         draw();

@@ -100,6 +100,12 @@ public class SceneLoader {
                     slime.setAggressive(parts[3].equals("true"));
                     enemies[i] = slime;
                 }
+                if(parts[0].equals("boss")) {
+                    Boss boss = new Boss(gp, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]),
+                            Integer.parseInt(parts[3].split("/")[0]), Integer.parseInt(parts[3].split("/")[1]));
+
+                    enemies[i] = boss;
+                }
 
             }
 
@@ -782,6 +788,10 @@ public class SceneLoader {
                     gp.player.getBulletManager().checkBulletFromEnemy(enemies[i]);
                     if(enemies[i].getHealth() <= 0) {
                         enemies[i].death();
+                        if(enemies[i].getName().equals("boss")) {
+                            enemies[i] = null;
+                            gp.endOfGamePanel(true);
+                        }
                         enemies[i] = null;
                     }
                 }
