@@ -651,7 +651,7 @@ public class SceneLoader {
                                     if (door.checkValues(keySpell.getCurrentFirst(),
                                             keySpell.getCurrentSecond(),
                                             keySpell.getCurrentThird(),
-                                            keySpell.getCurrentFourth()) && !keySpell.getIsRecharge() && gp.player.getMana() >= 10) {
+                                            keySpell.getCurrentFourth()) && !keySpell.getIsRecharge() && gp.player.getMana() >= 10 && keySpell.getState()) {
                                         door.unlock();
                                         keySpell.setIsRecharge(true);
                                     }
@@ -679,7 +679,7 @@ public class SceneLoader {
                                     if (bridge.checkValues(wrenchSpell.getCurrentFirst(),
                                             wrenchSpell.getCurrentSecond(),
                                             wrenchSpell.getCurrentThird(),
-                                            wrenchSpell.getCurrentFourth()) && !wrenchSpell.getIsRecharge() && gp.player.getMana() >= 10) {
+                                            wrenchSpell.getCurrentFourth()) && !wrenchSpell.getIsRecharge() && gp.player.getMana() >= 10 && wrenchSpell.getState()) {
                                         bridge.repair();
                                         wrenchSpell.setIsRecharge(true);
                                     }

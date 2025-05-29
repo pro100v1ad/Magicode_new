@@ -471,8 +471,20 @@ public class Player extends Entity implements Serializable {
             }
 
             int radius = 16;
-            Bullet bullet = new Bullet(gp, (int)worldX + collisionWidth/2, (int)worldY + collisionHeight/2, angleDeg, 10, radius, true, 30);
-            bulletManager.addBullet(bullet);
+
+            GunSpell gunSpell;
+            for(Spell spell: spells) {
+                if(spell != null) if(spell.getName().equals("gun")) {
+                    gunSpell = (GunSpell) spell;
+                    gunSpell.setCurrentReload(gunSpell.getCurrentReload());
+                    Bullet bullet = new Bullet(gp, (int)worldX + collisionWidth/2, (int)worldY + collisionHeight/2,
+                            angleDeg, 10, radius, true, gunSpell.getCurrentDamage());
+                    bulletManager.addBullet(bullet);
+
+                }
+            }
+
+
             shoot = false;
         }
 

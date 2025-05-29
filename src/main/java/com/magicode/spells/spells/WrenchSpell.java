@@ -11,6 +11,7 @@ public class WrenchSpell extends Spell {
     private String currentThird;
     private boolean currentFourth;
     private String[] saveChangeText;
+    private boolean state; // Работает ли
 
     private GamePanel gp;
 
@@ -55,7 +56,15 @@ public class WrenchSpell extends Spell {
         defaultSecond = 5;
         defaultThird = "key";
         defaultFourth = false;
+        state = true;
 
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
+    }
+    public boolean getState() {
+        return state;
     }
 
     public boolean first(String string) {
