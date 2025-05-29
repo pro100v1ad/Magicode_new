@@ -170,9 +170,6 @@ public class Slime extends Enemy {
                             worldY -= 1;
                         }
                     }
-                    if(gp.getCollision().checkCollisionUpEnemy(this)) {
-                        System.out.println("Удар");
-                    }
                     break;
                 case "down":
                     for(int i = 0; i < speed/sqrt(2); i++) {
