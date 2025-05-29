@@ -98,6 +98,12 @@ public class SceneLoader {
                     slime.setAggressive(parts[3].equals("true"));
                     enemies[i] = slime;
                 }
+                if(parts[0].equals("boss")) {
+                    Boss boss = new Boss(gp, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]),
+                            Integer.parseInt(parts[3].split("/")[0]), Integer.parseInt(parts[3].split("/")[1]));
+
+                    enemies[i] = boss;
+                }
 
             }
 
@@ -641,7 +647,7 @@ public class SceneLoader {
                                     if (door.checkValues(keySpell.getCurrentFirst(),
                                             keySpell.getCurrentSecond(),
                                             keySpell.getCurrentThird(),
-                                            keySpell.getCurrentFourth()) && !keySpell.getIsRecharge() && gp.player.getMana() >= 10) {
+                                            keySpell.getCurrentFourth()) && !keySpell.getIsRecharge() && gp.player.getMana() >= 10 && keySpell.getState()) {
                                         door.unlock();
                                         keySpell.setIsRecharge(true);
                                     }
@@ -669,7 +675,7 @@ public class SceneLoader {
                                     if (bridge.checkValues(wrenchSpell.getCurrentFirst(),
                                             wrenchSpell.getCurrentSecond(),
                                             wrenchSpell.getCurrentThird(),
-                                            wrenchSpell.getCurrentFourth()) && !wrenchSpell.getIsRecharge() && gp.player.getMana() >= 10) {
+                                            wrenchSpell.getCurrentFourth()) && !wrenchSpell.getIsRecharge() && gp.player.getMana() >= 10 && wrenchSpell.getState()) {
                                         bridge.repair();
                                         wrenchSpell.setIsRecharge(true);
                                     }
@@ -772,12 +778,23 @@ public class SceneLoader {
         }
 
         if (enemies != null) {
-            for(Enemy enemy : enemies) {
-                if(enemy != null) {
-                    enemy.update();
+            for(int i = 0; i < enemies.length; i++) {
+                if(enemies[i] != null) {
+                    enemies[i].update();
+                    gp.player.getBulletManager().checkBulletFromEnemy(enemies[i]);
+                    if(enemies[i].getHealth() <= 0) {
+                        enemies[i].death();
+                        if(enemies[i].getName().equals("boss")) {
+                            enemies[i] = null;
+                            gp.endOfGamePanel(true);
+                        }
+                        enemies[i] = null;
+                    }
                 }
             }
         }
+
+
 
         updateBoard();
 

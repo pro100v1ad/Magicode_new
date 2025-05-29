@@ -110,4 +110,19 @@ public abstract class Enemy extends Entity {
         return damage;
     }
 
+    public void takeDamage(int damage) {
+        long currentTime = System.currentTimeMillis();
+
+        // Если игрок не в режиме бессмертия, наносим урон
+        if (!isInvulnerable) {
+            health -= damage;
+            isInvulnerable = true; // Включаем бессмертие
+            invulnerabilityEndTime = currentTime + damageCooldown; // Устанавливаем время окончания
+        }
+    }
+
+    public void death() {
+        System.out.println("Enemy ликвидирован!");
+    }
+
 }

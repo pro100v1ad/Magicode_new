@@ -118,12 +118,18 @@ public class GunSpell extends Spell {
         gp.player.setMana(gp.player.getMana() - 5);
     }
 
+    public void setCurrentReload(int reload) {
+        this.currentReload = reload;
+        rechargeTime = (int)(currentReload/2 * GamePanel.UPDATE_RATE);
+
+    }
+
     @Override
     public void recharge() {
 
         if(isRecharge) {
             currentRechargeTime++;
-            if(currentRechargeTime == rechargeTime) {
+            if(currentRechargeTime >= rechargeTime) {
                 currentRechargeTime = 0;
                 isRecharge = false;
             }

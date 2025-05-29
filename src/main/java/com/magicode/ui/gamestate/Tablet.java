@@ -106,10 +106,10 @@ public class Tablet extends GUI {
 
     public void setDefaultValues() {
 
-        N = 10;
-        plus = 10;
-        minus = 10;
-        exclamationMark = 10;
+        N = 0;
+        plus = 0;
+        minus = 0;
+        exclamationMark = 0;
 
         currentN = N;
         currentPlus = plus;
@@ -486,7 +486,15 @@ public class Tablet extends GUI {
                                             curExclamationMark--;
                                         }
 
-                                        editArea.setColor(Color.GREEN);
+                                        if(curPlus >= 0 && curMinus >= 0) {
+                                            editArea.setColor(Color.GREEN);
+                                            keySpell.setState(true);
+                                        }
+                                        else {
+                                            editArea.setColor(Color.RED);
+                                            keySpell.setState(false);
+                                        }
+
                                     } else {
                                         editArea.setColor(Color.RED);
                                     }
@@ -519,7 +527,14 @@ public class Tablet extends GUI {
                                             curExclamationMark--;
                                         }
 
-                                        editArea.setColor(Color.GREEN);
+                                        if(curPlus >= 0 && curMinus >= 0) {
+                                            editArea.setColor(Color.GREEN);
+                                            wrenchSpell.setState(true);
+                                        }
+                                        else {
+                                            editArea.setColor(Color.RED);
+                                            wrenchSpell.setState(false);
+                                        }
                                     } else {
                                         editArea.setColor(Color.RED);
                                     }
