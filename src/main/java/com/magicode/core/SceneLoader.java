@@ -94,9 +94,7 @@ public class SceneLoader {
                 String[] parts = line.split("_");
 
                 if(parts[0].equals("slime")) {
-                    Slime slime = new Slime(gp);
-                    slime.setWorldX(Integer.parseInt(parts[1]));
-                    slime.setWorldY(Integer.parseInt(parts[2]));
+                    Slime slime = new Slime(gp, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
                     slime.setAggressive(parts[3].equals("true"));
                     enemies[i] = slime;
                 }
@@ -139,9 +137,7 @@ public class SceneLoader {
                 String[] parts = line.split("_");
 
                 if(parts[0].equals("slime")) {
-                    Slime slime = new Slime(gp);
-                    slime.setWorldX(Integer.parseInt(parts[1]));
-                    slime.setWorldY(Integer.parseInt(parts[2]));
+                    Slime slime = new Slime(gp, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
                     slime.setAggressive(parts[3].equals("true"));
                     enemies[i] = slime;
                 }
