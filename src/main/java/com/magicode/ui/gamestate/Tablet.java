@@ -118,6 +118,22 @@ public class Tablet extends GUI {
 
     }
 
+    public void setN(int N) {
+        this.N = N;
+    }
+
+    public void setMinus(int minus) {
+        this.minus = minus;
+    }
+
+    public void setPlus(int plus) {
+        this.plus = plus;
+    }
+
+    public void setExclamationMark(int exclamationMark) {
+        this.exclamationMark = exclamationMark;
+    }
+
     public String[] getText() {
         if (text == null) {
             return null;

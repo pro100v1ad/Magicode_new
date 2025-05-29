@@ -3,10 +3,7 @@ package main.java.com.magicode.gameplay.world.structures;
 import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.gameplay.world.Structure;
 import main.java.com.magicode.gameplay.world.GameObject;
-import main.java.com.magicode.gameplay.world.objects.Book;
-import main.java.com.magicode.gameplay.world.objects.Gun;
-import main.java.com.magicode.gameplay.world.objects.Key;
-import main.java.com.magicode.gameplay.world.objects.Wrench;
+import main.java.com.magicode.gameplay.world.objects.*;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -167,6 +164,18 @@ public class Chest extends Structure {
                 break;
             case "gun":
                 object = new Gun(gp, x, y, this.objectCode);
+                break;
+            case "N":
+                object = new Signs(gp, x, y, this.objectCode, "N");
+                break;
+            case "plus":
+                object = new Signs(gp, x, y, this.objectCode, "plus");
+                break;
+            case "minus":
+                object = new Signs(gp, x, y, this.objectCode, "minus");
+                break;
+            case "exclamationMark":
+                object = new Signs(gp, x, y, this.objectCode, "exclamationMark");
                 break;
 
             default:

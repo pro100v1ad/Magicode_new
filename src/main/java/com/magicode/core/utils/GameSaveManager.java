@@ -7,10 +7,7 @@ import main.java.com.magicode.gameplay.entity.Player;
 import main.java.com.magicode.gameplay.world.GameObject;
 import main.java.com.magicode.gameplay.world.Layer;
 import main.java.com.magicode.gameplay.world.Structure;
-import main.java.com.magicode.gameplay.world.objects.Book;
-import main.java.com.magicode.gameplay.world.objects.Gun;
-import main.java.com.magicode.gameplay.world.objects.Key;
-import main.java.com.magicode.gameplay.world.objects.Wrench;
+import main.java.com.magicode.gameplay.world.objects.*;
 import main.java.com.magicode.gameplay.world.structures.*;
 import main.java.com.magicode.spells.Spell;
 import main.java.com.magicode.spells.spells.GunSpell;
@@ -144,6 +141,11 @@ public class GameSaveManager {
                     if (object.getName().equals("gun")) {
                         Gun gun = (Gun) object;
                         writer.write("gun_" + gun.getPosX() + "_" + gun.getPosY() + "_" + gun.getCode() + "\n");
+                    }
+                    if (object.getName().equals("N") || object.getName().equals("plus") ||
+                            object.getName().equals("minus") || object.getName().equals("exclamationMark")) {
+                        Signs signs = (Signs) object;
+                        writer.write(signs.getName() + "_" + signs.getPosX() + "_" + signs.getPosY() + "_" + signs.getCode() + "\n");
                     }
 
 

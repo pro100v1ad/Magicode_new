@@ -9,10 +9,7 @@ import main.java.com.magicode.gameplay.entity.EnemyType.Slime;
 import main.java.com.magicode.gameplay.world.GameObject;
 import main.java.com.magicode.gameplay.world.Layer;
 import main.java.com.magicode.gameplay.world.Structure;
-import main.java.com.magicode.gameplay.world.objects.Book;
-import main.java.com.magicode.gameplay.world.objects.Gun;
-import main.java.com.magicode.gameplay.world.objects.Key;
-import main.java.com.magicode.gameplay.world.objects.Wrench;
+import main.java.com.magicode.gameplay.world.objects.*;
 import main.java.com.magicode.gameplay.world.structures.*;
 import main.java.com.magicode.spells.Spell;
 import main.java.com.magicode.spells.spells.GunSpell;
@@ -307,6 +304,11 @@ public class SceneLoader {
                 }
                 if(parts[0].equals("gun")) {
                     objects[i] = new Gun(gp, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3]));
+                }
+                if(parts[0].equals("N") || parts[0].equals("plus") ||
+                        parts[0].equals("minus") || parts[0].equals("exclamationMark")) {
+                    objects[i] = new Signs(gp, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]),
+                            Integer.parseInt(parts[3]), parts[0]);
                 }
 
             }
@@ -749,6 +751,32 @@ public class SceneLoader {
                                         System.out.println("Пушка подобрана!");
                                         gp.tablet.getTextRedactor().addSpell("/resources/spells/gun");
                                         gp.player.addSpell("gun", "true_gun_null_null".split("_"));
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        if(object.getName().equals("N") || object.getName().equals("plus") ||
+                            object.getName().equals("minus") || object.getName().equals("exclamationMark")) {
+
+                            for(int i = 0; i < objects.length; i++) {
+                                if(objects[i] != null) {
+                                    if (objects[i].equals(object)) {
+                                        objects[i] = null;
+                                        System.out.println("Знак подобран!");
+                                        if(object.getName().equals("N")) {
+                                            gp.tablet.setN(gp.tablet.getN() + 1);
+                                        }
+                                        if(object.getName().equals("minus")) {
+                                            gp.tablet.setMinus(gp.tablet.getMinus() + 1);
+                                        }
+                                        if(object.getName().equals("plus")) {
+                                            gp.tablet.setPlus(gp.tablet.getPlus() + 1);
+                                        }
+                                        if(object.getName().equals("exclamationMark")) {
+                                            gp.tablet.setExclamationMark(gp.tablet.getExclamationMark() + 1);
+                                        }
                                         break;
                                     }
                                 }

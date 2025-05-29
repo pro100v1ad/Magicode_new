@@ -79,6 +79,10 @@ public class TextureAtlas {
         textures[13][1].loadTexture("/resources/objects/book.png");
         textures[13][2].loadTexture("/resources/objects/wrench.png");
         textures[13][3].loadTexture("/resources/objects/gun.png");
+        textures[13][4].loadTexture("/resources/objects/N.png");
+        textures[13][5].loadTexture("/resources/objects/minus.png");
+        textures[13][6].loadTexture("/resources/objects/plus.png");
+        textures[13][7].loadTexture("/resources/objects/exclamationMark.png");
 
         textures[14][0].loadTexture("/resources/gui/button/menuButtonPassive.png");
         textures[14][1].loadTexture("/resources/gui/button/menuButtonActive.png");
