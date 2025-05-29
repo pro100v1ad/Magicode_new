@@ -10,8 +10,8 @@ public class Animation {
     private BufferedImage[] images;
     private BufferedImage currentImage;
     private double fps;
-    private int currentFrame;
-    private int updatesCount;
+    public int currentFrame;
+    public int updatesCount;
     private final int updatesPerFrame;
 
     public Animation(BufferedImage[] images, double fps) {
@@ -28,9 +28,12 @@ public class Animation {
         this.currentImage = images[0];
 
         // Рассчитываем, сколько update() должно пройти между кадрами
-        this.updatesPerFrame = (int)(GamePanel.UPDATE_RATE / fps); // 40 - количество вызовов update в секунду
+        this.updatesPerFrame = (int)(GamePanel.UPDATE_RATE / fps); // UPDATE_RATE - количество вызовов update в секунду
         this.updatesCount = 0;
+    }
 
+    public int getUpdatesCount() {
+        return updatesCount;
     }
 
     public void reset() {

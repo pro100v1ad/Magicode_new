@@ -161,8 +161,24 @@ public class TextureAtlas {
         textures[22][0].loadTexture("/resources/bullets/friendlyBullet.png");
         textures[22][1].loadTexture("/resources/bullets/angryBullet.png");
 
-
-
+        textures[23][0].loadTexture("/resources/boss/green/greenBoss1.png");
+        textures[23][1].loadTexture("/resources/boss/green/greenBoss2.png");
+        textures[23][2].loadTexture("/resources/boss/green/greenBoss3.png");
+        textures[23][3].loadTexture("/resources/boss/green/greenBoss4.png");
+        textures[23][4].loadTexture("/resources/boss/green/greenBoss5.png");
+        textures[23][5].loadTexture("/resources/boss/green/greenBoss6.png");
+        textures[23][6].loadTexture("/resources/boss/green/greenBoss7.png");
+        textures[23][7].loadTexture("/resources/boss/green/greenBoss8.png");
+        textures[23][8].loadTexture("/resources/boss/green/greenBoss9.png");
+        textures[23][9].loadTexture("/resources/boss/red/redBoss1.png");
+        textures[23][10].loadTexture("/resources/boss/red/redBoss2.png");
+        textures[23][11].loadTexture("/resources/boss/red/redBoss3.png");
+        textures[23][12].loadTexture("/resources/boss/red/redBoss4.png");
+        textures[23][13].loadTexture("/resources/boss/red/redBoss5.png");
+        textures[23][14].loadTexture("/resources/boss/red/redBoss6.png");
+        textures[23][15].loadTexture("/resources/boss/red/redBoss7.png");
+        textures[23][16].loadTexture("/resources/boss/red/redBoss8.png");
+        textures[23][17].loadTexture("/resources/boss/red/redBoss9.png");
 
 
 

@@ -17,7 +17,7 @@ public class Bar {
     private int currentValue;
     private float percent;
 
-    private final Color stripColor;
+    private Color stripColor;
     private BufferedImage stripImage;
 
     private GamePanel gp;
@@ -44,6 +44,10 @@ public class Bar {
 
     public void setPosY(int posY) {
         this.posY = posY;
+    }
+
+    public void setColor(Color color) {
+        stripColor = color;
     }
 
     public void setCurrentValue(int currentValue) {
