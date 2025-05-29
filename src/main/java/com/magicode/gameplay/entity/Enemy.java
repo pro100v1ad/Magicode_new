@@ -121,4 +121,8 @@ public abstract class Enemy extends Entity {
         }
     }
 
+    public void death() {
+        System.out.println("Enemy ликвидирован!");
+    }
+
 }

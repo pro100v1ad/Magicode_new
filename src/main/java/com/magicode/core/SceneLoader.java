@@ -776,13 +776,19 @@ public class SceneLoader {
         }
 
         if (enemies != null) {
-            for(Enemy enemy : enemies) {
-                if(enemy != null) {
-                    enemy.update();
-                    gp.player.getBulletManager().checkBulletFromEnemy(enemy);
+            for(int i = 0; i < enemies.length; i++) {
+                if(enemies[i] != null) {
+                    enemies[i].update();
+                    gp.player.getBulletManager().checkBulletFromEnemy(enemies[i]);
+                    if(enemies[i].getHealth() <= 0) {
+                        enemies[i].death();
+                        enemies[i] = null;
+                    }
                 }
             }
         }
+
+
 
         updateBoard();
 

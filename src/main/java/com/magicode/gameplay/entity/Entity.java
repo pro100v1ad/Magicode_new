@@ -22,7 +22,7 @@ public class Entity {
     protected boolean isInvulnerable = false; // Добавляем флаг бессмертия
     protected long invulnerabilityEndTime = 0; // Время окончания бессмертия
     protected long lastDamageTime = 0;
-    protected final long damageCooldown = 1000;
+    protected final long damageCooldown = 500;
 
     public double getWorldX() {
         return  worldX;
