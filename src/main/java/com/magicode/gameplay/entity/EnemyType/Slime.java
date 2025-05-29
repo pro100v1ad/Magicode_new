@@ -20,24 +20,15 @@ public class Slime extends Enemy {
 
     private final double homeX;
     private final double homeY;
-    private final double patrolRadius; // Радиус патрулирования
     private boolean wasAggressive = false;
     private boolean isAngry = false;
-    private long lastDirectionChangeTime = 0;
-    private final long directionChangeCooldown = 2000; // Частота смены направления при патрулировании
+    private boolean isReturningHome = false;
 
-    // Старый конструктор для совместимости
-    public Slime(GamePanel gp) {
-        this(gp, GamePanel.tileSize * 10, GamePanel.tileSize * 10);
-    }
-
-    // Новый конструктор с указанием позиции
     public Slime(GamePanel gp, double spawnX, double spawnY) {
         super(gp);
         this.name = "slime";
         this.homeX = spawnX;
         this.homeY = spawnY;
-        this.patrolRadius = GamePanel.tileSize * 3;
         setDefaultValues();
         loadAnimations();
     }
@@ -86,7 +77,7 @@ public class Slime extends Enemy {
         }
     }
 
-    private void updateAggressiveMovement() {
+    private void chasePlayer() {
         double playerX = gp.player.getWorldX();
         double playerY = gp.player.getWorldY();
 
@@ -104,13 +95,16 @@ public class Slime extends Enemy {
         }
     }
 
+
     private void returnToHome() {
         double dx = homeX - worldX;
         double dy = homeY - worldY;
 
-        // Если уже дома, начинаем патрулирование
+        // Если уже дома, прекращаем возвращение
         if (Math.abs(dx) < speed && Math.abs(dy) < speed) {
-            patrolAroundHome();
+            worldX = homeX;
+            worldY = homeY;
+            isReturningHome = false;
             return;
         }
 
@@ -124,72 +118,62 @@ public class Slime extends Enemy {
         moveOneStep(direction);
     }
 
-    private void patrolAroundHome() {
-        long currentTime = System.currentTimeMillis();
-
-        // Если пришло время сменить направление
-        if (currentTime - lastDirectionChangeTime > directionChangeCooldown) {
-            // Выбираем случайное направление вокруг дома
-            double angle = random() * 2 * PI;
-            double targetX = homeX + patrolRadius * cos(angle);
-            double targetY = homeY + patrolRadius * sin(angle);
-
-            if (abs(targetX - worldX) > abs(targetY - worldY)) {
-                direction = targetX > worldX ? "right" : "left";
-            } else {
-                direction = targetY > worldY ? "down" : "up";
-            }
-            lastDirectionChangeTime = currentTime;
-        }
-
-        moveOneStep(direction);
-    }
-
-
     private void moveOneStep(String dir) {
         double step = speed / sqrt(2);
 
         switch (dir) {
             case "up":
                 if (worldY > 0 && gp.getCollision().checkCollisionUp(this)) {
-                    worldY = max(worldY - step, homeY - patrolRadius);
+                    worldY -= step;
                 }
                 break;
             case "down":
                 if (worldY < gp.getWorldHeight() * GamePanel.tileSize - GamePanel.tileSize * 4 - 1
                         && gp.getCollision().checkCollisionDown(this)) {
-                    worldY = min(worldY + step, homeY + patrolRadius);
+                    worldY += step;
                 }
                 break;
             case "left":
                 if (worldX > 1 && gp.getCollision().checkCollisionLeft(this)) {
-                    worldX = max(worldX - step, homeX - patrolRadius);
+                    worldX -= step;
                 }
                 break;
             case "right":
                 if (worldX < gp.getWorldWidth() * GamePanel.tileSize - GamePanel.tileSize * 2 - 1
                         && gp.getCollision().checkCollisionRight(this)) {
-                    worldX = min(worldX + step, homeX + patrolRadius);
+                    worldX += step;
                 }
                 break;
         }
     }
+
 
     @Override
     public void update() {
         if(gp.state.equals(GamePanel.GameState.StartMenu)) return;
 
         boolean playerInRange = isPlayerInRange();
-        if (playerInRange != wasAggressive) {
-            aggressive = playerInRange;
-            wasAggressive = playerInRange;
-            isAngry = aggressive;
+        // Проверяем, появился ли игрок в зоне агрессии
+        if (playerInRange) {
+            aggressive = true;
+            isAngry = true;
+            isReturningHome = false;
+        }
+        // Если игрок вышел из зоны и мы не были агрессивны
+        else if (wasAggressive) {
+            aggressive = false;
+            isAngry = false;
+            isReturningHome = true;
         }
 
+        wasAggressive = playerInRange;
+
         if (aggressive) {
-            updateAggressiveMovement();
-        } else {
-            patrolAroundHome();
+            // Преследуем игрока (приоритетнее возвращения домой)
+            chasePlayer();
+        } else if (isReturningHome) {
+            // Возвращаемся домой
+            returnToHome();
         }
 
         checkPlayerCollisionAndDamage();
@@ -234,6 +218,9 @@ public class Slime extends Enemy {
         super.setAggressive(aggressive);
         wasAggressive = aggressive;
         isAngry = aggressive;
+        if (!aggressive) {
+            isReturningHome = true;
+        }
     }
 
     public boolean getAggressive() {
