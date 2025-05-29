@@ -1,5 +1,6 @@
 package main.java.com.magicode.core.utils;
 
+import main.java.com.magicode.gameplay.entity.Boss;
 import main.java.com.magicode.gameplay.entity.Enemy;
 import main.java.com.magicode.gameplay.entity.EnemyType.Slime;
 import main.java.com.magicode.gameplay.entity.Player;
@@ -164,6 +165,11 @@ public class GameSaveManager {
                         Slime slime = (Slime) enemy;
                         writer.write("slime_" + (int)slime.getWorldX() + "_" +
                                 (int)slime.getWorldY() + "_" + slime.getAggressive() + "\n");
+                    }
+                    if(enemy.getName().equals("boss")) {
+                        Boss boss = (Boss) enemy;
+                        writer.write("boss_" + (int)boss.getWorldX() + "_" + (int)boss.getWorldY() + "_" +
+                                (int)boss.getHealth() + "/" + (int)boss.getMaxHealth());
                     }
 
                 }

@@ -12,6 +12,7 @@ public class Bullet extends Entity{
     private int radius;
     private double angle;
     private BufferedImage image;
+    private boolean typeBullet;
 
     private GamePanel gp;
 
@@ -26,7 +27,7 @@ public class Bullet extends Entity{
         this.radius = radius;
 
         this.damage = damage;
-
+        this.typeBullet = typeBullet;
         if(typeBullet) {
             image = gp.textureAtlas.textures[22][0].getTexture();
         } else {
@@ -37,6 +38,10 @@ public class Bullet extends Entity{
 
     public int getRadius() {
         return radius;
+    }
+
+    public boolean getTypeBullet() {
+        return typeBullet;
     }
 
     public boolean update() {

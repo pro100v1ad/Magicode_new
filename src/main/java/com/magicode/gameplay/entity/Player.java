@@ -39,14 +39,8 @@ public class Player extends Entity implements Serializable {
     private Bar healthBar;
     private Bar manaBar;
 
-    private long lastDamageTime = 0;
-    private final long damageCooldown = 1000;
-
     private BulletManager bulletManager;
     private boolean shoot;
-
-    private boolean isInvulnerable = false; // Добавляем флаг бессмертия
-    private long invulnerabilityEndTime = 0; // Время окончания бессмертия
 
     public Player(GamePanel gp, String playerFilePath, String spellFilePath) {
         this.gp = gp;
@@ -477,7 +471,7 @@ public class Player extends Entity implements Serializable {
             }
 
             int radius = 16;
-            Bullet bullet = new Bullet(gp, (int)worldX + collisionWidth/2, (int)worldY + collisionHeight/2, angleDeg, 10, radius, false, 10);
+            Bullet bullet = new Bullet(gp, (int)worldX + collisionWidth/2, (int)worldY + collisionHeight/2, angleDeg, 10, radius, true, 10);
             bulletManager.addBullet(bullet);
             shoot = false;
         }

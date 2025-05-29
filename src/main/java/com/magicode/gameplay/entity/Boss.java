@@ -38,6 +38,7 @@ public class Boss extends Enemy {
         this.worldY = y;
         this.collisionWidth = GamePanel.tileSize * 4;
         this.collisionHeight = GamePanel.tileSize * 4;
+        this.name = "boss";
 
         this.health = health;
         this.maxHealth = maxHealth;
@@ -232,6 +233,12 @@ public class Boss extends Enemy {
         }
         if(health < maxHealth/3) {
             bar.setColor(Color.RED);
+        }
+
+        // Проверяем, закончилось ли бессмертие
+        long currentTime = System.currentTimeMillis();
+        if (isInvulnerable && currentTime >= invulnerabilityEndTime) {
+            isInvulnerable = false;
         }
     }
 

@@ -213,6 +213,13 @@ public class Slime extends Enemy {
             case "right": animations[0].update(); break;
         }
         healthBar.setCurrentValue((int)health);
+
+        // Проверяем, закончилось ли бессмертие
+        long currentTime = System.currentTimeMillis();
+        if (isInvulnerable && currentTime >= invulnerabilityEndTime) {
+            isInvulnerable = false;
+        }
+
     }
 
     @Override

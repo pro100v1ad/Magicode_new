@@ -779,6 +779,7 @@ public class SceneLoader {
             for(Enemy enemy : enemies) {
                 if(enemy != null) {
                     enemy.update();
+                    gp.player.getBulletManager().checkBulletFromEnemy(enemy);
                 }
             }
         }
