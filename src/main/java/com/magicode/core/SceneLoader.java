@@ -3,6 +3,7 @@ package main.java.com.magicode.core;
 import main.java.com.magicode.core.utils.Collision;
 import main.java.com.magicode.core.utils.CutScene;
 import main.java.com.magicode.core.utils.Interaction;
+import main.java.com.magicode.gameplay.entity.Boss;
 import main.java.com.magicode.gameplay.entity.Enemy;
 import main.java.com.magicode.gameplay.entity.EnemyType.Slime;
 import main.java.com.magicode.gameplay.world.GameObject;
@@ -143,6 +144,12 @@ public class SceneLoader {
                     slime.setWorldY(Integer.parseInt(parts[2]));
                     slime.setAggressive(parts[3].equals("true"));
                     enemies[i] = slime;
+                }
+                if(parts[0].equals("boss")) {
+                    Boss boss = new Boss(gp, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]),
+                            Integer.parseInt(parts[3].split("/")[0]), Integer.parseInt(parts[3].split("/")[1]));
+
+                    enemies[i] = boss;
                 }
 
             }

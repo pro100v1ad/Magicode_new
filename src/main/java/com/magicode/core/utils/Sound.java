@@ -3,6 +3,7 @@ package main.java.com.magicode.core.utils;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 
@@ -24,6 +25,8 @@ public class Sound {
         soundFiles[8] = "/resources/sounds/hitmonster.wav";
         soundFiles[9] = "/resources/sounds/receivedamage.wav";
         soundFiles[10] = "/resources/sounds/chest.wav";
+
+
     }
 
     public void setFile(int i) {
@@ -43,6 +46,8 @@ public class Sound {
         } catch (Exception e) {
             System.out.println("Ошибка в Sound: " + e.getMessage());
         }
+
+        setVolume(0.05f);
     }
 
     public void play(int i) {
@@ -71,5 +76,22 @@ public class Sound {
         }
         clip.stop();
         clip.close();
+    }
+
+    // Метод для изменения громкости
+    public void setVolume(float volume) {
+        if (clip == null) {
+            System.out.println("Ошибка: звуковой файл не загружен для изменения громкости!");
+            return;
+        }
+
+        if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            // Устанавливаем громкость (в децибелах)
+            float dB = (float) (Math.log(volume) / Math.log(10.0) * 20.0);
+            gainControl.setValue(dB);
+        } else {
+            System.out.println("Ошибка: управление громкостью не поддерживается!");
+        }
     }
 }

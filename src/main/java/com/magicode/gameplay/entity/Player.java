@@ -240,6 +240,10 @@ public class Player extends Entity implements Serializable {
 
     }
 
+    public BulletManager getBulletManager() {
+        return bulletManager;
+    }
+
     public Spell[] getSpells() {
         return spells;
     }
