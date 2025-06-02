@@ -1,4 +1,4 @@
-arg1 + 1 > arg2 - 1
-if(arg1 + 1 > arg2 - 1) {
+arg1 - arg2 * arg1 == 0
+if(arg1 - arg2 * arg1 == 0) {
     openDoor();
 }

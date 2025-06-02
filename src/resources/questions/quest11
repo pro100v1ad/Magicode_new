@@ -1,0 +1,4 @@
+"keya" > "keyA" == arg4
+if("keya" > "keyA" == arg4) {
+    openDoor();
+}

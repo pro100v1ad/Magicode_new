@@ -107,7 +107,7 @@ public class Tablet extends GUI {
     public void setDefaultValues() {
 
         N = 0;
-        plus = 0;
+        plus = 1;
         minus = 0;
         exclamationMark = 0;
 

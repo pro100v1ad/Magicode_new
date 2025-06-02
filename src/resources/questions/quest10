@@ -1,0 +1,4 @@
+arg1 * arg1 - arg2 * 4 - 5 == 0
+if(arg1 * arg1 - arg2 * 4 - 5 == 0) {
+    openDoor();
+}

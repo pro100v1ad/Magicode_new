@@ -1,4 +1,4 @@
-arg3 == "key2"
-if(third == "key2") {
+arg1 > arg2 && !arg4
+if((arg1 > arg2) == !arg4) {
     openDoor();
 }

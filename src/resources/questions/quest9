@@ -1,0 +1,4 @@
+!arg4 == arg3 > "keyA"
+if(!arg4 == arg3 > "keyA") {
+    openDoor();
+}

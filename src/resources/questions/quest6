@@ -1,0 +1,4 @@
+"key0" == arg3
+if("key0" == arg3) {
+    openDoor();
+}

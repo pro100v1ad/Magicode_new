@@ -122,20 +122,41 @@ public class Chest extends Structure {
 
     public boolean checkValues(int first, int second, String third, boolean fourth) {
 
-        if(condition.equals("arg1 + arg2 == 10")) {
+        if(condition.equals("arg1 + arg2 == 10")) { // 1
             return first + second == 10;
         }
-        if(condition.equals("arg1 + arg2 == 8")) {
-            return first + second == 8;
+        if(condition.equals("arg1 - arg2 == 8")) { // 2
+            return first - second == 8;
         }
-        if(condition.equals("arg1 + 1 > arg2 - 1")) {
-            return first + 1 > second - 1;
+        if(condition.equals("arg1 - arg2 * arg1 == 0")) { // 3
+            return first - second * first == 0;
         }
-        if(condition.equals("arg4")) {
+        if(condition.equals("arg1 + arg2/10 == arg2")) { // 4
+            return first + second/10 == second;
+        }
+        if(condition.equals("arg1 > arg2 && !arg4")) { // 5
+            return first > second && !fourth;
+        }
+        if(condition.equals("\"key0\" == arg3")) { // 6
+            return third.equals("key0");
+        }
+        if(condition.equals("arg3 + (arg1 + arg2) == \"key15\"")) { // 7
+            return (third + (first + second)).equals("key15");
+        }
+        if(condition.equals("arg3 == \"key\" + (arg1 - arg2) * (arg1 + arg2)")) { // 8
+            return third.equals("key" + (first - second) * (first + second));
+        }
+        if(condition.equals("!arg4 == (arg3 == \"keyA\")")) { // 9
+            return !fourth == third.equals("keyA");
+        }
+        if(condition.equals("arg1 * arg1 - arg2 * 4 - 5 == 0")) { // 10
+            return first * first - second * 4 - 5 == 0;
+        }
+        if(condition.equals("\"keya\" > \"keyA\" == arg4")) { // 11
             return fourth;
         }
-        if(condition.equals("arg3 == \"key2\"")) {
-            return third.equals("key2");
+        if(condition.equals("arg1 * arg2 * 2 == (arg1 + arg2) * (arg1 - arg2)")) { // 12
+            return first * second * 2 == (first + second) * (first - second);
         }
 
         return false;
