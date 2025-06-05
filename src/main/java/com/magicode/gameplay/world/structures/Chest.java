@@ -158,6 +158,12 @@ public class Chest extends Structure {
         if(condition.equals("arg1 * arg2 * 2 == (arg1 + arg2) * (arg1 - arg2)")) { // 12
             return first * second * 2 == (first + second) * (first - second);
         }
+        if(condition.equals("arg1 - arg2 == -19")) { // 12
+            return first - second == -19;
+        }
+        if(condition.equals("arg4 && (arg1 - arg2 > arg1)")) { // 14
+            return fourth && (first - second > first);
+        }
 
         return false;
     }

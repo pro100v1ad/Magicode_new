@@ -1,0 +1,4 @@
+arg4 && (arg1 - arg2 > arg1)
+if(arg4 and (arg1-arg2 > arg1)) {
+    openDoor();
+}
