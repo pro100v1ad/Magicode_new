@@ -155,8 +155,8 @@ public class Chest extends Structure {
         if(condition.equals("\"keya\" > \"keyA\" == arg4")) { // 11
             return fourth;
         }
-        if(condition.equals("arg1 * arg2 * 2 == (arg1 + arg2) * (arg1 - arg2)")) { // 12
-            return first * second * 2 == (first + second) * (first - second);
+        if(condition.equals("arg1 * arg2 + arg1 == (arg1 + arg2) * (arg1 - arg2)")) { // 12
+            return first * second + first == (first + second) * (first - second);
         }
         if(condition.equals("arg1 - arg2 == -19")) { // 12
             return first - second == -19;
