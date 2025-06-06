@@ -16,7 +16,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.*;
 
-public class Tablet extends GUI {
+public class Tablet extends GUI { // Класс отвечающий за планшет
 
     private BufferedImage imageTablet;
 
@@ -28,22 +28,19 @@ public class Tablet extends GUI {
 
     private EditArea hoveredEditArea = null;
     private EditArea activeEditArea = null;
-    //Text
+
     private String[] text;
     private static int lineSpace;
     private int fontSize;
     private static int countRowsVisible;
     private static int textPosX, textPosY;
     private Color textColor;
-    private float scrollPosition; // Вместо percent
-    // Вместо фиксированной скорости
-    private static final float SCROLL_SPEED = 0.05f * GamePanel.UPDATE_RATE_Speed;  // Скорость скролла
+    private float scrollPosition;
 
     private GamePanel gp;
     private boolean click;
 
     private static final float SCROLL_SENSITIVITY = 0.5f; // Чувствительность прокрутки
-    private static final float MAX_SCROLL_SPEED = 2.0f;   // Максимальная скорость прокрутки
 
     private TextRedactor textRedactor;
     private EditArea[] editAreas;
@@ -95,7 +92,6 @@ public class Tablet extends GUI {
 
         textRedactor = new TextRedactor(this, filePath);
         editAreas = textRedactor.getEditAreas();
-//        textRedactor.addSpell("/resources/spells/gun");
     }
 
     public void addButton(String name) {
@@ -213,7 +209,6 @@ public class Tablet extends GUI {
             context.startRow = 0;
             context.verticalOffset = 0;
         } else {
-            float maxScroll = totalRows - countRowsVisible;
             float rowOffset = scrollPosition % 1.0f; // Дробная часть
 
             context.startRow = (int)scrollPosition;
@@ -334,7 +329,6 @@ public class Tablet extends GUI {
             String line;
             line = reader.readLine();
             if (line == null) {
-                System.out.println("Файл данных планшета, пуст!");
                 return;// Если файл закончился раньше, чем ожидалось
             }
 
@@ -396,7 +390,6 @@ public class Tablet extends GUI {
                         }
                     }
                 }
-                // Тута остальные заклинания
             }
 
         } catch (Exception e) {
@@ -427,7 +420,6 @@ public class Tablet extends GUI {
         }
 
         if(buttonSave.update()) {
-            System.out.println("Изменения сохранены!");
             gp.state = GamePanel.GameState.Game;
         }
         click = false;
@@ -438,9 +430,6 @@ public class Tablet extends GUI {
         } else {
             scrollPosition = 0;
         }
-
-//        float currentScroll = getScrollPercent();
-//        System.out.println("Прокручено: " + currentScroll + "%");
 
         for(EditArea editArea: editAreas) {
             if (editArea != null) {

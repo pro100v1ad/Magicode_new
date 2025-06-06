@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.List;
 
-public class SceneLoader {
+public class SceneLoader { // Класс отвечающий за саму сцену и все ее составляющие
 
     private Collision collision;
     private Interaction interaction;
@@ -67,7 +67,6 @@ public class SceneLoader {
     private void loadSaveEnemies(String enemiesPath) {
 
         if (enemiesPath == null) {
-            System.out.println("Враги на локации отсутствуют (путь не указан)");
             return;
         }
 
@@ -113,15 +112,12 @@ public class SceneLoader {
     // Метод загрузки врагов
     private void loadEnemies(String enemiesPath) {
 
-
         if (enemiesPath == null) {
-            System.out.println("Враги на локации отсутствуют (путь не указан)");
             return;
         }
 
         try (InputStream is = getClass().getResourceAsStream(enemiesPath)) {
             if (is == null) {
-                System.out.println("Ошибка: файл не найден! " + enemiesPath);
                 return;
             }
 
@@ -166,14 +162,12 @@ public class SceneLoader {
             String line;
             line = reader.readLine();
             if (line == null) {
-                System.out.println("Файл saveScene пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
 
             String parts[] = line.split(" ");
 
             if(parts.length != 2) {
-                System.out.println("При загрузке сцены, первая строка не соответствует формату \"число число\"");
                 return;
             }
             sceneWidth = Integer.parseInt(parts[0]);
@@ -211,7 +205,6 @@ public class SceneLoader {
             String line;
             line = reader.readLine();
             if (line == null) {
-                System.out.println("Файл structure пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
 
@@ -280,7 +273,6 @@ public class SceneLoader {
             String line;
             line = reader.readLine();
             if (line == null) {
-                System.out.println("Файл object пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
 
@@ -318,24 +310,20 @@ public class SceneLoader {
     }
 
     private void loadScene(String backgroundPath, String structurePath) {
-        long startTime = System.nanoTime();
 
         try (InputStream is = getClass().getResourceAsStream(backgroundPath)) {
             if (is == null) {
-                System.out.println("Ошибка: файл не найден! " + backgroundPath);
                 return;
             }
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line = br.readLine();
             if (line == null) {
-                System.out.println("Файл background пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
 
             String parts[] = line.split(" ");
 
             if(parts.length != 2) {
-                System.out.println("При загрузке сцены, первая строка не соответствует формату \"число число\"");
                 return;
             }
             sceneWidth = Integer.parseInt(parts[0]);
@@ -357,7 +345,6 @@ public class SceneLoader {
                 for(int col = 0; col < sceneWidth; col++) {
                     String elements = parts[col];
                     // Упрощенная обработка
-                    if(elements.isEmpty()) System.out.println("Я лох^ " + row + "_ " + col);
                     worldMap[row][col].setLayers(elements);
                 }
             }
@@ -383,7 +370,6 @@ public class SceneLoader {
         //STRUCTURE
         try (InputStream is = getClass().getResourceAsStream(structurePath)) {
             if (is == null) {
-                System.out.println("Ошибка: файл не найден! " + structurePath);
                 return;
             }
 
@@ -400,11 +386,8 @@ public class SceneLoader {
             }
 
             if (totalStructures == 0) {
-                System.out.println("Файл пуст или не содержит структур");
                 return;
             }
-
-            System.out.println("Количество структур: " + totalStructures);
 
             // Выделяем память
             structures = new Structure[totalStructures];
@@ -482,10 +465,6 @@ public class SceneLoader {
         return enemies;
     }
 
-    public void setEnemies(Enemy[] enemies) {
-        this.enemies = enemies;
-    }
-
     public int getSceneWidth() {
         return sceneWidth;
     }
@@ -496,10 +475,6 @@ public class SceneLoader {
 
     public Collision getCollision() {
         return collision;
-    }
-
-    public Interaction getInteraction() {
-        return interaction;
     }
 
     public Layer[][] getWorldMap() {
@@ -702,7 +677,6 @@ public class SceneLoader {
                                 if(objects[i] != null) {
                                     if (objects[i].equals(object)) {
                                         objects[i] = null;
-                                        System.out.println("Ключ подобран!");
                                         break;
                                     }
                                 }
@@ -714,7 +688,6 @@ public class SceneLoader {
                                 if(objects[i] != null) {
                                     if (objects[i].equals(object)) {
                                         objects[i] = null;
-                                        System.out.println("Книга подобрана!");
                                         gp.directory.addInfo();
                                         gp.player.setCountBook(gp.player.getCountBook() + 1);
                                         break;
@@ -729,7 +702,6 @@ public class SceneLoader {
                                 if(objects[i] != null) {
                                     if (objects[i].equals(object)) {
                                         objects[i] = null;
-                                        System.out.println("Гаечный ключ подобран!");
                                         gp.tablet.getTextRedactor().addSpell("/resources/spells/repair");
                                         gp.player.addSpell("wrench", "true_wrench_null_null_null_null".split("_"));
                                         break;
@@ -744,7 +716,6 @@ public class SceneLoader {
                                 if(objects[i] != null) {
                                     if (objects[i].equals(object)) {
                                         objects[i] = null;
-                                        System.out.println("Пушка подобрана!");
                                         gp.tablet.getTextRedactor().addSpell("/resources/spells/gun");
                                         gp.player.addSpell("gun", "true_gun_null_null".split("_"));
                                         break;
@@ -760,7 +731,6 @@ public class SceneLoader {
                                 if(objects[i] != null) {
                                     if (objects[i].equals(object)) {
                                         objects[i] = null;
-                                        System.out.println("Знак подобран!");
                                         if(object.getName().equals("N")) {
                                             gp.tablet.setN(gp.tablet.getN() + 1);
                                         }
@@ -811,7 +781,6 @@ public class SceneLoader {
                     enemies[i].update();
                     gp.player.getBulletManager().checkBulletFromEnemy(enemies[i]);
                     if(enemies[i].getHealth() <= 0) {
-                        enemies[i].death();
                         if(enemies[i].getName().equals("boss")) {
                             enemies[i] = null;
                             gp.endOfGamePanel(true);

@@ -7,7 +7,7 @@ import javax.sound.sampled.FloatControl;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 
-public class Sound {
+public class Sound { // Класс отвечающий за звук
 
     private Clip clip;
     private String[] soundFiles = new String[30];
@@ -33,7 +33,6 @@ public class Sound {
         try {
             InputStream audioSrc = getClass().getResourceAsStream(soundFiles[i]);
             if (audioSrc == null) {
-                System.out.println("Ошибка: звуковой файл не найден! " + soundFiles[i]);
                 return;
             }
 
@@ -42,7 +41,6 @@ public class Sound {
             AudioInputStream ais = AudioSystem.getAudioInputStream(bufferedInputStream);
             clip = AudioSystem.getClip();
             clip.open(ais);
-            System.out.println("Звуковой файл успешно загружен: " + soundFiles[i]);
         } catch (Exception e) {
             System.out.println("Ошибка в Sound: " + e.getMessage());
         }
@@ -52,8 +50,6 @@ public class Sound {
 
     public void play(int i) {
         if (clip == null) {
-            System.out.println("Ошибка: звуковой файл не загружен!");
-            System.out.println("Ошибка была в файле:" + i);
             return;
         }
         clip.setFramePosition(0);
@@ -62,8 +58,6 @@ public class Sound {
 
     public void loop(int i) {
         if (clip == null) {
-            System.out.println("Ошибка: звуковой файл не загружен для лупа!");
-            System.out.println("Ошибка была в файле:" + i);
             return;
         }
         clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -71,7 +65,6 @@ public class Sound {
 
     public void stop() {
         if (clip == null) {
-            System.out.println("Ошибка: звуковой файл не загружен для стопа!");
             return;
         }
         clip.stop();
@@ -81,7 +74,6 @@ public class Sound {
     // Метод для изменения громкости
     public void setVolume(float volume) {
         if (clip == null) {
-            System.out.println("Ошибка: звуковой файл не загружен для изменения громкости!");
             return;
         }
 
@@ -90,8 +82,6 @@ public class Sound {
             // Устанавливаем громкость (в децибелах)
             float dB = (float) (Math.log(volume) / Math.log(10.0) * 20.0);
             gainControl.setValue(dB);
-        } else {
-            System.out.println("Ошибка: управление громкостью не поддерживается!");
         }
     }
 }

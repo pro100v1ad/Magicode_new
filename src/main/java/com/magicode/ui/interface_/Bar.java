@@ -6,7 +6,7 @@ import main.java.com.magicode.core.GamePanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Bar {
+public class Bar { // Класс отвечающий за полоску хп/маны
 
     private final int width;
     private final int height;
@@ -33,6 +33,7 @@ public class Bar {
         this.maxValue = maxValue;
         this.currentValue = currentValue;
         this.stripColor = stripColor;
+        percent = (float)currentValue/maxValue;
 
         this.stripImage = gp.textureAtlas.textures[17][0].getTexture();
 

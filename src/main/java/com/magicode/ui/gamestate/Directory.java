@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 
-public class Directory extends GUI {
+public class Directory extends GUI { // Класс отвечающий за блокнот
 
     private BufferedImage directoryImage;
 
@@ -20,12 +20,10 @@ public class Directory extends GUI {
     private int posButtonX, posButtonY;
     private String[] buttonNames;
 
-    //Text
-    private String[] text;
+
     private static int lineSpace;
     private int fontSize;
-    private static int textPosX, textPosY;
-    private Color textColor;
+
     private int textNavigationX, textNavigationY;
     private String[] currentText;
 
@@ -125,13 +123,11 @@ public class Directory extends GUI {
 
         try (InputStream is = getClass().getResourceAsStream(filePath)) {
             if (is == null) {
-                System.out.println("Ошибка: файл не найден! " + filePath);
                 return;
             }
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line = br.readLine();
             if (line == null) {
-                System.out.println("Файл пуст");
                 return;
             }
             currentText = null;
@@ -144,7 +140,6 @@ public class Directory extends GUI {
                 linecounter++;
             }
 
-//            System.out.println("Текст загружен из файла: " + filePath);
         } catch (IOException e) {
             System.err.println("Ошибка при загрузке текста: " + e.getMessage());
         }

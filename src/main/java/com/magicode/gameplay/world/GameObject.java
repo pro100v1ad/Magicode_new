@@ -3,7 +3,7 @@ package main.java.com.magicode.gameplay.world;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public abstract class GameObject {
+public abstract class GameObject { // Родительский класс для всех объектов
 
     protected String name;
     protected BufferedImage image;

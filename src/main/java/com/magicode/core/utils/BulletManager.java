@@ -6,38 +6,13 @@ import main.java.com.magicode.gameplay.entity.Player;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class BulletManager {
+public class BulletManager { // Класс отвечающий за управление пулями
 
     private ArrayList<Bullet> bullets = new ArrayList<>();
 
     // Добавление новой пули
     public void addBullet(Bullet bullet) {
         bullets.add(bullet);
-    }
-
-    // Удаление пули по индексу
-    public void removeBullet(int index) {
-        if (index >= 0 && index < bullets.size()) {
-            bullets.remove(index);
-        }
-    }
-
-    // Удаление конкретной пули (по объекту)
-    public void removeBullet(Bullet bullet) {
-        bullets.remove(bullet);
-    }
-
-    // Получение пули по индексу
-    public Bullet getBullet(int index) {
-        if (index >= 0 && index < bullets.size()) {
-            return bullets.get(index);
-        }
-        return null;
-    }
-
-    // Получение количества пуль
-    public int getBulletCount() {
-        return bullets.size();
     }
 
     //Проверка урона игроку
@@ -52,16 +27,14 @@ public class BulletManager {
                         bullet.getRadius(),
                         bullet.getRadius()
                 );
-//            System.out.println("bullet - x:" + (int)bullet.getWorldX() + " y:" + (int)bullet.getWorldY());
 
                 // Создаем прямоугольник для игрока
                 Rectangle playerRect = new Rectangle(
                         (int) player.getWorldX(),
                         (int) player.getWorldY(),
-                        (int) player.getCollisionWidth(),
-                        (int) player.getCollisionHeight()
+                        player.getCollisionWidth(),
+                        player.getCollisionHeight()
                 );
-//            System.out.println("player - x:" + (int)player.getWorldX() + " y:" + (int)player.getWorldY());
 
                 // Проверяем пересечение
                 if (bulletRect.intersects(playerRect)) {
@@ -84,17 +57,13 @@ public class BulletManager {
                         bullet.getRadius(),
                         bullet.getRadius()
                 );
-//            System.out.println("bullet - x:" + (int)bullet.getWorldX() + " y:" + (int)bullet.getWorldY());
-
                 // Создаем прямоугольник для игрока
                 Rectangle playerRect = new Rectangle(
                         (int) enemy.getWorldX(),
                         (int) enemy.getWorldY(),
-                        (int) enemy.getCollisionWidth(),
-                        (int) enemy.getCollisionHeight()
+                        enemy.getCollisionWidth(),
+                        enemy.getCollisionHeight()
                 );
-//            System.out.println("player - x:" + (int)player.getWorldX() + " y:" + (int)player.getWorldY());
-
                 // Проверяем пересечение
                 if (bulletRect.intersects(playerRect)) {
                     bullets.remove(i); // Удаляем пулю
@@ -126,8 +95,4 @@ public class BulletManager {
         }
     }
 
-    // Очистка всех пуль
-    public void clearAllBullets() {
-        bullets.clear();
-    }
 }

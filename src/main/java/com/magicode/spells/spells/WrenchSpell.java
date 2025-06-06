@@ -5,7 +5,7 @@ import main.java.com.magicode.spells.Spell;
 
 import java.awt.*;
 
-public class WrenchSpell extends Spell {
+public class WrenchSpell extends Spell { // Класс отвечающий за работу заклинания гаечный ключ
 
     private int currentFirst, currentSecond;
     private String currentThird;

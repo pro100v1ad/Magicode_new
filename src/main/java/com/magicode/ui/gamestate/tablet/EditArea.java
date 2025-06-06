@@ -5,7 +5,7 @@ import main.java.com.magicode.ui.gamestate.Tablet;
 
 import java.awt.*;
 
-public class EditArea extends GUI {
+public class EditArea extends GUI { // Класс отвечающий за редактируемое поле в планшете
 
     private String name;
     private int markerLine, markerPos, markerWidth, markerHeight;
@@ -36,7 +36,6 @@ public class EditArea extends GUI {
 
     public void stopEditing() {
         this.isEditing = false;
-        // Здесь можно сохранить изменения в основной текст
     }
 
     public boolean isEditing() {
@@ -124,9 +123,7 @@ public class EditArea extends GUI {
     }
 
     private String getOriginalText() {
-        // Здесь нужно получить оригинальный текст из Tablet.text
-        // Это зависит от вашей реализации хранения текста
-        return currentText; // временная заглушка
+        return currentText;
     }
 
     public String getName() {

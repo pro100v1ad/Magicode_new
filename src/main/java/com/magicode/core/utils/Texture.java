@@ -2,7 +2,7 @@ package main.java.com.magicode.core.utils;
 
 import java.awt.image.BufferedImage;
 
-public class Texture {
+public class Texture { // Вспомогательный класс для создания текстур
 
     private BufferedImage texture = null;
     ResourceLoader rs = new ResourceLoader();

@@ -1,6 +1,6 @@
 package main.java.com.magicode.core.utils;
 
-public class TextureAtlas {
+public class TextureAtlas { // Класс для работы со всеми текстурами игры
 
     public Texture textures[][];
 
@@ -183,9 +183,6 @@ public class TextureAtlas {
         textures[23][15].loadTexture("/resources/boss/red/redBoss7.png");
         textures[23][16].loadTexture("/resources/boss/red/redBoss8.png");
         textures[23][17].loadTexture("/resources/boss/red/redBoss9.png");
-
-
-
 
     }
 

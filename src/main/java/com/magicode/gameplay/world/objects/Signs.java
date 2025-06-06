@@ -5,7 +5,7 @@ import main.java.com.magicode.gameplay.world.GameObject;
 
 import java.awt.*;
 
-public class Signs extends GameObject {
+public class Signs extends GameObject { // Класс отвечающий за объект знак
 
     private GamePanel gp;
 

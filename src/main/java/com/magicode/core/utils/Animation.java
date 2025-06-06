@@ -5,11 +5,10 @@ import main.java.com.magicode.core.GamePanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Animation {
+public class Animation { // Класс отвечающий за смену кадров в анимации
 
     private BufferedImage[] images;
     private BufferedImage currentImage;
-    private double fps;
     public int currentFrame;
     public int updatesCount;
     private final int updatesPerFrame;
@@ -23,7 +22,6 @@ public class Animation {
         }
 
         this.images = images;
-        this.fps = fps;
         this.currentFrame = 0;
         this.currentImage = images[0];
 

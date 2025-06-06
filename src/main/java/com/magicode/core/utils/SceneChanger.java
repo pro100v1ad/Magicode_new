@@ -3,11 +3,9 @@ package main.java.com.magicode.core.utils;
 import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.core.SceneLoader;
 
-
-import java.awt.*;
 import java.io.*;
 
-public class SceneChanger {
+public class SceneChanger { // Класс отвечающий за смену сцен
 
     private String[] sceneInfo;
     private final String FILEPATH = "/resources/levels/sceneInfo";
@@ -41,7 +39,6 @@ public class SceneChanger {
             String line;
             line = reader.readLine();
             if (line == null) {
-                System.out.println("Файл пуст");
                 return;
             }
 
@@ -55,13 +52,11 @@ public class SceneChanger {
     private void loadSceneInfo() {
         try (InputStream is = getClass().getResourceAsStream(FILEPATH)) {
             if (is == null) {
-                System.out.println("Ошибка: файл не найден! " + FILEPATH);
                 return;
             }
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line = br.readLine();
             if (line == null) {
-                System.out.println("Файл sceneInfo пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
             sceneInfo = new String[3];

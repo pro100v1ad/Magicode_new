@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 
-public class Bullet extends Entity{
+public class Bullet extends Entity { // Класс отвечающий за пулю
 
 
     private int radius;
@@ -89,7 +89,6 @@ public class Bullet extends Entity{
                 worldY - GamePanel.tileSize * 4 < gp.player.getWorldY() + gp.player.getScreenY())
         {
 
-//            g.fillOval(screenX, screenY, radius, radius);
             g.drawImage(image, screenX, screenY, radius, radius, null);
         }
 

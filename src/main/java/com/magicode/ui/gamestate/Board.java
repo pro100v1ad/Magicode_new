@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class Board extends GUI {
+public class Board extends GUI { // Класс отвечающий за доску заданий
 
     private BufferedImage boardImage;
 
@@ -59,13 +59,11 @@ public class Board extends GUI {
         }
         try (InputStream is = getClass().getResourceAsStream(filePath)) {
             if (is == null) {
-                System.out.println("Ошибка: файл не найден! " + filePath);
                 return;
             }
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line = br.readLine();
             if (line == null) {
-                System.out.println("Файл пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
             line = br.readLine();

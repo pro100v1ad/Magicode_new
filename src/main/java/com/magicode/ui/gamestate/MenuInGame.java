@@ -5,7 +5,7 @@ import main.java.com.magicode.core.GamePanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class MenuInGame {
+public class MenuInGame { // Класс отвечающий за меню в игре
 
     private GamePanel gp;
     private Button[] button;
@@ -70,7 +70,7 @@ public class MenuInGame {
                 button[1].click();
                 click = false;
             }
-            if(button[0].update() || GamePanel.keys[6]) { // если true ,то нажата кнопка
+            if(button[0].update() || GamePanel.keys[6]) { // если true, то нажата кнопка
                 state = false;
                 gp.state = GamePanel.GameState.Game;
                 GamePanel.keys[6] = false;
@@ -129,7 +129,6 @@ public class MenuInGame {
                     && mY >= posButtonTabletY && mY <= posButtonTabletY + GamePanel.tileSize*3.5) {
                 buttonTabletImage = gp.textureAtlas.textures[14][3].getTexture();
                 if(click) {
-                    click = false;
                     gp.state = GamePanel.GameState.GameOpenTablet;
                     state = false;
                 }

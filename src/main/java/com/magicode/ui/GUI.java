@@ -3,7 +3,7 @@ package main.java.com.magicode.ui;
 import java.awt.*;
 import java.io.InputStream;
 
-public class GUI {
+public class GUI { // Родительский класс для всего интерфейса
 
     protected int posX;
     protected int posY;

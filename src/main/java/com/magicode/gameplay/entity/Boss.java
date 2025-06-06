@@ -8,7 +8,7 @@ import main.java.com.magicode.ui.interface_.Bar;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Boss extends Enemy {
+public class Boss extends Enemy { // Класс отвечающий за босса
 
     private BufferedImage[] imagesRed;
     private BufferedImage[] imagesGreen;
@@ -198,7 +198,7 @@ public class Boss extends Enemy {
     }
 
     private void createBullet(double x, double y, double angle, int speed) {
-        Bullet bullet = new Bullet(gp, (int) x, (int) y, angle, speed, bulletRadius, false, 3);
+        Bullet bullet = new Bullet(gp, (int) x, (int) y, angle, speed, bulletRadius, false, 10);
         gp.player.getBulletManager().addBullet(bullet);
     }
 

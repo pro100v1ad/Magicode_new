@@ -12,13 +12,13 @@ import main.java.com.magicode.gameplay.world.structures.Portal;
 import java.awt.*;
 
 
-public class Collision {
-    private int[][] collisionMap; // true - есть коллизия
+public class Collision { // Класс отвечающий за коллизию всех сущностей с препятствиями
+    private int[][] collisionMap;
     private int mapX, mapY;
     public Collision(int mapX, int mapY) {
         this.mapX = mapX;
         this.mapY = mapY;
-        collisionMap = new int[mapY][mapX];/////////////////////////////////Решить проблему коллизии при пустой карте
+        collisionMap = new int[mapY][mapX];
 
         for(int i = 0; i < mapY; i++) {
             for(int j = 0; j < mapX; j++) {
@@ -44,7 +44,6 @@ public class Collision {
 
     public void loadMap(Layer[][] worldMap) {
         if(worldMap == null) {
-            System.out.println("Карта коллизии не загрузилась!");
             return;
         }
         try {
@@ -58,7 +57,6 @@ public class Collision {
                             for(int j2 = j*GamePanel.tileSize; j2 < (j+1)*GamePanel.tileSize; j2++) {
                                 try {
                                     if(collisionMap[i2][j2] != 0) {
-                                        System.out.println("Почему-то там уже стоит 1");
                                     }
                                     collisionMap[i2][j2] = 1;
                                 } catch (Exception e) {
@@ -169,9 +167,9 @@ public class Collision {
                     }
 
                 }
-            }//end if
+            }
 
-        }//end for
+        }
 
     }
 
@@ -199,9 +197,7 @@ public class Collision {
         int code = entity.getCollisionCode();
         boolean flag = false;
         for(int i = x; i < x + w; i++) {
-//            if(collisionMap[y + h - h/3+1][i] != entity.getCollisionCode()) System.out.println(" Разберись почему нет кода сущности тут up" + entity.getCollisionCode());
             try{
-//                if(collisionMap[y-1][i] == 1) flag = true;
                 if(collisionMap[y + h - h/3-1][i] == 1) flag = true;
             }catch (Exception e) {
                 System.out.println("Вышло за пределы коллизии массива");
@@ -221,7 +217,6 @@ public class Collision {
         int code = entity.getCollisionCode();
         boolean flag = false;
         for(int i = x; i < x + w; i++) {
-//            if(collisionMap[y+h-1][i] != entity.getCollisionCode()) System.out.println(" Разберись почему нет кода сущности тут down" + entity.getCollisionCode());
             try{
                 if(collisionMap[y+h][i] == 1) flag = true;
             }catch (Exception e) {
@@ -243,8 +238,6 @@ public class Collision {
         boolean flag = false;
         for(int i = y; i < y + h; i++) {
             if(i > y + h - h/3) {
-//                if (collisionMap[i][x + w - 1] != entity.getCollisionCode())
-//                    System.out.println(" Разберись почему нет кода сущности тут right" + entity.getCollisionCode());
                 try {
                     if (collisionMap[i][x + w] == 1) flag = true;
                 } catch (Exception e) {
@@ -268,8 +261,6 @@ public class Collision {
         boolean flag = false;
         for(int i = y; i < y + h; i++) {
             if(i > y + h - h/3) {
-//                if (collisionMap[i][x] != entity.getCollisionCode())
-//                    System.out.println(" Разберись почему нет кода сущности тут left" + entity.getCollisionCode());
                 try {
                     if (collisionMap[i][x - 1] == 1) flag = true;
                 } catch (Exception e) {
@@ -305,103 +296,7 @@ public class Collision {
                 if(collisionMap[i][j] == 0 && i > y + h - h/3) collisionMap[i][j] = code;
             }
         }
-//        System.out.println();
-//        System.out.println();
-//        for(int i = y-5; i < y + h +5; i++) {
-//            for(int j = x-5; j < x + w +5; j++) {
-//                System.out.print(collisionMap[i][j] + " ");
-//            }
-//            System.out.println();
-//        }
-
 
     }
 
-//    public void drawEntity(Graphics2D g) {
-//        g.setColor(Color.YELLOW);
-//
-//        // Перебираем всю карту коллизий
-//        for (int worldY = 0; worldY < GamePanel.worldHeight; worldY++) {
-//            for (int worldX = 0; worldX < GamePanel.worldWidth; worldX++) {
-//
-//                // Если в этой точке есть коллизия сущности (например, игрока)
-//                if (collisionMap[worldY][worldX] == 2) {
-//
-//                    // Преобразуем мировые координаты в экранные
-//                    int screenX = (int) (worldX - gp.player.worldX + gp.player.screenX);
-//                    int screenY = (int) (worldY - gp.player.worldY + gp.player.screenY);
-//
-//                    // Проверяем, находится ли точка в зоне видимости камеры
-//                    if (worldX > gp.player.worldX - gp.player.screenX - 32 &&
-//                            worldX < gp.player.worldX + gp.player.screenX + 32 &&
-//                            worldY > gp.player.worldY - gp.player.screenY - 32 &&
-//                            worldY < gp.player.worldY + gp.player.screenY + 32) {
-//
-//                        // Рисуем пиксель коллизии
-//                        g.fillRect(screenX, screenY, 1, 1);
-//                    }
-//                }
-//            }
-//        }
-//    }
-
-//    public void drawCollision(Graphics2D g) {
-//        g.setColor(Color.BLUE);
-//
-//        // Перебираем всю карту коллизий
-//        for (int worldY = 0; worldY < GamePanel.HEIGHT; worldY++) {
-//            for (int worldX = 0; worldX < GamePanel.WIDTH; worldX++) {
-//
-//                // Если в этой точке есть коллизия сущности (например, игрока)
-//                if (collisionMap[worldY][worldX] == 1) {
-//
-//                    // Преобразуем мировые координаты в экранные
-//                    int screenX = (int) (worldX - gp.player.worldX + gp.player.screenX);
-//                    int screenY = (int) (worldY - gp.player.worldY + gp.player.screenY);
-//
-//                    // Проверяем, находится ли точка в зоне видимости камеры
-//                    if (worldX > gp.player.worldX - gp.player.screenX - 32 &&
-//                            worldX < gp.player.worldX + gp.player.screenX + 32 &&
-//                            worldY > gp.player.worldY - gp.player.screenY - 32 &&
-//                            worldY < gp.player.worldY + gp.player.screenY + 32) {
-//
-//                        // Рисуем пиксель коллизии
-//                        g.fillRect(screenX, screenY, 1, 1);
-//                    }
-//                }
-//            }
-//        }
-//    }
-
-//    public void drawTiles(Graphics2D g) {
-//        g.setColor(Color.RED);
-//
-//        // Перебираем все тайлы мира
-//        for (int worldRow = 0; worldRow < GamePanel.maxWorldRow; worldRow++) {
-//            for (int worldCol = 0; worldCol < GamePanel.maxWorldCol; worldCol++) {
-//
-//                // Проверяем, есть ли у тайла коллизия
-//                if (gp.backGround.worldMap[worldRow][worldCol].getCollision()) {
-//
-//                    // Мировые координаты тайла
-//                    int worldX = worldCol * GamePanel.tileSize;
-//                    int worldY = worldRow * GamePanel.tileSize;
-//
-//                    // Преобразуем мировые координаты в экранные (относительно камеры)
-//                    int screenX = (int) (worldX - gp.player.worldX + gp.player.screenX);
-//                    int screenY = (int) (worldY - gp.player.worldY + gp.player.screenY);
-//
-//                    // Проверяем, находится ли тайл в зоне видимости камеры
-//                    if (worldX + GamePanel.tileSize > gp.player.worldX - gp.player.screenX &&
-//                            worldX - GamePanel.tileSize < gp.player.worldX + gp.player.screenX &&
-//                            worldY + GamePanel.tileSize > gp.player.worldY - gp.player.screenY &&
-//                            worldY - GamePanel.tileSize < gp.player.worldY + gp.player.screenY) {
-//
-//                        // Рисуем квадрат коллизии
-//                        g.drawRect(screenX, screenY, GamePanel.tileSize, GamePanel.tileSize);
-//                    }
-//                }
-//            }
-//        }
-//    }
 }

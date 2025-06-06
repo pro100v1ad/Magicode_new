@@ -5,7 +5,7 @@ import main.java.com.magicode.gameplay.world.GameObject;
 
 import java.awt.*;
 
-public class Gun extends GameObject {
+public class Gun extends GameObject { // Класс отвечающий за объект пушка
 
     private GamePanel gp;
 

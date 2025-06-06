@@ -18,7 +18,8 @@ import main.java.com.magicode.ui.gamestate.tablet.EditArea;
 
 import java.io.*;
 
-public class GameSaveManager {
+public class GameSaveManager { // Класс отвечающий за сохранение данных состояния игры
+
     private final String saveFilePathBackground = "saves/backgroundSave.txt";
     private final String saveFilePathStructure = "saves/structureSave.txt";
     private final String saveFilePathPlayer = "saves/playerSave.txt";
@@ -262,8 +263,6 @@ public class GameSaveManager {
 
                         }
 
-
-                        // Сюда остальные заклинания
                     }
                 }
 

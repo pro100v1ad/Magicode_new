@@ -5,7 +5,7 @@ import main.java.com.magicode.gameplay.world.Structure;
 
 import java.awt.*;
 
-public class Portal extends Structure {
+public class Portal extends Structure { // Класс отвечающий за структуру портал
 
     private GamePanel gp;
 

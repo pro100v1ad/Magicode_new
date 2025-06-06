@@ -17,7 +17,8 @@ import java.io.*;
 
 import static java.lang.Math.sqrt;
 
-public class Player extends Entity implements Serializable {
+public class Player extends Entity implements Serializable { // Класс отвечающий за игрока
+
     private static final long serialVersionUID = 1L;
 
     private GamePanel gp;
@@ -142,7 +143,6 @@ public class Player extends Entity implements Serializable {
             String line;
             line = reader.readLine();
             if (line == null) {
-                System.out.println("Файл saveSpells пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
             int enemyCount = Integer.parseInt(line);
@@ -176,13 +176,11 @@ public class Player extends Entity implements Serializable {
     public void loadSpells(String spellPath) {
         try (InputStream is = getClass().getResourceAsStream(spellPath)) {
             if (is == null) {
-                System.out.println("Ошибка: файл не найден! " + spellPath);
                 return;
             }
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line = br.readLine();
             if (line == null) {
-                System.out.println("Файл spells пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
 
@@ -232,7 +230,7 @@ public class Player extends Entity implements Serializable {
 
         worldX = GamePanel.tileSize*35;
         worldY = GamePanel.tileSize*17;
-        float pixelsPerSecond = 200f;
+        float pixelsPerSecond = 150f;
         speed = (pixelsPerSecond * GamePanel.scale) / GamePanel.UPDATE_RATE; // scale минимум 1/4 и максимум 2.
 
     }
@@ -295,7 +293,6 @@ public class Player extends Entity implements Serializable {
             String line;
             line = reader.readLine();
             if (line == null) {
-                System.out.println("Файл savePlayer пуст");
                 return ;// Если файл закончился раньше, чем ожидалось
             }
 
@@ -320,12 +317,8 @@ public class Player extends Entity implements Serializable {
             maxMana = Integer.parseInt(parts[0]);
             mana = Integer.parseInt(parts[1]);
 
-
-
-            // Потом поменяю //////////
-            float pixelsPerSecond = 200f;
-            speed = (pixelsPerSecond * GamePanel.scale) / GamePanel.UPDATE_RATE; // scale минимум 1/4 и максимум 2.
-            ///////////////////
+            float pixelsPerSecond = 150f;
+            speed = (pixelsPerSecond * GamePanel.scale) / GamePanel.UPDATE_RATE;
 
         } catch (Exception e) {
             System.out.println("Ошибка загрузки игрока!");
@@ -346,7 +339,6 @@ public class Player extends Entity implements Serializable {
 
 
     public void update() {
-//        System.out.println("Pos: " + worldX + " : " + worldY);
         if(gp.sceneLoader.getCutScene()) {
             return;
         }
@@ -438,8 +430,6 @@ public class Player extends Entity implements Serializable {
             case "right": case "up_right": case "down_right": animations[3].update(); break;
             case "null": animations[4].update(); break;
         }
-
-//        System.out.println("Player - x: " + worldX + ", y: " + worldY);
 
         if(health < maxHealth) health += 0.03;
         if(mana < maxMana) mana += 0.08;

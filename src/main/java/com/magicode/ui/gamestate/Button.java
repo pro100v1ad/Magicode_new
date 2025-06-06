@@ -5,7 +5,7 @@ import main.java.com.magicode.ui.GUI;
 
 import java.awt.*;
 
-public class Button extends GUI {
+public class Button extends GUI { // Класс отвечающий за кнопку
 
     private String text;
     private Color colorLine;
@@ -36,7 +36,6 @@ public class Button extends GUI {
         this.passiveLineColor = Color.WHITE;
         this.activeLineColor = Color.YELLOW;
 
-        // Временная инициализация, точные значения получим в методе draw
         this.textWidth = (int)(text.length() * fontSize / 1.55);
         this.textHeight = (int)fontSize;
 

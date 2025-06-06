@@ -7,7 +7,7 @@ import main.java.com.magicode.core.utils.ResourceLoader;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public abstract class Enemy extends Entity {
+public abstract class Enemy extends Entity { // Родительский класс для всех врагов
     protected GamePanel gp;
     protected Animation[] animations;
     protected ResourceLoader resourceLoader;
@@ -15,9 +15,6 @@ public abstract class Enemy extends Entity {
     protected String name;
     protected int detectionRange; // Дистанция обнаружения игрока
     protected int damage; // Урон, который наносит враг
-    protected int attackCooldown; // Задержка между атаками
-    protected int attackTimer; // Таймер для атаки
-
     protected boolean aggressive; // Агрессивный ли враг (преследует игрока)
 
     public Enemy(GamePanel gp) {
@@ -39,8 +36,8 @@ public abstract class Enemy extends Entity {
             return;
         }
 
-        int enemyWidth = (int)(GamePanel.tileSize*2/2);
-        int enemyHeight = (int)(GamePanel.tileSize*4/2);
+        int enemyWidth = GamePanel.tileSize*2/2;
+        int enemyHeight = GamePanel.tileSize*4/2;
 
         switch (direction) {
             case "up": animations[1].draw(g, (int)worldX, (int)worldY, enemyWidth, enemyHeight); break;
@@ -58,36 +55,12 @@ public abstract class Enemy extends Entity {
     }
 
     protected boolean isPlayerInRange() {
-        if (gp.player == null) return false; // Добавляем проверку на null
+        if (gp.player == null) return false;
 
         Player player = gp.player;
         double distance = Math.sqrt(Math.pow(worldX - player.getWorldX(), 2) +
                 Math.pow(worldY - player.getWorldY(), 2));
         return distance <= detectionRange;
-    }
-
-    protected void moveTowardsPlayer() {
-        if (gp.player == null) return; // Добавляем проверку на null
-
-        Player player = gp.player;
-        double dx = player.getWorldX() - worldX;
-        double dy = player.getWorldY() - worldY;
-        double distance = Math.sqrt(dx * dx + dy * dy);
-
-        if(distance != 0) {
-            dx /= distance;
-            dy /= distance;
-
-            worldX += dx * speed;
-            worldY += dy * speed;
-
-            // Обновляем направление для анимации
-            if(Math.abs(dx) > Math.abs(dy)) {
-                direction = dx > 0 ? "right" : "left";
-            } else {
-                direction = dy > 0 ? "down" : "up";
-            }
-        }
     }
 
     public void setWorldX(double worldX) {
@@ -119,10 +92,6 @@ public abstract class Enemy extends Entity {
             isInvulnerable = true; // Включаем бессмертие
             invulnerabilityEndTime = currentTime + damageCooldown; // Устанавливаем время окончания
         }
-    }
-
-    public void death() {
-        System.out.println("Enemy ликвидирован!");
     }
 
 }

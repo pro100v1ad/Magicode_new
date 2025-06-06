@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class Chest extends Structure {
+public class Chest extends Structure { // Класс отвечающий за структуру сундук
 
     private boolean isLock;
     private GamePanel gp;
@@ -24,10 +24,10 @@ public class Chest extends Structure {
     public Chest(GamePanel gp, int x, int y, int w, int h, String code, boolean isLock, boolean state, String direction, String filePath) {
         this.gp = gp;
         this.name = "chest";
-        String[] parts = code.split(":"); // Немного изменил парсинг (для работы третьего опционального параметра)
+        String[] parts = code.split(":");
         this.code = Integer.parseInt(parts[0]);
         this.radius = Integer.parseInt(parts[1]);
-        this.objectCode = Integer.parseInt(parts[0]); // Сундук не может быть пустым теперь
+        this.objectCode = Integer.parseInt(parts[0]);
         this.objectName = parts[2];
 
         this.x = x;
@@ -50,13 +50,11 @@ public class Chest extends Structure {
         }
         try (InputStream is = getClass().getResourceAsStream(filePath)) {
             if (is == null) {
-                System.out.println("Ошибка: файл не найден! " + filePath);
                 return;
             }
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line = br.readLine();
             if (line == null) {
-                System.out.println("Файл пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
             condition = line;
@@ -178,7 +176,7 @@ public class Chest extends Structure {
         return setObjectByCode(object, objectName);
     }
 
-    private GameObject setObjectByCode(GameObject object, String objectName) { // Добавил функцию
+    private GameObject setObjectByCode(GameObject object, String objectName) {
         switch (objectName) {
             case "key":
                 object = new Key(gp, x, y, this.objectCode);

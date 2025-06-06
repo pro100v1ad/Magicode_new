@@ -6,7 +6,7 @@ import main.java.com.magicode.ui.GUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public abstract class Spell extends GUI {
+public abstract class Spell extends GUI { // Родительский класс для всех заклинаний
 
     protected int defaultFirst, defaultSecond;
     protected String defaultThird;
@@ -30,38 +30,6 @@ public abstract class Spell extends GUI {
 
     }
 
-    public int getDefaultFirst() {
-        return defaultFirst;
-    }
-
-    public int getDefaultSecond() {
-        return defaultSecond;
-    }
-
-    public String getDefaultThird() {
-        return defaultThird;
-    }
-
-    public boolean getDefaultFourth() {
-        return defaultFourth;
-    }
-
-    public void setDefaultFirst(int defaultFirst) {
-        this.defaultFirst = defaultFirst;
-    }
-
-    public void setDefaultSecond(int defaultSecond) {
-        this.defaultSecond = defaultSecond;
-    }
-
-    public void setDefaultThird(String defaultThird) {
-        this.defaultThird = defaultThird;
-    }
-
-    public void setDefaultFourth(boolean defaultFourth) {
-        this.defaultFourth = defaultFourth;
-    }
-
     public boolean getVisible() {
         return isVisible;
     }
@@ -80,7 +48,6 @@ public abstract class Spell extends GUI {
 
     public void draw(Graphics2D g) {
 
-//        System.out.println((float)currentRechargeTime/rechargeTime);
 
         g.drawImage(rechargeBackgroundIconSpell, posIconX, posIconY, GamePanel.tileSize*2, GamePanel.tileSize*2, null);
         g.setColor(new Color(255, 255, 255, 100));

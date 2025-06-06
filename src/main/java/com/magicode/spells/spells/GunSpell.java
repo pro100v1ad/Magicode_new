@@ -3,11 +3,11 @@ package main.java.com.magicode.spells.spells;
 import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.spells.Spell;
 
-public class GunSpell extends Spell {
+public class GunSpell extends Spell { // Класс отвечающий за заклинание пушка
 
     private int currentDamage, currentReload;
     private String[] saveChangeText;
-    private boolean state; // Работает ли пушка
+    private boolean state;
 
     private GamePanel gp;
 

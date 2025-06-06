@@ -6,7 +6,7 @@ import main.java.com.magicode.ui.GUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class EndBoard extends GUI {
+public class EndBoard extends GUI { // Класс отвечающий за доску окончания игры
 
     private BufferedImage boardImage;
 

@@ -1,12 +1,10 @@
 package main.java.com.magicode.ui.gamestate.tablet;
 
-import main.java.com.magicode.spells.Spell;
-import main.java.com.magicode.spells.spells.KeySpell;
 import main.java.com.magicode.ui.gamestate.Tablet;
 
 import java.io.*;
 
-public class TextRedactor {
+public class TextRedactor { // Класс отвечающий за текст в планшете
 
     private EditArea[] editAreas;
     private int countEditAreas;
@@ -20,7 +18,7 @@ public class TextRedactor {
 
         this.tablet = tablet;
         spellsPath = new String[10];
-        editAreas = new EditArea[10]; // При увеличении к-ва заклинаний менять это поле!
+        editAreas = new EditArea[10];
         countEditAreas = 0;
         countOpenSpells = 0;
         String[] text = new String[8];
@@ -48,13 +46,11 @@ public class TextRedactor {
     public void addSpell(String filePath) {
         try (InputStream is = getClass().getResourceAsStream(filePath)) {
             if (is == null) {
-                System.out.println("Ошибка: файл не найден! " + filePath);
                 return;
             }
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line = br.readLine();
             if (line == null) {
-                System.out.println("Файл пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
             int count = Integer.parseInt(line); // количество редактируемых зон
@@ -93,56 +89,6 @@ public class TextRedactor {
             tablet.addButton(filePath.split("/")[filePath.split("/").length-1] + "()");
             spellsPath[countOpenSpells++] = filePath;
 
-//            System.out.println("Функция-заклинание загружено из файла: " + filePath);
-        } catch (IOException e) {
-            System.err.println("Ошибка при загрузке заклинания: " + e.getMessage());
-        }
-    }
-
-    public void addSaveSpell(String filePath) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            line = reader.readLine();
-            if (line == null) {
-                System.out.println("Файл пуст");
-                return;// Если файл закончился раньше, чем ожидалось
-            }
-            int count = Integer.parseInt(line); // количество редактируемых зон
-            for(int i = 0; i < count; i++) { // Загрузка всех редактируемых зон
-                line = reader.readLine();
-                editAreas[countEditAreas++] = new EditArea(startRowsForSpell + Integer.parseInt(line.split("_")[0]),
-                        Integer.parseInt(line.split("_")[1]),
-                        Integer.parseInt(line.split("_")[2]),
-                        line.split("_")[3]);
-
-            }
-            int countRows = Integer.parseInt(reader.readLine());
-            startRowsForSpell += countRows;
-            if(tablet.getText() == null) {
-                String[] text;
-                text = new String[countRows];
-                for(int i = 0; i < countRows; i++) {
-                    text[i] = reader.readLine();
-                }
-                tablet.setText(text);
-            } else {
-                int countRowsAgo = tablet.getText().length;
-                String[] text;
-                text = new String[countRowsAgo + countRows];
-                countRowsAgo -= 2; // Это пустая строка и }
-                for(int i = 0; i < countRowsAgo; i++) {
-                    text[i] = tablet.getText()[i];
-                }
-                for(int i = countRowsAgo; i < countRowsAgo + countRows; i++) {
-                    text[i] = reader.readLine();
-                }
-                text[countRowsAgo + countRows] = "} ";
-                tablet.setText(text);
-            }
-
-            tablet.addButton(filePath.split("/")[filePath.split("/").length-1] + "()");
-            spellsPath[countOpenSpells++] = filePath;
-
         } catch (IOException e) {
             System.err.println("Ошибка при загрузке заклинания: " + e.getMessage());
         }
@@ -153,7 +99,6 @@ public class TextRedactor {
             String line;
             line = reader.readLine();
             if (line == null) {
-                System.out.println("Файл saveSpells пуст textRedactor");
                 return;// Если файл закончился раньше, чем ожидалось
             }
             countOpenSpells = 0;
@@ -171,10 +116,6 @@ public class TextRedactor {
 
     public int getCountOpenSpells() {
         return countOpenSpells;
-    }
-
-    public void setCountOpenSpells(int countOpenSpells) {
-        this.countOpenSpells = countOpenSpells;
     }
 
     public String[] getSpellsPath() {

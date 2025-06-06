@@ -5,7 +5,7 @@ import main.java.com.magicode.gameplay.world.Structure;
 
 import java.awt.*;
 
-public class Hatch extends Structure {
+public class Hatch extends Structure { // Класс отвечающий за структуру люк
 
 
     private String[] route;

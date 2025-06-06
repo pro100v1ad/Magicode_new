@@ -5,7 +5,7 @@ import main.java.com.magicode.core.GamePanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class StartMenu {
+public class StartMenu { // Класс отвечающий за начальное меню при запуске игры
 
     private GamePanel gp;
     private Button[] button;

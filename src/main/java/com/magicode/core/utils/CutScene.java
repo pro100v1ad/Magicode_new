@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import static java.lang.Math.sqrt;
 
-public class CutScene {
+public class CutScene { // Класс отвечающий за кат-сцену
 
     private String[] route;
     private GamePanel gp;

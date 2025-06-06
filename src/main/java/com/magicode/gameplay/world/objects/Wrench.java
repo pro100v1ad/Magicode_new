@@ -5,7 +5,7 @@ import main.java.com.magicode.gameplay.world.GameObject;
 
 import java.awt.*;
 
-public class Wrench extends GameObject {
+public class Wrench extends GameObject { // Класс отвечающий за объект гаечный ключ
 
     private GamePanel gp;
 

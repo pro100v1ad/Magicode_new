@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
-public class Layer implements Serializable {
+public class Layer implements Serializable { // Класс отвечающий за задний фон игры
     private static final long serialVersionUID = 1L;
     private int firstLayer;
     private int secondLayer;
@@ -15,13 +15,11 @@ public class Layer implements Serializable {
     private String interactionZone;
     private BufferedImage imageFirst;
     private BufferedImage imageSecond;
-    private ResourceLoader resourceLoader;
 
     private GamePanel gp;
 
     public Layer(GamePanel gp) {
         this.gp = gp;
-        resourceLoader = new ResourceLoader();
     }
 
     public void setLayers(String input) {
@@ -94,13 +92,6 @@ public class Layer implements Serializable {
     }
     public boolean getCollision() {
         return collision;
-    }
-
-    public void setInteractionZone(String interactionZone) {
-        this.interactionZone = interactionZone;
-    }
-    public String getInteractionZone() {
-        return interactionZone;
     }
 
     public void draw(Graphics2D g, int x, int y, int w, int h) {

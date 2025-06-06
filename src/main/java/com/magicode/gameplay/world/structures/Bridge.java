@@ -20,7 +20,7 @@ public class Bridge extends Structure {
     private String filePath;
     private String condition;
 
-
+    // Класс отвечающий за структуру мост
     public Bridge(GamePanel gp, int x, int y, int bridgeLength, String code, String direction, boolean isBreak, String name, String filePath) {
         this.gp = gp;
 
@@ -48,13 +48,11 @@ public class Bridge extends Structure {
         }
         try (InputStream is = getClass().getResourceAsStream(filePath)) {
             if (is == null) {
-                System.out.println("Ошибка: файл не найден! " + filePath);
                 return;
             }
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line = br.readLine();
             if (line == null) {
-                System.out.println("Файл пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
             condition = line;
@@ -236,9 +234,9 @@ public class Bridge extends Structure {
             }
 
 
-        } // end if
+        }
 
-    } // end draw
+    }
 
 }
 

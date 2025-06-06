@@ -5,13 +5,13 @@ import main.java.com.magicode.spells.Spell;
 
 import java.awt.*;
 
-public class KeySpell extends Spell {
+public class KeySpell extends Spell { // Класс отвечающий за работу заклинания ключ
 
     private int currentFirst, currentSecond;
     private String currentThird;
     private boolean currentFourth;
     private String[] saveChangeText;
-    private boolean state; // Работает ли
+    private boolean state;
 
     private GamePanel gp;
 
@@ -34,7 +34,7 @@ public class KeySpell extends Spell {
         currentFourth = defaultFourth;
 
         currentRechargeTime = 0;
-        rechargeTime = (int)(5 * GamePanel.UPDATE_RATE); // 5 секунд
+        rechargeTime = (int)(5 * GamePanel.UPDATE_RATE);
         isRecharge = false;
 
         posIconX = 300;
@@ -200,11 +200,6 @@ public class KeySpell extends Spell {
             case 3: flag = third(string); break;
             case 4: flag = fourth(string); break;
         }
-
-//        System.out.println("\n\n" + currentFirst);
-//        System.out.println(currentSecond);
-//        System.out.println(currentThird);
-//        System.out.println(currentFourth);
 
         return flag;
     }

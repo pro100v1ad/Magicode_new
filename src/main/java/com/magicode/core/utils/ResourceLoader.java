@@ -5,13 +5,12 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ResourceLoader {
+public class ResourceLoader { // Вспомогательный класс для загрузки файлов
 
     public BufferedImage loadImage(String path) {
         try {
             InputStream inputStream = getClass().getResourceAsStream(path);
             if (inputStream == null) {
-                System.out.println("Ошибка: изображение не найдено! " + path);
                 return null;
             }
             return ImageIO.read(inputStream);

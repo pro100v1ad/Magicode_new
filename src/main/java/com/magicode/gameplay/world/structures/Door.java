@@ -17,6 +17,7 @@ public class Door extends Structure {
     private String filePath;
     private String condition;
 
+    // Класс отвечающий за структуру дверь
     public Door(GamePanel gp, int x, int y, int w, int h, String code, boolean isLock, boolean state, String direction, String filePath) {
         this.name = "door";
         this.code = Integer.parseInt(code.split(":")[0]);
@@ -76,11 +77,6 @@ public class Door extends Structure {
         return filePath;
     }
 
-    public void setLock(boolean lock) {
-        isLock = lock;
-        loadImage();
-    }
-
     public void changeLock() {
         isLock = !isLock;
         loadImage();
@@ -93,13 +89,11 @@ public class Door extends Structure {
         }
         try (InputStream is = getClass().getResourceAsStream(filePath)) {
             if (is == null) {
-                System.out.println("Ошибка: файл не найден! " + filePath);
                 return;
             }
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line = br.readLine();
             if (line == null) {
-                System.out.println("Файл пуст");
                 return;// Если файл закончился раньше, чем ожидалось
             }
             condition = line;
@@ -162,9 +156,6 @@ public class Door extends Structure {
         if(condition.equals("arg4 && (arg1 - arg2 > arg1)")) { // 14
             return fourth && (first - second > first);
         }
-
-
-
 
         return false;
     }

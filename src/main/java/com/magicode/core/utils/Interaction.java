@@ -7,9 +7,9 @@ import main.java.com.magicode.gameplay.world.Structure;
 
 import java.awt.*;
 
-public class Interaction {
+public class Interaction { // Класс отвечающий за взаимодействие с объектами
 
-    private int[][] interactionMap; // true - есть коллизия
+    private int[][] interactionMap;
     private GamePanel gp;
     private int mapX, mapY;
 
@@ -40,7 +40,6 @@ public class Interaction {
     public void loadObjects(GameObject[] objects) {
 
         if(objects == null) {
-            System.out.println("Структуры пусты для интеракции!");
             return;
         }
         for(int i = 0; i < objects.length; i++) {
@@ -59,7 +58,6 @@ public class Interaction {
 
     public void loadStructure(Structure[] structures) {
         if(structures == null) {
-            System.out.println("Структуры пусты для интеракции!");
             return;
         }
         for(int i = 0; i < structures.length; i++) {
@@ -162,19 +160,4 @@ public class Interaction {
         return null;
     }
 
-    // Добавить для отладки желтые полупрозрачные круги зоны интеракции
-    public void drawInteractionZones(Graphics2D g) {
-        g.setColor(new Color(255, 255, 0, 100)); // Желтый полупрозрачный
-
-        for(int y = 0; y < mapY; y++) {
-            for(int x = 0; x < mapX; x++) {
-                if(interactionMap[y][x] > 0) {
-                    int screenX = x - (int)gp.player.getWorldX() + gp.player.getScreenX();
-                    int screenY = y - (int)gp.player.getWorldY() + gp.player.getScreenY();
-                    g.fillRect(screenX, screenY, 1, 1);
-//                    System.out.println("Круг загружен на позицию " + screenX + " and " + screenY);
-                }
-            }
-        }
-    }
 }

@@ -5,7 +5,7 @@ import main.java.com.magicode.gameplay.world.Structure;
 
 import java.awt.*;
 
-public class Decoration extends Structure {
+public class Decoration extends Structure { // Класс отвечающий за структуры декораций
 
     private GamePanel gp;
 

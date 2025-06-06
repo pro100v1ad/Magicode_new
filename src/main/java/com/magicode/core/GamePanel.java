@@ -12,11 +12,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 
-/*
-В этом классе происходят все моменты
- */
 
-public class GamePanel extends JComponent {
+public class GamePanel extends JComponent { // Класс отвечающий за работу самой игры
 
     public static final String TITLE = "Magicode";
     public static boolean running; // Отвечает за то, что запущена игра или нет
@@ -35,7 +32,7 @@ public class GamePanel extends JComponent {
 
     public static boolean[] keys = new boolean[256]; // Содержит список состояния нажатия всех необходимых клавиш
     public static boolean[] mouseButtons = new boolean[3]; // Для левой, средней и правой кнопок
-    public static int mouseX, mouseY; // У вас они уже есть
+    public static int mouseX, mouseY;
     public static int keyCooldown;
 
     public static final int MAS_HEIGHT = 45;
@@ -46,26 +43,21 @@ public class GamePanel extends JComponent {
     public static int tileSize = (int)(originalTileSize*scale);
     public static int WIDTH = MAS_WIDTH*originalTileSize;
     public static int HEIGHT = MAS_HEIGHT*originalTileSize;
-    private Enemy[] enemies;
 
     private volatile long thread1WorkTime = 0;
     private volatile long thread2WorkTime = 0;
-    private volatile long thread1LastCycle = 0;
-    private volatile long thread2LastCycle = 0;
     private volatile long thread1WorkNanos = 0;
     private volatile long thread2WorkNanos = 0;
-    private long lastTitleUpdateTime = System.nanoTime();
 
     // Настройка FPS UPS
     public static final float UPDATE_RATE = 40.0f;
     public static final float DRAW_RATE = 60.0f;
     public static final float UPDATE_RATE_Speed = UPDATE_RATE/100;
-    public static final long IDLE_TIME = 1;
-// Конец настройки FPS UPS
 
     // Настройки карты мира
     public static int whoHaveCollision[] = new int[100];
     // Конец настройки карты мира
+
 // Объявление классов необходимых для работы игры
     private Thread thread1;
     private Thread thread2;
@@ -73,16 +65,14 @@ public class GamePanel extends JComponent {
     private Graphics2D g;
     private Sound soundMusic = new Sound();
     private Sound soundSE = new Sound();
-// Конец объявления классов необходимых для работы игры
-    public GameSaveManager saveManager;
 
+    public GameSaveManager saveManager;
     public StartMenu startMenu;
     public MenuInGame menuInGame;
     public Tablet tablet;
     public Directory directory;
     public EndBoard endBoard;
 
-    // Объявление классов Необходимых в процессе разработки
     public Listeners listeners;
     public TextureAtlas textureAtlas;
     public SceneLoader sceneLoader;
@@ -90,7 +80,7 @@ public class GamePanel extends JComponent {
     public Player player;
 
 
-    public GamePanel() { // Конструктор (что-то делает)
+    public GamePanel() {
         super();
 
         saveManager = new GameSaveManager();
@@ -292,18 +282,6 @@ public class GamePanel extends JComponent {
         }
     }
 
-    public synchronized String getWindowTitle(int fps, int upd, int updl) {
-        double thread1Load = (double)thread1WorkTime / (Time.SECOND / 1000);
-        double thread2Load = (double)thread2WorkTime / (Time.SECOND / 1000);
-
-        return TITLE + " || Fps: " + fps +
-                " | Upd: " + upd +
-                " | Updl: " + updl +
-                " | Thread1: " + String.format("%.1f", thread1Load * 100) + "%" +
-                " | Thread2: " + String.format("%.1f", thread2Load * 100) + "%";
-    }
-
-
     public void start() {
         if(running) return;
         running = true;
@@ -315,26 +293,21 @@ public class GamePanel extends JComponent {
     }
 
     public void startNewGame() {
-//        sceneLoader = new SceneLoader(this, null, null);
-
         sceneChanger = new SceneChanger(this, true, null);
         tablet = new Tablet(this, null);
         directory = new Directory(this);
         player = new Player(this, null, null);
         menuInGame = new MenuInGame(this);
-        enemies = sceneLoader.getEnemies();
         changeMusic();
     }
 
     public void continueGame() {
-//        sceneLoader = new SceneLoader(this, saveManager.getSaveFilePathBackground(), saveManager.getSaveFilePathStructure());
         sceneChanger = new SceneChanger(this, false, saveManager.getSaveFilePathSceneInfo());
         tablet = new Tablet(this, saveManager.getSaveFilePathOpenSpellsInfo());
         directory = new Directory(this);
         tablet.loadSaveValues(saveManager.getSaveFilePathTabletInfo());
         player = new Player(this, saveManager.getSaveFilePathPlayer(), saveManager.getSaveFilePathSpells());
         menuInGame = new MenuInGame(this);
-        enemies = sceneLoader.getEnemies();
         changeMusic();
     }
 
@@ -460,13 +433,12 @@ public class GamePanel extends JComponent {
 
 
         // Game
-        if(state.equals(GameState.Game) || state.equals(GameState.GameOpenBoard)) { // Так как оно может быть еще не создано
+        if(state.equals(GameState.Game) || state.equals(GameState.GameOpenBoard)) {
             sceneLoader.draw(g);
             player.draw(g);
-//            sceneLoader.getInteraction().drawInteractionZones(g);////
         }
 
-        if(state.equals(GameState.GameMenu) || state.equals(GameState.Game)) { // так как оно может быть еще не создано
+        if(state.equals(GameState.GameMenu) || state.equals(GameState.Game)) {
             menuInGame.draw(g);
         }
 

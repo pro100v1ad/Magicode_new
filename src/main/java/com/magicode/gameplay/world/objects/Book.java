@@ -5,7 +5,7 @@ import main.java.com.magicode.gameplay.world.GameObject;
 
 import java.awt.*;
 
-public class Book extends GameObject {
+public class Book extends GameObject { // Класс отвечающий за объект книга
 
     private GamePanel gp;
 

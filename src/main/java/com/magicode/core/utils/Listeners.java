@@ -21,19 +21,11 @@ public class Listeners implements MouseListener, MouseMotionListener, KeyListene
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        // e.getButton() возвращает номер кнопки:
-        // MouseEvent.BUTTON1 - левая кнопка
-        // MouseEvent.BUTTON2 - средняя кнопка (колесо)
-        // MouseEvent.BUTTON3 - правая кнопка
 
         if (e.getButton() == MouseEvent.BUTTON1) {
             gp.click();
-            // Можно передать событие в GamePanel или Player
         }
 
-        if (e.getButton() == MouseEvent.BUTTON3) {
-            System.out.println("Правый клик!");
-        }
     }
 
     @Override

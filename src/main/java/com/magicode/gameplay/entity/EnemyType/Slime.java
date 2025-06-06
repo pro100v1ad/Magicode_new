@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 
 import static java.lang.Math.*;
 
-public class Slime extends Enemy {
+public class Slime extends Enemy { // Класс отвечающий за тип врагов slime
     private Animation[] animations;
     private ResourceLoader resourceLoader;
     private long lastDamageTime = 0;
@@ -37,15 +37,15 @@ public class Slime extends Enemy {
     protected void setDefaultValues() {
         worldX = homeX;
         worldY = homeY;
-        speed = 3.75;
+        speed = 6.5;
         maxHealth = 50;
         health = maxHealth;
         damage = 3;
-        detectionRange = GamePanel.tileSize * 5;
+        detectionRange = GamePanel.tileSize * 10;
         aggressive = false;
 
         collisionWidth = (int)(GamePanel.tileSize*1.7/1.5);
-        collisionHeight = (int)(GamePanel.tileSize*3/2);
+        collisionHeight = GamePanel.tileSize*3/2;
 
         resourceLoader = new ResourceLoader();
         healthBar = new Bar(gp, 0, 0, (int)(GamePanel.tileSize * 2 / 1.5), 8, (int)maxHealth, (int)health, new Color(200, 0, 0));

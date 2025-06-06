@@ -2,7 +2,8 @@ package main.java.com.magicode.gameplay.entity;
 
 import main.java.com.magicode.core.GamePanel;
 
-public class Entity {
+public class Entity { // Родительский класс отвечающий за все сущности
+
     protected double worldX, worldY; // Точные координаты
     protected double speed;
     protected String direction = "null";
@@ -30,9 +31,6 @@ public class Entity {
     public double getWorldY() {
         return  worldY;
     }
-    public double getSpeed() {
-        return  speed;
-    }
     public String getDirection() {
         return  direction;
     }
@@ -41,15 +39,6 @@ public class Entity {
     }
     public double getHealth() {
         return health;
-    }
-    public double getRegeneration() {
-        return regeneration;
-    }
-    public int getCollisionX() {
-        return collisionX;
-    }
-    public int getCollisionY() {
-        return collisionY;
     }
     public int getCollisionCode() {
         return collisionCode;
