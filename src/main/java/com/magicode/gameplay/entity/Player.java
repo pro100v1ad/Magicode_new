@@ -441,7 +441,7 @@ public class Player extends Entity implements Serializable {
 
 //        System.out.println("Player - x: " + worldX + ", y: " + worldY);
 
-        if(health < maxHealth) health += 0.02;
+        if(health < maxHealth) health += 0.03;
         if(mana < maxMana) mana += 0.08;
 
         healthBar.setCurrentValue((int)health);

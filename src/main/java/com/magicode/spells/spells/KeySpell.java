@@ -67,6 +67,7 @@ public class KeySpell extends Spell {
     }
 
     public boolean first(String string) {
+        currentFirst = defaultFirst;
         if(string.equals("null")) return true;
         if(string.length() < 2) return false;
         char operator = string.charAt(0);
@@ -74,6 +75,7 @@ public class KeySpell extends Spell {
 
 
         if(operator != '+' && operator != '-' || num == 0) return false;
+
 
         switch (operator) {
             case '+': {
@@ -86,10 +88,12 @@ public class KeySpell extends Spell {
             }
         }
 
+
         return true;
     }
 
     public boolean second(String string) {
+        currentSecond = defaultSecond;
         if(string.equals("null")) return true;
         if(string.length() < 2) return false;
         char operator = string.charAt(0);
@@ -112,6 +116,7 @@ public class KeySpell extends Spell {
     }
 
     public boolean third(String string) {
+        currentThird = defaultThird;
 
         if(string.equals("null")) return true;
         if(string.length() < 2) return false;
@@ -126,6 +131,7 @@ public class KeySpell extends Spell {
     }
 
     public boolean fourth(String string) {
+        currentFourth = defaultFourth;
         if(string.equals("null")) return true;
         if(string.isEmpty()) return false;
         char operator = string.charAt(0);

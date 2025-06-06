@@ -120,7 +120,6 @@ public class Door extends Structure {
     public boolean checkValues(int first, int second, String third, boolean fourth) {
 
         if(condition == null) return false;
-
         if(condition.equals("arg1 + arg2 == 10")) { // 1
             return first + second == 10;
         }

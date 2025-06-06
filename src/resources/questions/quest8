@@ -1,4 +1,5 @@
 arg3 == "key" + (arg1 - arg2) * (arg1 + arg2)
-if(arg3 == "key" + (arg1 - arg2) * (arg1 + arg2)) {
-    openDoor();
+if(arg3 == "key" + (arg1 - arg2)
+    * (arg1 + arg2)) {
+    bridgeRepair();
 }

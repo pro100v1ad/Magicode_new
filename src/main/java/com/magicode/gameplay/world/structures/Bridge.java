@@ -116,22 +116,10 @@ public class Bridge extends Structure {
     public boolean checkValues(int first, int second, String third, boolean fourth) {
 
         if(condition == null) return false;
+        if(condition.equals("arg3 == \"key\" + (arg1 - arg2) * (arg1 + arg2)")) {
+            return third.equals("key" + (first - second) * (first + second));
+        }
 
-        if(condition.equals("arg1 + arg2 == 10")) {
-            return first + second == 10;
-        }
-        if(condition.equals("arg1 + arg2 == 8")) {
-            return first + second == 8;
-        }
-        if(condition.equals("arg1 + 1 > arg2 - 1")) {
-            return first + 1 > second - 1;
-        }
-        if(condition.equals("arg4")) {
-            return fourth;
-        }
-        if(condition.equals("arg3 == \"key2\"")) {
-            return third.equals("key2");
-        }
 
         return false;
     }

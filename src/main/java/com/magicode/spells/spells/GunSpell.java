@@ -54,6 +54,7 @@ public class GunSpell extends Spell {
     }
 
     public boolean first(String string) {
+        currentDamage = defaultFirst;
         if(string.equals("null")) return true;
         if(string.length() < 2) return false;
         char operator = string.charAt(0);
@@ -77,6 +78,7 @@ public class GunSpell extends Spell {
     }
 
     public boolean second(String string) {
+        currentReload = defaultSecond;
         if(string.equals("null")) return true;
         if(string.length() < 2) return false;
         char operator = string.charAt(0);
