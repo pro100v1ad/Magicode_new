@@ -34,6 +34,7 @@ public class Lich extends Enemy {
         loadAnimations();
         this.worldX = spawnX;
         this.worldY = spawnY;
+        this.aggressive = true;
     }
 
     @Override
@@ -187,8 +188,8 @@ public class Lich extends Enemy {
         }
 
         // Рисуем модельку слайма (временно для тестов)
-        int enemyWidth = (int)(GamePanel.tileSize * 2/1.5);
-        int enemyHeight = (int)(GamePanel.tileSize * 4/2.5);
+        int enemyWidth = (int)(GamePanel.tileSize * 2/1);
+        int enemyHeight = (int)(GamePanel.tileSize * 4/2);
         animations[isPlayerInRange() ? 1 : 0].draw(g, screenX, screenY, enemyWidth, enemyHeight);
 
         // Рисуем health bar
@@ -196,4 +197,15 @@ public class Lich extends Enemy {
         healthBar.setPosY(screenY - 10);
         healthBar.draw(g);
     }
+
+    @Override
+    public void setAggressive(boolean aggressive) {
+        // Лич всегда остается агрессивным, игнорируем параметр
+        this.aggressive = true;
+    }
+
+    public boolean getAggressive() {
+        return aggressive;
+    }
+
 }

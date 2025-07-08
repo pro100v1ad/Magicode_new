@@ -2,6 +2,7 @@ package main.java.com.magicode.core.utils;
 
 import main.java.com.magicode.gameplay.entity.Boss;
 import main.java.com.magicode.gameplay.entity.Enemy;
+import main.java.com.magicode.gameplay.entity.EnemyType.Lich;
 import main.java.com.magicode.gameplay.entity.EnemyType.Slime;
 import main.java.com.magicode.gameplay.entity.Player;
 import main.java.com.magicode.gameplay.world.GameObject;
@@ -174,7 +175,11 @@ public class GameSaveManager { // Класс отвечающий за сохр�
                         writer.write("boss_" + (int)boss.getWorldX() + "_" + (int)boss.getWorldY() + "_" +
                                 (int)boss.getHealth() + "/" + (int)boss.getMaxHealth());
                     }
-
+                    if(enemy.getName().equals("lich")) {
+                        Lich lich = (Lich) enemy;
+                        writer.write("lich_" + (int)lich.getWorldX() + "_" +
+                                (int)lich.getWorldY() + "_" + lich.getAggressive() + "\n");
+                    }
                 }
             }
 

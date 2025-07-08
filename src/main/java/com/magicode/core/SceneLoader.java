@@ -128,6 +128,7 @@ public class SceneLoader { // Класс отвечающий за саму сц
                 }
                 else if(parts[0].equals("lich")) {
                     Lich lich = new Lich(gp, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
+                    lich.setAggressive(parts.length > 3 && parts[3].equals("true"));
                     enemies[i] = lich;
                 }
             }
