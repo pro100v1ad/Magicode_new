@@ -5,6 +5,7 @@ import main.java.com.magicode.core.utils.CutScene;
 import main.java.com.magicode.core.utils.Interaction;
 import main.java.com.magicode.gameplay.entity.Boss;
 import main.java.com.magicode.gameplay.entity.Enemy;
+import main.java.com.magicode.gameplay.entity.EnemyType.Lich;
 import main.java.com.magicode.gameplay.entity.EnemyType.Slime;
 import main.java.com.magicode.gameplay.world.GameObject;
 import main.java.com.magicode.gameplay.world.Layer;
@@ -65,28 +66,17 @@ public class SceneLoader { // Класс отвечающий за саму сц
     }
 
     private void loadSaveEnemies(String enemiesPath) {
-
-        if (enemiesPath == null) {
-            return;
-        }
+        if (enemiesPath == null) return;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(enemiesPath))) {
-            String line;
-            line = reader.readLine();
-            if (line == null) {
-                return;// Если файл закончился раньше, чем ожидалось
-            }
-
+            String line = reader.readLine();
+            if (line == null) return;
 
             int enemyCount = Integer.parseInt(line);
-
-            // Создаем массив нужного размера
             enemies = new Enemy[enemyCount];
 
             for(int i = 0; i < enemyCount; i++) {
-
                 line = reader.readLine();
-
                 String[] parts = line.split("_");
 
                 if(parts[0].equals("slime")) {
@@ -94,45 +84,36 @@ public class SceneLoader { // Класс отвечающий за саму сц
                     slime.setAggressive(parts[3].equals("true"));
                     enemies[i] = slime;
                 }
-                if(parts[0].equals("boss")) {
+                else if(parts[0].equals("boss")) {
                     Boss boss = new Boss(gp, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]),
                             Integer.parseInt(parts[3].split("/")[0]), Integer.parseInt(parts[3].split("/")[1]));
-
                     enemies[i] = boss;
                 }
-
+                else if(parts[0].equals("lich")) {
+                    Lich lich = new Lich(gp, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
+                    enemies[i] = lich;
+                }
             }
-
-
         } catch (Exception e) {
-            System.err.println("Критическая ошибка загрузки врагов: ");
+            System.err.println("Ошибка загрузки врагов: " + e.getMessage());
         }
     }
 
     // Метод загрузки врагов
     private void loadEnemies(String enemiesPath) {
-
-        if (enemiesPath == null) {
-            return;
-        }
+        if (enemiesPath == null) return;
 
         try (InputStream is = getClass().getResourceAsStream(enemiesPath)) {
-            if (is == null) {
-                return;
-            }
+            if (is == null) return;
 
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String line;
-            line = br.readLine();
+            String line = br.readLine();
             int enemyCount = Integer.parseInt(line);
 
-            // Создаем массив нужного размера
             enemies = new Enemy[enemyCount];
 
             for(int i = 0; i < enemyCount; i++) {
-
                 line = br.readLine();
-
                 String[] parts = line.split("_");
 
                 if(parts[0].equals("slime")) {
@@ -140,20 +121,21 @@ public class SceneLoader { // Класс отвечающий за саму сц
                     slime.setAggressive(parts[3].equals("true"));
                     enemies[i] = slime;
                 }
-                if(parts[0].equals("boss")) {
+                else if(parts[0].equals("boss")) {
                     Boss boss = new Boss(gp, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]),
                             Integer.parseInt(parts[3].split("/")[0]), Integer.parseInt(parts[3].split("/")[1]));
-
                     enemies[i] = boss;
                 }
-
+                else if(parts[0].equals("lich")) {
+                    Lich lich = new Lich(gp, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
+                    enemies[i] = lich;
+                }
             }
-
-
         } catch (Exception e) {
-            System.err.println("Критическая ошибка загрузки врагов: ");
+            System.err.println("Ошибка загрузки врагов: " + e.getMessage());
         }
     }
+
 
     private void loadSaveScene(String backgroundPath, String structurePath, String objectPath) {
 
