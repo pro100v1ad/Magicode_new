@@ -15,7 +15,7 @@ public class Lich extends Enemy {
     private Bar healthBar;
 
     // Параметры ауры
-    private final int auraRadius = GamePanel.tileSize * 3;
+    private final int auraRadius = GamePanel.tileSize * 7;
     private final long auraCooldown = 4000;
     private final long auraDuration = 5000;
     private long lastAuraTime = 0;
@@ -23,8 +23,8 @@ public class Lich extends Enemy {
     private long auraStartTime = 0;
 
     // Эффект ауры
-    private Color auraColor = new Color(150, 0, 200, 100);
-    private int auraPulseSpeed = 5;
+    private Color auraColor = new Color(150, 0, 200, 150);
+    private int auraPulseSpeed = 7;
     private int currentAuraPulse = 0;
 
     public Lich(GamePanel gp, double spawnX, double spawnY) {
@@ -46,30 +46,21 @@ public class Lich extends Enemy {
         detectionRange = GamePanel.tileSize * 10;
         aggressive = true;
 
-        collisionWidth = (int)(GamePanel.tileSize*1.7/1.5);
-        collisionHeight = GamePanel.tileSize*3/2;
+        collisionWidth = (int)(GamePanel.tileSize);
+        collisionHeight = (int)(GamePanel.tileSize*1.5);
 
         resourceLoader = new ResourceLoader();
-        healthBar = new Bar(gp, 0, 0, (int)(GamePanel.tileSize * 2 / 1.5), 8,
+        healthBar = new Bar(gp, 0, 0, (int)(GamePanel.tileSize * 2/1.5), 8,
                 (int)maxHealth, (int)health, new Color(150, 0, 200));
     }
 
     @Override
     protected void loadAnimations() {
-        animations = new Animation[2]; // Используем 2 анимации как у слайма
+        animations = new Animation[1];
 
-        // Берем анимации слайма для теста
-        BufferedImage[] normalImages = new BufferedImage[3];
-        normalImages[0] = resourceLoader.loadImage("/resources/enemies/slime/Slimes1.png");
-        normalImages[1] = resourceLoader.loadImage("/resources/enemies/slime/Slimes2.png");
-        normalImages[2] = resourceLoader.loadImage("/resources/enemies/slime/Slimes3.png");
+        BufferedImage[] normalImages = new BufferedImage[1];
+        normalImages[0] = resourceLoader.loadImage("/resources/enemies/lich/Lich.png");
         animations[0] = new Animation(normalImages, 5);
-
-        BufferedImage[] angryImages = new BufferedImage[3];
-        angryImages[0] = resourceLoader.loadImage("/resources/enemies/slime/slime_angry1.png");
-        angryImages[1] = resourceLoader.loadImage("/resources/enemies/slime/slime_angry2.png");
-        angryImages[2] = resourceLoader.loadImage("/resources/enemies/slime/slime_angry3.png");
-        animations[1] = new Animation(angryImages, 5);
     }
 
     private void activateAura() {
@@ -132,7 +123,6 @@ public class Lich extends Enemy {
             currentAuraPulse = (currentAuraPulse + 1) % (2 * auraPulseSpeed);
         }
 
-        animations[isPlayerInRange() ? 1 : 0].update(); // Используем angry анимацию при агрессии
         healthBar.setCurrentValue((int)health);
 
         long currentTime = System.currentTimeMillis();
@@ -177,6 +167,12 @@ public class Lich extends Enemy {
         int screenX = (int)(worldX - gp.player.getWorldX() + gp.player.getScreenX());
         int screenY = (int)(worldY - gp.player.getWorldY() + gp.player.getScreenY());
 
+        int enemyWidth = (int)(GamePanel.tileSize * 2);
+        int enemyHeight = (int)(GamePanel.tileSize * 3);
+
+        int centerX = screenX + collisionWidth/2;
+        int centerY = screenY + collisionHeight/2;
+
         // Рисуем ауру
         if (isAuraActive) {
             int pulseSize = currentAuraPulse < auraPulseSpeed ?
@@ -184,17 +180,18 @@ public class Lich extends Enemy {
             int drawRadius = auraRadius + pulseSize * 2;
 
             g.setColor(auraColor);
-            g.fillOval(screenX - drawRadius/2, screenY - drawRadius/2, drawRadius, drawRadius);
+            g.fillOval(centerX - drawRadius/2, centerY - drawRadius/2, drawRadius, drawRadius);
         }
 
-        // Рисуем модельку слайма (временно для тестов)
-        int enemyWidth = (int)(GamePanel.tileSize * 2/1);
-        int enemyHeight = (int)(GamePanel.tileSize * 4/2);
-        animations[isPlayerInRange() ? 1 : 0].draw(g, screenX, screenY, enemyWidth, enemyHeight);
 
+
+        int drawX = screenX - (enemyWidth - collisionWidth)/2;
+        int drawY = screenY - (enemyHeight - collisionHeight);
+
+        animations[0].draw(g, drawX, drawY, enemyWidth, enemyHeight);
         // Рисуем health bar
         healthBar.setPosX(screenX);
-        healthBar.setPosY(screenY - 10);
+        healthBar.setPosY(screenY - 60);
         healthBar.draw(g);
     }
 
