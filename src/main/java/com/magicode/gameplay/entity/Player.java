@@ -228,8 +228,8 @@ public class Player extends Entity implements Serializable { // Класс от�
 
         loadSpells(DEFAULT_SPELLS);
 
-        worldX = GamePanel.tileSize*35;
-        worldY = GamePanel.tileSize*17;
+        worldX = GamePanel.tileSize*6;
+        worldY = GamePanel.tileSize*6;
         float pixelsPerSecond = 150f;
         speed = (pixelsPerSecond * GamePanel.scale) / GamePanel.UPDATE_RATE; // scale минимум 1/4 и максимум 2.
 
@@ -342,7 +342,8 @@ public class Player extends Entity implements Serializable { // Класс от�
         if(gp.sceneLoader.getCutScene()) {
             return;
         }
-        if(gp.state.equals(GamePanel.GameState.StartMenu) || gp.state.equals(GamePanel.GameState.GameOpenBoard)) {
+        if(gp.state.equals(GamePanel.GameState.StartMenu) || gp.state.equals(GamePanel.GameState.GameOpenBoard)
+            || gp.startCutScene.getStart()) {
             return;
         }
 
@@ -374,62 +375,8 @@ public class Player extends Entity implements Serializable { // Класс от�
             direction = "right";
         } else direction = "null";
         //Проверка коллизии
-        if(direction.equals("up_right")) {
-            for(int i = 0; i < speed/sqrt(2); i++) {// Обработка движения вверх
-                if(gp.getCollision().checkCollisionUp(this)) {
-                    if(worldY > - 0) worldY -= 1;
-                }
-                if(gp.getCollision().checkCollisionRight(this)) {
-                    if (worldX < gp.getWorldWidth()*GamePanel.tileSize-GamePanel.tileSize*2-1) worldX += 1;
-                }
-            }
-        } else if(direction.equals("up_left")) {
-            for(int i = 0; i < speed/sqrt(2); i++) {// Обработка движения вверх
-                if(gp.getCollision().checkCollisionUp(this)) {
-                    if(worldY > - 0) worldY -= 1;
-                }
-                if(gp.getCollision().checkCollisionLeft(this)) {
-                    if(worldX > 1) worldX -= 1;
-                }
-            }
-        } else if(direction.equals("down_left")) {
-            for(int i = 0; i < speed/sqrt(2); i++) {// Обработка движения вверх
-                if(gp.getCollision().checkCollisionDown(this)) {
-                    if(worldY < gp.getWorldHeight()*GamePanel.tileSize-GamePanel.tileSize*4 - 1) worldY += 1;
-                }
-                if(gp.getCollision().checkCollisionLeft(this)) {
-                    if(worldX > 1) worldX -= 1;
-                }
-            }
-        } else if(direction.equals("down_right")) {
-            for(int i = 0; i < speed/sqrt(2); i++) {// Обработка движения вверх
-                if(gp.getCollision().checkCollisionDown(this)) {
-                    if(worldY < gp.getWorldHeight()*GamePanel.tileSize-GamePanel.tileSize*4 - 1) worldY += 1;
-                }
-                if(gp.getCollision().checkCollisionRight(this)) {
-                    if(worldX < gp.getWorldWidth()*GamePanel.tileSize-GamePanel.tileSize*2-1) worldX += 1;
-                }
-            }
-        } else if(direction.equals("up")) {
-            for(int i = 0; i < speed/sqrt(2); i++) {
-                if(worldY > - 0 && gp.getCollision().checkCollisionUp(this)) worldY -= 1;
-            }
-        } else if(direction.equals("down")) {
-            for(int i = 0; i < speed/sqrt(2); i++) if(gp.getCollision().checkCollisionDown(this) && worldY < gp.getWorldHeight()*GamePanel.tileSize-GamePanel.tileSize*4 - 1) worldY += 1;
-        } else if(direction.equals("left")) {
-            for(int i = 0; i < speed/sqrt(2); i++) if(worldX > 1 && gp.getCollision().checkCollisionLeft(this)) worldX -= 1;
-        } else if(direction.equals("right")) {
-            for(int i = 0; i < speed/sqrt(2); i++) if(gp.getCollision().checkCollisionRight(this) && worldX < gp.getWorldWidth()*GamePanel.tileSize-GamePanel.tileSize*2-1) worldX += 1;
-        }
 
-
-        switch (direction) {
-            case "up": animations[1].update(); break;
-            case "down": animations[0].update(); break;
-            case "left": case "up_left": case "down_left": animations[2].update(); break;
-            case "right": case "up_right": case "down_right": animations[3].update(); break;
-            case "null": animations[4].update(); break;
-        }
+        movePlayer(direction, speed);
 
         if(health < maxHealth) health += 0.03;
         if(mana < maxMana) mana += 0.08;
@@ -487,6 +434,67 @@ public class Player extends Entity implements Serializable { // Класс от�
         shoot = false;
     }
 
+    public void movePlayer(String direction, double speed) {
+        this.direction = direction;
+
+        if(direction.equals("up_right")) {
+            for(int i = 0; i < speed/sqrt(2); i++) {// Обработка движения вверх
+                if(gp.getCollision().checkCollisionUp(this)) {
+                    if(worldY > - 0) worldY -= 1;
+                }
+                if(gp.getCollision().checkCollisionRight(this)) {
+                    if (worldX < gp.getWorldWidth()*GamePanel.tileSize-GamePanel.tileSize*2-1) worldX += 1;
+                }
+            }
+        } else if(direction.equals("up_left")) {
+            for(int i = 0; i < speed/sqrt(2); i++) {// Обработка движения вверх
+                if(gp.getCollision().checkCollisionUp(this)) {
+                    if(worldY > - 0) worldY -= 1;
+                }
+                if(gp.getCollision().checkCollisionLeft(this)) {
+                    if(worldX > 1) worldX -= 1;
+                }
+            }
+        } else if(direction.equals("down_left")) {
+            for(int i = 0; i < speed/sqrt(2); i++) {// Обработка движения вверх
+                if(gp.getCollision().checkCollisionDown(this)) {
+                    if(worldY < gp.getWorldHeight()*GamePanel.tileSize-GamePanel.tileSize*4 - 1) worldY += 1;
+                }
+                if(gp.getCollision().checkCollisionLeft(this)) {
+                    if(worldX > 1) worldX -= 1;
+                }
+            }
+        } else if(direction.equals("down_right")) {
+            for(int i = 0; i < speed/sqrt(2); i++) {// Обработка движения вверх
+                if(gp.getCollision().checkCollisionDown(this)) {
+                    if(worldY < gp.getWorldHeight()*GamePanel.tileSize-GamePanel.tileSize*4 - 1) worldY += 1;
+                }
+                if(gp.getCollision().checkCollisionRight(this)) {
+                    if(worldX < gp.getWorldWidth()*GamePanel.tileSize-GamePanel.tileSize*2-1) worldX += 1;
+                }
+            }
+        } else if(direction.equals("up")) {
+            for(int i = 0; i < speed/sqrt(2); i++) {
+                if(worldY > - 0 && gp.getCollision().checkCollisionUp(this)) worldY -= 1;
+            }
+        } else if(direction.equals("down")) {
+            for(int i = 0; i < speed/sqrt(2); i++) if(gp.getCollision().checkCollisionDown(this) && worldY < gp.getWorldHeight()*GamePanel.tileSize-GamePanel.tileSize*4 - 1) worldY += 1;
+        } else if(direction.equals("left")) {
+            for(int i = 0; i < speed/sqrt(2); i++) if(worldX > 1 && gp.getCollision().checkCollisionLeft(this)) worldX -= 1;
+        } else if(direction.equals("right")) {
+            for(int i = 0; i < speed/sqrt(2); i++) if(gp.getCollision().checkCollisionRight(this) && worldX < gp.getWorldWidth()*GamePanel.tileSize-GamePanel.tileSize*2-1) worldX += 1;
+        }
+
+        switch (direction) {
+            case "up": animations[1].update(); break;
+            case "down": animations[0].update(); break;
+            case "left": case "up_left": case "down_left": animations[2].update(); break;
+            case "right": case "up_right": case "down_right": animations[3].update(); break;
+            case "null": case "stop": animations[4].update(); break;
+        }
+
+    }
+
     private void handleEnemyCollision(Enemy enemy) {
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastDamageTime >= damageCooldown) {
@@ -497,12 +505,14 @@ public class Player extends Entity implements Serializable { // Класс от�
     }
 
     public void draw(Graphics2D g) {
+
         if(gp.sceneLoader.getCutScene()) {
             return;
         }
         if(gp.state.equals(GamePanel.GameState.StartMenu) || gp.state.equals(GamePanel.GameState.GameOpenBoard)) {
             return;
         }
+
         int playerWidth = (int)(GamePanel.tileSize*2/2);
         int playerHeight = (int)(GamePanel.tileSize*4/2);
         switch (direction) { // Анимирует движение по направлениям
@@ -514,7 +524,7 @@ public class Player extends Entity implements Serializable { // Класс от�
             case "right":
             case "up_right":
             case "down_right": animations[3].draw(g, screenX, screenY, playerWidth, playerHeight); break;
-            case "null": animations[4].draw(g, screenX, screenY, playerWidth, playerHeight);
+            case "null": case "stop": animations[4].draw(g, screenX, screenY, playerWidth, playerHeight);
         }
 
         healthBar.draw(g);

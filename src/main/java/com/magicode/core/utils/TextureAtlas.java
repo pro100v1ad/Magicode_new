@@ -108,6 +108,10 @@ public class TextureAtlas { // Класс для работы со всеми т
         textures[18][0].loadTexture("/resources/structures/decoration/bush.png");
         textures[18][1].loadTexture("/resources/structures/decoration/stone.png");
         textures[18][2].loadTexture("/resources/structures/decoration/tree.png");
+        textures[18][3].loadTexture("/resources/structures/decoration/bed.png");
+        textures[18][4].loadTexture("/resources/structures/decoration/table.png");
+        textures[18][5].loadTexture("/resources/structures/decoration/chair.png");
+        textures[18][6].loadTexture("/resources/structures/decoration/carpet.png");
 
         textures[19][0].loadTexture("/resources/structures/bridge/horizontal/bridgeStart.png");
         textures[19][1].loadTexture("/resources/structures/bridge/horizontal/bridgeEnd.png");
@@ -183,6 +187,16 @@ public class TextureAtlas { // Класс для работы со всеми т
         textures[23][15].loadTexture("/resources/boss/red/redBoss7.png");
         textures[23][16].loadTexture("/resources/boss/red/redBoss8.png");
         textures[23][17].loadTexture("/resources/boss/red/redBoss9.png");
+
+        textures[24][0].loadTexture("/resources/background/parts0/floor.png");
+        textures[24][1].loadTexture("/resources/background/parts0/wallUp.png");
+        textures[24][2].loadTexture("/resources/background/parts0/wallDown.png");
+        textures[24][3].loadTexture("/resources/background/parts0/wallRight.png");
+        textures[24][4].loadTexture("/resources/background/parts0/wallLeft.png");
+        textures[24][5].loadTexture("/resources/background/parts0/wallLeftUp.png");
+        textures[24][6].loadTexture("/resources/background/parts0/wallLeftDown.png");
+        textures[24][7].loadTexture("/resources/background/parts0/wallRightUp.png");
+        textures[24][8].loadTexture("/resources/background/parts0/wallRightDown.png");
 
     }
 

@@ -1,7 +1,7 @@
 package main.java.com.magicode.core;
 
 import main.java.com.magicode.core.utils.Collision;
-import main.java.com.magicode.core.utils.CutScene;
+import main.java.com.magicode.core.utils.AutoMove;
 import main.java.com.magicode.core.utils.Interaction;
 import main.java.com.magicode.gameplay.entity.Boss;
 import main.java.com.magicode.gameplay.entity.Enemy;
@@ -20,10 +20,6 @@ import main.java.com.magicode.ui.gamestate.Board;
 
 import java.awt.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.List;
 
 public class SceneLoader { // Класс отвечающий за саму сцену и все ее составляющие
 
@@ -33,11 +29,11 @@ public class SceneLoader { // Класс отвечающий за саму сц
     private Layer[][] worldMap;
     private Structure[] structures;
     private GameObject[] objects;
-    public static final String DEFAULT_BACKGROUND = "/resources/levels/scenes/start/background";
-    public static final String DEFAULT_STRUCTURE = "/resources/levels/scenes/start/structure";
+    public static final String DEFAULT_BACKGROUND = "/resources/levels/scenes/startCutScene/background";
+    public static final String DEFAULT_STRUCTURE = "/resources/levels/scenes/startCutScene/structure";
     private int sceneWidth;
     private int sceneHeight;
-    private CutScene scene;
+    private AutoMove scene;
     private int cooldown;
     private boolean isCooldown;
     private boolean isCutScene;
@@ -217,7 +213,9 @@ public class SceneLoader { // Класс отвечающий за саму сц
                             Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
                             structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7], structure[9]);
                 }
-                if(structure[0].equals("tree") || structure[0].equals("bush") || structure[0].equals("stone")) {
+                if(structure[0].equals("tree") || structure[0].equals("bush") || structure[0].equals("stone") ||
+                    structure[0].equals("bed") || structure[0].equals("table") || structure[0].equals("chair") ||
+                    structure[0].equals("carpet")) {
                     // Формат name_x_y_w_h - для декораций
                     structures[i] = new Decoration(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
                             Integer.parseInt(structure[3]), Integer.parseInt(structure[4]), structure[0]);
@@ -403,7 +401,9 @@ public class SceneLoader { // Класс отвечающий за саму сц
                                         Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
                                         structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7], structure[9]);
                             }
-                            else if (structure[0].equals("tree") || structure[0].equals("bush") || structure[0].equals("stone")) {
+                            else if (structure[0].equals("tree") || structure[0].equals("bush") || structure[0].equals("stone") ||
+                                    structure[0].equals("bed") || structure[0].equals("table") || structure[0].equals("chair") ||
+                                    structure[0].equals("carpet")) {
                                 structures[index++] = new Decoration(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
                                         Integer.parseInt(structure[3]), Integer.parseInt(structure[4]), structure[0]);
                             }
@@ -537,7 +537,7 @@ public class SceneLoader { // Класс отвечающий за саму сц
                         }
                     } else if(structure.getName().equals("hatch")) {
                         Hatch hatch = (Hatch) structure;
-                        scene = new CutScene(gp, hatch.getRoute());
+                        scene = new AutoMove(gp, hatch.getRoute());
                         isCutScene = true;
                     } else if(structure.getName().equals("chest")) {
                         if(structure.getState()) {
