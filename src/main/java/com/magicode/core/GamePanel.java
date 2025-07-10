@@ -86,7 +86,7 @@ public class GamePanel extends JComponent { // Класс отвечающий �
     public GamePanel() {
         super();
 
-        saveManager = new GameSaveManager();
+        saveManager = new GameSaveManager(this);
         saveManager.ensureSaveDirectoryExists(); // проверка наличия папки.
         textureAtlas = new TextureAtlas(100, 100);
 
@@ -322,7 +322,12 @@ public class GamePanel extends JComponent { // Класс отвечающий �
         directory = new Directory(this);
         tablet.loadSaveValues(saveManager.getSaveFilePathTabletInfo());
         player = new Player(this, saveManager.getSaveFilePathPlayer(), saveManager.getSaveFilePathSpells());
+        player.setVisibleSpells(true);
+        player.setVisibleHealthBar(true);
+        player.setVisibleManaBar(true);
         menuInGame = new MenuInGame(this);
+        menuInGame.setVisibleDirectory(true);
+        menuInGame.setVisibleTablet(true);
         changeMusic();
     }
 
@@ -346,7 +351,6 @@ public class GamePanel extends JComponent { // Класс отвечающий �
 
     public void saveGame() {
         saveManager.saveGame(sceneLoader.getWorldMap(), sceneLoader.getStructures(), player, sceneChanger, sceneLoader.getObjects(), sceneLoader.getEnemies(), player.getSpells(), tablet);
-        startMenu.setState(true);
         stopMusic();
         playMusic(0);
     }

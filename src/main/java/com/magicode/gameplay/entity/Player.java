@@ -381,8 +381,10 @@ public class Player extends Entity implements Serializable { // Класс от�
         if(gp.sceneLoader.getCutScene()) {
             return;
         }
-        if(gp.state.equals(GamePanel.GameState.StartMenu) || gp.state.equals(GamePanel.GameState.GameOpenBoard)
-            || gp.startCutScene.getStart()) {
+        if(gp.state.equals(GamePanel.GameState.StartMenu) || gp.state.equals(GamePanel.GameState.GameOpenBoard)) {
+            return;
+        }
+        if(gp.startCutScene != null && gp.startCutScene.getStart()) {
             return;
         }
 

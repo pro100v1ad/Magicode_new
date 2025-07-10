@@ -1,5 +1,6 @@
 package main.java.com.magicode.core.utils;
 
+import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.gameplay.entity.Boss;
 import main.java.com.magicode.gameplay.entity.Enemy;
 import main.java.com.magicode.gameplay.entity.EnemyType.Lich;
@@ -31,8 +32,20 @@ public class GameSaveManager { // Класс отвечающий за сохр�
     private final String saveFilePathOpenSpellsInfo = "saves/openSpellsInfo.txt";
     private final String saveFilePathSceneInfo = "saves/sceneInfo.txt";
 
+    private GamePanel gp;
+
+    public GameSaveManager(GamePanel gp) {
+        this.gp = gp;
+    }
+
     // Сохранение игры
     public void saveGame(Layer[][] worldMap, Structure[] structures, Player player, SceneChanger sceneChanger, GameObject[] objects, Enemy[] enemies, Spell[] spells, Tablet tablet) {
+
+        if(gp.sceneChanger.getNumberActiveScene() == 0) {
+            return;
+        }
+        gp.startMenu.setState(true);
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFilePathBackground))) {
             writer.write(worldMap[0].length + " " + worldMap.length + "\n");
             for(int i = 0; i < worldMap.length; i++) {

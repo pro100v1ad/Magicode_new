@@ -72,6 +72,9 @@ public class CutScene {
     }
 
     public void update() {
+        if(gp.state.equals(GamePanel.GameState.GameMenu) || gp.state.equals(GamePanel.GameState.StartMenu)) {
+            return;
+        }
         if(isStart) {
 
             try {
@@ -140,6 +143,11 @@ public class CutScene {
     }
 
     public void draw(Graphics2D g) {
+
+        if(gp.state.equals(GamePanel.GameState.GameMenu) || gp.state.equals(GamePanel.GameState.StartMenu)) {
+            return;
+        }
+
         if(gp.player != null) {
             gp.player.draw(g);
         }
