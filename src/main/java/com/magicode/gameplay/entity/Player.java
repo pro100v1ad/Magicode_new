@@ -34,11 +34,14 @@ public class Player extends Entity implements Serializable { // Класс от�
     private Spell[] spells;
     private int countSpells;
     public static final String DEFAULT_SPELLS = "/resources/levels/scenes/start/spells";
+    private boolean isVisibleSpells;
 
     private int countBook;
 
     private Bar healthBar;
+    private boolean isVisibleHealthBar;
     private Bar manaBar;
+    private boolean isVisibleManaBar;
 
     private BulletManager bulletManager;
     private boolean shoot;
@@ -65,18 +68,20 @@ public class Player extends Entity implements Serializable { // Класс от�
             setDefaultValues();
         }
 
+        isVisibleSpells = false;
+
         int healthBarWidth = 300;
         int healthBarHeight = 32;
         int healthBarPosX = GamePanel.WIDTH/2 - healthBarWidth/2;
         int healthBarPosY = GamePanel.HEIGHT - healthBarHeight*2;
         healthBar = new Bar(gp, healthBarPosX, healthBarPosY, healthBarWidth, healthBarHeight, (int)maxHealth, (int)health, Color.red);
-
+        isVisibleHealthBar = false;
         int manaBarWidth = 400;
         int manaBarHeight = 32;
         int manaBarPosX = GamePanel.WIDTH/2 - manaBarWidth/2;
         int manaBarPosY = GamePanel.HEIGHT - manaBarHeight*3;
         manaBar = new Bar(gp, manaBarPosX, manaBarPosY, manaBarWidth, manaBarHeight, (int)maxMana, (int)mana, Color.blue);
-
+        isVisibleManaBar = false;
 
 
     }
@@ -286,6 +291,22 @@ public class Player extends Entity implements Serializable { // Класс от�
 
     public void shoot() {
         shoot = true;
+    }
+
+    public void setVisibleSpells(boolean visibleSpells) {
+        this.isVisibleSpells = visibleSpells;
+    }
+
+    public boolean getVisibleSpells() {
+        return isVisibleSpells;
+    }
+
+    public void setVisibleHealthBar(boolean visibleHealthBar) {
+        this.isVisibleHealthBar = visibleHealthBar;
+    }
+
+    public void setVisibleManaBar(boolean visibleManaBar) {
+        this.isVisibleManaBar = visibleManaBar;
     }
 
     public void loadPlayerFromFile(String filePath) {
@@ -527,10 +548,17 @@ public class Player extends Entity implements Serializable { // Класс от�
             case "null": case "stop": animations[4].draw(g, screenX, screenY, playerWidth, playerHeight);
         }
 
-        healthBar.draw(g);
-        manaBar.draw(g);
+        if(isVisibleHealthBar) {
+            healthBar.draw(g);
+        }
+        if(isVisibleManaBar) {
+            manaBar.draw(g);
+        }
+
 
         bulletManager.drawAllBullets(g);
     }
+
+
 
 }

@@ -800,7 +800,10 @@ public class SceneLoader { // Класс отвечающий за саму сц
         if(spells != null) {
             for(Spell spell: spells) {
                 if(spell != null) {
-                    spell.draw(g);
+                    if(gp.player.getVisibleSpells()) {
+                        spell.draw(g);
+                    }
+
                 }
             }
         }

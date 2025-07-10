@@ -22,10 +22,12 @@ public class MenuInGame { // Класс отвечающий за меню в и
     private BufferedImage buttonDirectoryImage;
     private BufferedImage directory;
     private int posButtonDirectoryX, posButtonDirectoryY;
+    private boolean isVisibleDirectory;
 
     private BufferedImage buttonTabletImage;
     private BufferedImage tablet;
     private int posButtonTabletX, posButtonTabletY;
+    private boolean isVisibleTablet;
 
     private int fontSize;
 
@@ -50,11 +52,13 @@ public class MenuInGame { // Класс отвечающий за меню в и
         directory = gp.textureAtlas.textures[14][4].getTexture();
         posButtonDirectoryX = 10;
         posButtonDirectoryY = 96;
+        isVisibleDirectory = false;
 
         buttonTabletImage = gp.textureAtlas.textures[14][2].getTexture();
         tablet = gp.textureAtlas.textures[14][5].getTexture();
         posButtonTabletX = 10;
         posButtonTabletY = 232;
+        isVisibleTablet = false;
 
     }
 
@@ -113,8 +117,9 @@ public class MenuInGame { // Класс отвечающий за меню в и
                 buttonMenuImage = gp.textureAtlas.textures[14][0].getTexture();
             }
 
+
             if(mX >= posButtonDirectoryX && mX <= posButtonDirectoryX + GamePanel.tileSize*3.5
-                    && mY >= posButtonDirectoryY && mY <= posButtonDirectoryY + GamePanel.tileSize*3.5) {
+                    && mY >= posButtonDirectoryY && mY <= posButtonDirectoryY + GamePanel.tileSize*3.5 && isVisibleDirectory) {
                 buttonDirectoryImage = gp.textureAtlas.textures[14][3].getTexture();
                 if(click) {
                     click = false;
@@ -126,7 +131,7 @@ public class MenuInGame { // Класс отвечающий за меню в и
             }
 
             if(mX >= posButtonTabletX && mX <= posButtonTabletX + GamePanel.tileSize*3.5
-                    && mY >= posButtonTabletY && mY <= posButtonTabletY + GamePanel.tileSize*3.5) {
+                    && mY >= posButtonTabletY && mY <= posButtonTabletY + GamePanel.tileSize*3.5 && isVisibleTablet) {
                 buttonTabletImage = gp.textureAtlas.textures[14][3].getTexture();
                 if(click) {
                     gp.state = GamePanel.GameState.GameOpenTablet;
@@ -155,18 +160,29 @@ public class MenuInGame { // Класс отвечающий за меню в и
 
             g.drawImage(buttonMenuImage, posButtonMenuX, posButtonMenuY, GamePanel.tileSize*2, GamePanel.tileSize*2, null);
 
-            g.drawImage(buttonDirectoryImage, posButtonDirectoryX, posButtonDirectoryY, (int)(GamePanel.tileSize*3.5), (int)(GamePanel.tileSize*3.5), null);
-            g.drawImage(directory, posButtonDirectoryX + GamePanel.tileSize/2, posButtonDirectoryY + GamePanel.tileSize/2
-                    , (int)(GamePanel.tileSize*2.5), (int)(GamePanel.tileSize*2.5), null);
+            if(isVisibleDirectory) {
+                g.drawImage(buttonDirectoryImage, posButtonDirectoryX, posButtonDirectoryY, (int)(GamePanel.tileSize*3.5), (int)(GamePanel.tileSize*3.5), null);
+                g.drawImage(directory, posButtonDirectoryX + GamePanel.tileSize/2, posButtonDirectoryY + GamePanel.tileSize/2
+                        , (int)(GamePanel.tileSize*2.5), (int)(GamePanel.tileSize*2.5), null);
 
-            g.drawImage(buttonTabletImage, posButtonTabletX, posButtonTabletY, (int)(GamePanel.tileSize*3.5), (int)(GamePanel.tileSize*3.5), null);
-            g.drawImage(tablet, posButtonTabletX + GamePanel.tileSize/2, posButtonTabletY + GamePanel.tileSize/2
-                    , (int)(GamePanel.tileSize*2.5), (int)(GamePanel.tileSize*2.5), null);
+            }
 
+            if(isVisibleTablet) {
+                g.drawImage(buttonTabletImage, posButtonTabletX, posButtonTabletY, (int)(GamePanel.tileSize*3.5), (int)(GamePanel.tileSize*3.5), null);
+                g.drawImage(tablet, posButtonTabletX + GamePanel.tileSize/2, posButtonTabletY + GamePanel.tileSize/2
+                        , (int)(GamePanel.tileSize*2.5), (int)(GamePanel.tileSize*2.5), null);
 
+            }
         }
 
 
     }
 
+    public void setVisibleDirectory(boolean isVisibleDirectory) {
+        this.isVisibleDirectory = isVisibleDirectory;
+    }
+
+    public void setVisibleTablet(boolean isVisibleTablet) {
+        this.isVisibleTablet = isVisibleTablet;
+    }
 }

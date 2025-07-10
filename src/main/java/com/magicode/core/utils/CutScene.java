@@ -2,13 +2,12 @@ package main.java.com.magicode.core.utils;
 
 
 import main.java.com.magicode.core.GamePanel;
+import main.java.com.magicode.ui.interface_.TextBubble;
 
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import static java.lang.Math.sqrt;
 
 public class CutScene {
 
@@ -18,6 +17,7 @@ public class CutScene {
     private int currentTime;
 
     private GamePanel gp;
+    private TextBubble textBubble;
 
     public CutScene(GamePanel gp, String filePath) {
 
@@ -71,16 +71,22 @@ public class CutScene {
             try {
                 if(sequenceOfCommands[numberCurrentCommands] != null) {
 
-                    String[] command = sequenceOfCommands[numberCurrentCommands].split(" ");
+                    String[] command = sequenceOfCommands[numberCurrentCommands].split("_");
 
-                    if (Integer.parseInt(command[1]) > currentTime) {
+                    if(command[0].equals("text")) {
+                        textBubble = new TextBubble(command[1], Integer.parseInt(command[2]));
+                        textBubble.setVisible(true);
+                        numberCurrentCommands++;
+                    } else {
+                        if (Integer.parseInt(command[1]) > currentTime) {
 
-                        gp.player.movePlayer(command[0], Integer.parseInt(command[2])); // Двигаю игрока
+                            gp.player.movePlayer(command[0], Integer.parseInt(command[2])); // Двигаю игрока
 
-                        currentTime += 1;
-                        if (currentTime == Integer.parseInt(command[1])) {
-                            currentTime = 0;
-                            numberCurrentCommands++;
+                            currentTime += 1;
+                            if (currentTime == Integer.parseInt(command[1])) {
+                                currentTime = 0;
+                                numberCurrentCommands++;
+                            }
                         }
                     }
                 } else {
@@ -88,6 +94,11 @@ public class CutScene {
                 }
             }catch (Exception e) {
                 isStart = false;
+                gp.player.setVisibleSpells(true);
+                gp.player.setVisibleHealthBar(true);
+                gp.player.setVisibleManaBar(true);
+                gp.menuInGame.setVisibleTablet(true);
+                gp.menuInGame.setVisibleDirectory(true);
                 System.out.println("Кат сцена завершена");
             }
 
@@ -100,6 +111,10 @@ public class CutScene {
     public void draw(Graphics2D g) {
         if(gp.player != null) {
             gp.player.draw(g);
+        }
+
+        if(textBubble != null) {
+            textBubble.draw(g);
         }
 
     }
