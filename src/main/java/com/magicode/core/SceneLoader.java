@@ -215,7 +215,7 @@ public class SceneLoader { // Класс отвечающий за саму сц
                 }
                 if(structure[0].equals("tree") || structure[0].equals("bush") || structure[0].equals("stone") ||
                     structure[0].equals("bed") || structure[0].equals("table") || structure[0].equals("chair") ||
-                    structure[0].equals("carpet")) {
+                    structure[0].equals("carpet") || structure[0].equals("calendar")) {
                     // Формат name_x_y_w_h - для декораций
                     structures[i] = new Decoration(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
                             Integer.parseInt(structure[3]), Integer.parseInt(structure[4]), structure[0]);
@@ -403,7 +403,7 @@ public class SceneLoader { // Класс отвечающий за саму сц
                             }
                             else if (structure[0].equals("tree") || structure[0].equals("bush") || structure[0].equals("stone") ||
                                     structure[0].equals("bed") || structure[0].equals("table") || structure[0].equals("chair") ||
-                                    structure[0].equals("carpet")) {
+                                    structure[0].equals("carpet") || structure[0].equals("calendar")) {
                                 structures[index++] = new Decoration(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
                                         Integer.parseInt(structure[3]), Integer.parseInt(structure[4]), structure[0]);
                             }
@@ -492,6 +492,29 @@ public class SceneLoader { // Класс отвечающий за саму сц
 
     public GameObject[] getObjects() {
         return objects;
+    }
+
+    public void addObject(String name, int index, int posX, int posY, int code) {
+        if(objects != null) {
+            objects = new GameObject[index + 1];
+            if(name.equals("book")) {
+                objects[index] = new Book(gp, posX, posY, code);
+            }
+
+        } else {
+            objects = new GameObject[index + 1];
+            if(name.equals("book")) {
+                objects[index] = new Book(gp, posX, posY, code);
+            }
+        }
+
+    }
+
+    public void deleteObject(int index) {
+        if(objects != null) {
+            objects[index] = null;
+        }
+
     }
 
     public void setObjects(GameObject[] objects) {

@@ -87,7 +87,7 @@ public class Player extends Entity implements Serializable { // Класс от�
     }
 
     public void loadAnimation() {
-        animations = new Animation[5];
+        animations = new Animation[8];
 
         // Анимация "вниз" (новый массив для каждой анимации)
         BufferedImage[] downImages = new BufferedImage[6];
@@ -138,6 +138,24 @@ public class Player extends Entity implements Serializable { // Класс от�
         nullImages[4] = resourceLoader.loadImage("/resources/player/null/playerNull5.png");
         nullImages[5] = resourceLoader.loadImage("/resources/player/null/playerNull6.png");
         animations[4] = new Animation(nullImages, 5);
+
+        // Анимация "смотреть вверх"
+        BufferedImage[] upViewImages = new BufferedImage[2];
+        upViewImages[0] = resourceLoader.loadImage("/resources/player/up/playerUp4.png");
+        upViewImages[1] = resourceLoader.loadImage("/resources/player/up/playerUp4.png");
+        animations[5] = new Animation(upViewImages, 5);
+
+        // Анимация "смотреть влево"
+        BufferedImage[] leftViewImages = new BufferedImage[2];
+        leftViewImages[0] = resourceLoader.loadImage("/resources/player/left/playerLeft1.png");
+        leftViewImages[1] = resourceLoader.loadImage("/resources/player/left/playerLeft1.png");
+        animations[6] = new Animation(leftViewImages, 5);
+
+        // Анимация "смотреть вправо"
+        BufferedImage[] rightViewImages = new BufferedImage[2];
+        rightViewImages[0] = resourceLoader.loadImage("/resources/player/right/playerRight1.png");
+        rightViewImages[1] = resourceLoader.loadImage("/resources/player/right/playerRight1.png");
+        animations[7] = new Animation(rightViewImages, 5);
     }
 
     public void loadSaveSpells(String spellsPath) {
@@ -545,7 +563,10 @@ public class Player extends Entity implements Serializable { // Класс от�
             case "right":
             case "up_right":
             case "down_right": animations[3].draw(g, screenX, screenY, playerWidth, playerHeight); break;
-            case "null": case "stop": animations[4].draw(g, screenX, screenY, playerWidth, playerHeight);
+            case "viewUp": animations[5].draw(g, screenX, screenY, playerWidth, playerHeight); break;
+            case "viewLeft": animations[6].draw(g, screenX, screenY, playerWidth, playerHeight); break;
+            case "viewRight": animations[7].draw(g, screenX, screenY, playerWidth, playerHeight); break;
+            case "null": case "stop": case "viewDown": animations[4].draw(g, screenX, screenY, playerWidth, playerHeight); break;
         }
 
         if(isVisibleHealthBar) {

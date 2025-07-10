@@ -112,6 +112,7 @@ public class TextureAtlas { // Класс для работы со всеми т
         textures[18][4].loadTexture("/resources/structures/decoration/table.png");
         textures[18][5].loadTexture("/resources/structures/decoration/chair.png");
         textures[18][6].loadTexture("/resources/structures/decoration/carpet.png");
+        textures[18][7].loadTexture("/resources/structures/decoration/calendar.png");
 
         textures[19][0].loadTexture("/resources/structures/bridge/horizontal/bridgeStart.png");
         textures[19][1].loadTexture("/resources/structures/bridge/horizontal/bridgeEnd.png");

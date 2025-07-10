@@ -19,6 +19,11 @@ public class CutScene {
     private GamePanel gp;
     private TextBubble textBubble;
 
+    private boolean isDarkeningScreen = false;
+    private int darkeningScreenTime; // Время затемнения в кадрах (например, 2 сек при 60 FPS = 120)
+    private int darkeningScreenCurrentTime = 0;
+    private int darkeningScreenPeak; // Пиковая прозрачность (0-255)
+
     public CutScene(GamePanel gp, String filePath) {
 
         this.gp = gp;
@@ -27,6 +32,7 @@ public class CutScene {
         isStart = false;
         numberCurrentCommands = 0;
         currentTime = 0;
+
 
 
     }
@@ -73,6 +79,31 @@ public class CutScene {
 
                     String[] command = sequenceOfCommands[numberCurrentCommands].split("_");
 
+                    if(command[0].equals("portal")) {
+                        gp.sceneChanger.setNumberActiveScene(gp.sceneChanger.getNumberActiveScene() + 1);
+                        gp.changeMusic();
+                    }
+
+                    if(command[0].equals("dark")) {
+                        darkeningScreenCurrentTime = 0;
+                        darkeningScreenTime = Integer.parseInt(command[1]);
+                        darkeningScreenPeak = Integer.parseInt(command[2]);
+                        isDarkeningScreen = true;
+                        numberCurrentCommands++;
+                        return;
+                    }
+
+                    if(command[0].equals("createObject")) {
+                        gp.sceneLoader.addObject(command[1], Integer.parseInt(command[4]), Integer.parseInt(command[2]), Integer.parseInt(command[3]), 0);
+                        numberCurrentCommands++;
+                        return;
+                    }
+                    if(command[0].equals("deleteObject")) {
+                        gp.sceneLoader.deleteObject(Integer.parseInt(command[1]));
+                        numberCurrentCommands++;
+                        return;
+                    }
+
                     if(command[0].equals("text")) {
                         textBubble = new TextBubble(command[1], Integer.parseInt(command[2]));
                         textBubble.setVisible(true);
@@ -116,6 +147,38 @@ public class CutScene {
         if(textBubble != null) {
             textBubble.draw(g);
         }
+
+        // Для рисования затемнения экрана
+
+        if (isDarkeningScreen) {
+            if (darkeningScreenCurrentTime >= darkeningScreenTime) {
+                isDarkeningScreen = false;
+                darkeningScreenCurrentTime = 0;
+            } else {
+                darkeningScreenCurrentTime++;
+            }
+
+            // Вычисляем прозрачность (сначала растёт, потом убывает)
+            int transparency;
+            if (darkeningScreenCurrentTime <= darkeningScreenTime / 2) {
+                // Первая половина - затемнение (0 → peak)
+                float progress = (float) darkeningScreenCurrentTime / (darkeningScreenTime / 2);
+                transparency = (int) (progress * darkeningScreenPeak);
+            } else {
+                // Вторая половина - осветление (peak → 0)
+                float progress = (float) (darkeningScreenCurrentTime - darkeningScreenTime / 2) / (darkeningScreenTime / 2);
+                transparency = (int) ((1 - progress) * darkeningScreenPeak);
+            }
+
+            // Ограничиваем прозрачность (на всякий случай)
+            transparency = Math.max(0, Math.min(255, transparency));
+
+            // Рисуем затемнение
+            g.setColor(new Color(0, 0, 0, transparency));
+            g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
+        }
+
+
 
     }
 

@@ -43,6 +43,9 @@ public class Decoration extends Structure { // Класс отвечающий �
         if(name.equals("carpet")) {
             image = gp.textureAtlas.textures[18][6].getTexture();
         }
+        if(name.equals("calendar")) {
+            image = gp.textureAtlas.textures[18][7].getTexture();
+        }
     }
 
 

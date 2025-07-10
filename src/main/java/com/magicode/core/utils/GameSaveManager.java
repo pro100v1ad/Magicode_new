@@ -73,7 +73,7 @@ public class GameSaveManager { // Класс отвечающий за сохр�
                         }
                         if(structures[i].getName().equals("tree") || structures[i].getName().equals("stone") || structures[i].getName().equals("bush") ||
                                 structures[i].getName().equals("bed") || structures[i].getName().equals("table") || structures[i].getName().equals("chair") ||
-                                structures[i].getName().equals("carpet")) {
+                                structures[i].getName().equals("carpet") || structures[i].getName().equals("calendar")) {
                             Decoration decoration = (Decoration) structures[i];
                             writer.write(decoration.getName() + "_" + decoration.getX() + "_" + decoration.getY() + "_" +
                                     decoration.getW() + "_" + decoration.getH() + " ");
