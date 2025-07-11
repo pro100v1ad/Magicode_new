@@ -317,6 +317,9 @@ public class GamePanel extends JComponent { // Класс отвечающий �
     }
 
     public void continueGame() {
+        if(startCutScene != null) {
+            startCutScene.setStart(false);
+        }
         sceneChanger = new SceneChanger(this, false, saveManager.getSaveFilePathSceneInfo());
         tablet = new Tablet(this, saveManager.getSaveFilePathOpenSpellsInfo());
         directory = new Directory(this);

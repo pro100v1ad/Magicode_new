@@ -17,6 +17,7 @@ import main.java.com.magicode.spells.spells.GunSpell;
 import main.java.com.magicode.spells.spells.KeySpell;
 import main.java.com.magicode.spells.spells.WrenchSpell;
 import main.java.com.magicode.ui.gamestate.Board;
+import main.java.com.magicode.ui.interface_.Hints;
 
 import java.awt.*;
 import java.io.*;
@@ -39,6 +40,7 @@ public class SceneLoader { // Класс отвечающий за саму сц
     private boolean isCutScene;
     private Enemy[] enemies;
     private Board board;
+    private Hints hints;
 
     public SceneLoader(GamePanel gp, boolean isStart, String backgroundPath,
                        String structurePath, String objectPath, String enemiesPath, String spellsPath) {
@@ -59,6 +61,7 @@ public class SceneLoader { // Класс отвечающий за саму сц
 
         cooldown = 0;
         isCooldown = false;
+        hints = new Hints("Нажмите F для взаимодействия");
     }
 
     private void loadSaveEnemies(String enemiesPath) {
@@ -546,6 +549,7 @@ public class SceneLoader { // Класс отвечающий за саму сц
         if(cooldown == 0) {
             Structure structure = interaction.isPlayerInInteractionZone(structures);
             if(structure != null) {
+                hints.setVisible(true);
                 if(GamePanel.keys[5]) {
 
                     isCooldown = true;
@@ -670,6 +674,8 @@ public class SceneLoader { // Класс отвечающий за саму сц
                     interaction.reloadMap(structures, objects);
                 }
 
+            } else {
+                hints.setVisible(false);
             }
 
             if(!isCooldown) {
@@ -810,6 +816,10 @@ public class SceneLoader { // Класс отвечающий за саму сц
             }
         }
 
+        if(hints != null) {
+            hints.update();
+        }
+
     }
 
     public void updateBoard() {
@@ -898,6 +908,10 @@ public class SceneLoader { // Класс отвечающий за саму сц
         drawEnemies(g);
         drawBoard(g);
         drawRechargeIconSpells(g);
+
+        if(hints != null) {
+            hints.draw(g);
+        }
     }
 
     private void drawEnemies(Graphics2D g) {
