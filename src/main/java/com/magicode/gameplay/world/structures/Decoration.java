@@ -31,6 +31,21 @@ public class Decoration extends Structure { // Класс отвечающий �
         if(name.equals("bush")) {
             image = gp.textureAtlas.textures[18][0].getTexture();
         }
+        if(name.equals("bed")) {
+            image = gp.textureAtlas.textures[18][3].getTexture();
+        }
+        if(name.equals("table")) {
+            image = gp.textureAtlas.textures[18][4].getTexture();
+        }
+        if(name.equals("chair")) {
+            image = gp.textureAtlas.textures[18][5].getTexture();
+        }
+        if(name.equals("carpet")) {
+            image = gp.textureAtlas.textures[18][6].getTexture();
+        }
+        if(name.equals("calendar")) {
+            image = gp.textureAtlas.textures[18][7].getTexture();
+        }
     }
 
 

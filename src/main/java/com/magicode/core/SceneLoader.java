@@ -1,7 +1,7 @@
 package main.java.com.magicode.core;
 
 import main.java.com.magicode.core.utils.Collision;
-import main.java.com.magicode.core.utils.CutScene;
+import main.java.com.magicode.core.utils.AutoMove;
 import main.java.com.magicode.core.utils.Interaction;
 import main.java.com.magicode.gameplay.entity.Boss;
 import main.java.com.magicode.gameplay.entity.Enemy;
@@ -17,13 +17,10 @@ import main.java.com.magicode.spells.spells.GunSpell;
 import main.java.com.magicode.spells.spells.KeySpell;
 import main.java.com.magicode.spells.spells.WrenchSpell;
 import main.java.com.magicode.ui.gamestate.Board;
+import main.java.com.magicode.ui.interface_.Hints;
 
 import java.awt.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.List;
 
 public class SceneLoader { // Класс отвечающий за саму сцену и все ее составляющие
 
@@ -33,16 +30,17 @@ public class SceneLoader { // Класс отвечающий за саму сц
     private Layer[][] worldMap;
     private Structure[] structures;
     private GameObject[] objects;
-    public static final String DEFAULT_BACKGROUND = "/resources/levels/scenes/start/background";
-    public static final String DEFAULT_STRUCTURE = "/resources/levels/scenes/start/structure";
+    public static final String DEFAULT_BACKGROUND = "/resources/levels/scenes/startCutScene/background";
+    public static final String DEFAULT_STRUCTURE = "/resources/levels/scenes/startCutScene/structure";
     private int sceneWidth;
     private int sceneHeight;
-    private CutScene scene;
+    private AutoMove scene;
     private int cooldown;
     private boolean isCooldown;
     private boolean isCutScene;
     private Enemy[] enemies;
     private Board board;
+    private Hints hints;
 
     public SceneLoader(GamePanel gp, boolean isStart, String backgroundPath,
                        String structurePath, String objectPath, String enemiesPath, String spellsPath) {
@@ -63,6 +61,7 @@ public class SceneLoader { // Класс отвечающий за саму сц
 
         cooldown = 0;
         isCooldown = false;
+        hints = new Hints("Нажмите F для взаимодействия");
     }
 
     private void loadSaveEnemies(String enemiesPath) {
@@ -217,7 +216,9 @@ public class SceneLoader { // Класс отвечающий за саму сц
                             Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
                             structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7], structure[9]);
                 }
-                if(structure[0].equals("tree") || structure[0].equals("bush") || structure[0].equals("stone")) {
+                if(structure[0].equals("tree") || structure[0].equals("bush") || structure[0].equals("stone") ||
+                    structure[0].equals("bed") || structure[0].equals("table") || structure[0].equals("chair") ||
+                    structure[0].equals("carpet") || structure[0].equals("calendar")) {
                     // Формат name_x_y_w_h - для декораций
                     structures[i] = new Decoration(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
                             Integer.parseInt(structure[3]), Integer.parseInt(structure[4]), structure[0]);
@@ -403,7 +404,9 @@ public class SceneLoader { // Класс отвечающий за саму сц
                                         Integer.parseInt(structure[3]), Integer.parseInt(structure[4]),
                                         structure[5], structure[6].equals("true"), structure[8].equals("true"), structure[7], structure[9]);
                             }
-                            else if (structure[0].equals("tree") || structure[0].equals("bush") || structure[0].equals("stone")) {
+                            else if (structure[0].equals("tree") || structure[0].equals("bush") || structure[0].equals("stone") ||
+                                    structure[0].equals("bed") || structure[0].equals("table") || structure[0].equals("chair") ||
+                                    structure[0].equals("carpet") || structure[0].equals("calendar")) {
                                 structures[index++] = new Decoration(gp, Integer.parseInt(structure[1]), Integer.parseInt(structure[2]),
                                         Integer.parseInt(structure[3]), Integer.parseInt(structure[4]), structure[0]);
                             }
@@ -494,6 +497,29 @@ public class SceneLoader { // Класс отвечающий за саму сц
         return objects;
     }
 
+    public void addObject(String name, int index, int posX, int posY, int code) {
+        if(objects != null) {
+            objects = new GameObject[index + 1];
+            if(name.equals("book")) {
+                objects[index] = new Book(gp, posX, posY, code);
+            }
+
+        } else {
+            objects = new GameObject[index + 1];
+            if(name.equals("book")) {
+                objects[index] = new Book(gp, posX, posY, code);
+            }
+        }
+
+    }
+
+    public void deleteObject(int index) {
+        if(objects != null) {
+            objects[index] = null;
+        }
+
+    }
+
     public void setObjects(GameObject[] objects) {
         this.objects = objects;
     }
@@ -523,6 +549,7 @@ public class SceneLoader { // Класс отвечающий за саму сц
         if(cooldown == 0) {
             Structure structure = interaction.isPlayerInInteractionZone(structures);
             if(structure != null) {
+                hints.setVisible(true);
                 if(GamePanel.keys[5]) {
 
                     isCooldown = true;
@@ -537,7 +564,7 @@ public class SceneLoader { // Класс отвечающий за саму сц
                         }
                     } else if(structure.getName().equals("hatch")) {
                         Hatch hatch = (Hatch) structure;
-                        scene = new CutScene(gp, hatch.getRoute());
+                        scene = new AutoMove(gp, hatch.getRoute());
                         isCutScene = true;
                     } else if(structure.getName().equals("chest")) {
                         if(structure.getState()) {
@@ -647,6 +674,8 @@ public class SceneLoader { // Класс отвечающий за саму сц
                     interaction.reloadMap(structures, objects);
                 }
 
+            } else {
+                hints.setVisible(false);
             }
 
             if(!isCooldown) {
@@ -787,6 +816,10 @@ public class SceneLoader { // Класс отвечающий за саму сц
             }
         }
 
+        if(hints != null) {
+            hints.update();
+        }
+
     }
 
     public void updateBoard() {
@@ -800,7 +833,10 @@ public class SceneLoader { // Класс отвечающий за саму сц
         if(spells != null) {
             for(Spell spell: spells) {
                 if(spell != null) {
-                    spell.draw(g);
+                    if(gp.player.getVisibleSpells()) {
+                        spell.draw(g);
+                    }
+
                 }
             }
         }
@@ -872,6 +908,10 @@ public class SceneLoader { // Класс отвечающий за саму сц
         drawEnemies(g);
         drawBoard(g);
         drawRechargeIconSpells(g);
+
+        if(hints != null) {
+            hints.draw(g);
+        }
     }
 
     private void drawEnemies(Graphics2D g) {

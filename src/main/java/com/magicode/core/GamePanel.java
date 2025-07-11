@@ -21,11 +21,13 @@ public class GamePanel extends JComponent { // Класс отвечающий �
     public static enum GameState {
         StartMenu,
         Game,
+        CutScenes,
         GameOpenTablet,
         GameOpenDirectory,
         GameOpenBoard,
         GameOpenEndBoard,
         GameMenu;
+
     }
 
     public GameState state = GameState.StartMenu;
@@ -72,6 +74,7 @@ public class GamePanel extends JComponent { // Класс отвечающий �
     public Tablet tablet;
     public Directory directory;
     public EndBoard endBoard;
+    public CutScene startCutScene;
 
     public Listeners listeners;
     public TextureAtlas textureAtlas;
@@ -83,7 +86,7 @@ public class GamePanel extends JComponent { // Класс отвечающий �
     public GamePanel() {
         super();
 
-        saveManager = new GameSaveManager();
+        saveManager = new GameSaveManager(this);
         saveManager.ensureSaveDirectoryExists(); // проверка наличия папки.
         textureAtlas = new TextureAtlas(100, 100);
 
@@ -145,6 +148,14 @@ public class GamePanel extends JComponent { // Класс отвечающий �
         whoHaveCollision[38] = 236;
         whoHaveCollision[39] = 237;
         whoHaveCollision[40] = 238;
+        whoHaveCollision[41] = 37;
+        whoHaveCollision[42] = 38;
+        whoHaveCollision[43] = 39;
+        whoHaveCollision[44] = 40;
+        whoHaveCollision[45] = 41;
+        whoHaveCollision[46] = 42;
+        whoHaveCollision[47] = 43;
+        whoHaveCollision[48] = 44;
     }
 
     public void changeMusic() {
@@ -293,6 +304,10 @@ public class GamePanel extends JComponent { // Класс отвечающий �
     }
 
     public void startNewGame() {
+
+        startCutScene = new CutScene(this, "/resources/cutscenes/startGame.txt");
+        startCutScene.setStart(true);
+
         sceneChanger = new SceneChanger(this, true, null);
         tablet = new Tablet(this, null);
         directory = new Directory(this);
@@ -302,12 +317,20 @@ public class GamePanel extends JComponent { // Класс отвечающий �
     }
 
     public void continueGame() {
+        if(startCutScene != null) {
+            startCutScene.setStart(false);
+        }
         sceneChanger = new SceneChanger(this, false, saveManager.getSaveFilePathSceneInfo());
         tablet = new Tablet(this, saveManager.getSaveFilePathOpenSpellsInfo());
         directory = new Directory(this);
         tablet.loadSaveValues(saveManager.getSaveFilePathTabletInfo());
         player = new Player(this, saveManager.getSaveFilePathPlayer(), saveManager.getSaveFilePathSpells());
+        player.setVisibleSpells(true);
+        player.setVisibleHealthBar(true);
+        player.setVisibleManaBar(true);
         menuInGame = new MenuInGame(this);
+        menuInGame.setVisibleDirectory(true);
+        menuInGame.setVisibleTablet(true);
         changeMusic();
     }
 
@@ -331,7 +354,6 @@ public class GamePanel extends JComponent { // Класс отвечающий �
 
     public void saveGame() {
         saveManager.saveGame(sceneLoader.getWorldMap(), sceneLoader.getStructures(), player, sceneChanger, sceneLoader.getObjects(), sceneLoader.getEnemies(), player.getSpells(), tablet);
-        startMenu.setState(true);
         stopMusic();
         playMusic(0);
     }
@@ -422,8 +444,12 @@ public class GamePanel extends JComponent { // Класс отвечающий �
             if(endBoard != null) {
                 endBoard.update();
             }
-
         }
+
+        if(startCutScene != null) {
+            startCutScene.update();
+        }
+
 
     }
     public void render1(){
@@ -454,6 +480,10 @@ public class GamePanel extends JComponent { // Класс отвечающий �
             if(endBoard != null) {
                 endBoard.draw(g);
             }
+        }
+
+        if(startCutScene != null) {
+            startCutScene.draw(g);
         }
 
         draw();

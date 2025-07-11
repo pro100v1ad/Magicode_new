@@ -112,7 +112,8 @@ public class Collision { // Класс отвечающий за коллизи�
                         }
                     }
 
-                } else if(structures[i].getName().equals("tree") || structures[i].getName().equals("stone") || structures[i].getName().equals("bush")) {
+                } else if(structures[i].getName().equals("tree") || structures[i].getName().equals("stone") || structures[i].getName().equals("bush") ||
+                        structures[i].getName().equals("bed") || structures[i].getName().equals("table") || structures[i].getName().equals("chair")) {
                     int x = structures[i].getX();
                     int y = structures[i].getY();
                     int w = structures[i].getW();

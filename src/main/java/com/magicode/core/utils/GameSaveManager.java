@@ -1,5 +1,6 @@
 package main.java.com.magicode.core.utils;
 
+import main.java.com.magicode.core.GamePanel;
 import main.java.com.magicode.gameplay.entity.Boss;
 import main.java.com.magicode.gameplay.entity.Enemy;
 import main.java.com.magicode.gameplay.entity.EnemyType.Lich;
@@ -31,8 +32,20 @@ public class GameSaveManager { // Класс отвечающий за сохр�
     private final String saveFilePathOpenSpellsInfo = "saves/openSpellsInfo.txt";
     private final String saveFilePathSceneInfo = "saves/sceneInfo.txt";
 
+    private GamePanel gp;
+
+    public GameSaveManager(GamePanel gp) {
+        this.gp = gp;
+    }
+
     // Сохранение игры
     public void saveGame(Layer[][] worldMap, Structure[] structures, Player player, SceneChanger sceneChanger, GameObject[] objects, Enemy[] enemies, Spell[] spells, Tablet tablet) {
+
+        if(gp.sceneChanger.getNumberActiveScene() == 0) {
+            return;
+        }
+        gp.startMenu.setState(true);
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFilePathBackground))) {
             writer.write(worldMap[0].length + " " + worldMap.length + "\n");
             for(int i = 0; i < worldMap.length; i++) {
@@ -71,7 +84,9 @@ public class GameSaveManager { // Класс отвечающий за сохр�
                                     "_" + chest.getCode() + ":" + chest.getRadius() + ":" + chest.getObjectName() + "_" + chest.getLock() + "_" + chest.getDirection()
                                     + "_" + chest.getState() + "_" + chest.getFilePath() + " ");
                         }
-                        if(structures[i].getName().equals("tree") || structures[i].getName().equals("stone") || structures[i].getName().equals("bush")) {
+                        if(structures[i].getName().equals("tree") || structures[i].getName().equals("stone") || structures[i].getName().equals("bush") ||
+                                structures[i].getName().equals("bed") || structures[i].getName().equals("table") || structures[i].getName().equals("chair") ||
+                                structures[i].getName().equals("carpet") || structures[i].getName().equals("calendar")) {
                             Decoration decoration = (Decoration) structures[i];
                             writer.write(decoration.getName() + "_" + decoration.getX() + "_" + decoration.getY() + "_" +
                                     decoration.getW() + "_" + decoration.getH() + " ");

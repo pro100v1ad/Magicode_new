@@ -616,8 +616,6 @@ public class Tablet extends GUI { // Класс отвечающий за пла
 
         g.drawImage(imageButtonExit, posButtonExitX, posButtonExitY, GamePanel.tileSize*2, GamePanel.tileSize*2, null);
 
-        buttonSave.draw(g);
-
         drawText(g);
         drawSlider(g, getScrollPercent());
 

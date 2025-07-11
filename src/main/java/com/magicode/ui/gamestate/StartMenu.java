@@ -59,7 +59,7 @@ public class StartMenu { // Класс отвечающий за начальн�
             gp.continueGame();
             gp.state = GamePanel.GameState.Game;
         }
-        if(button[1].update()) {
+        if(button[1].update()) { // Начало игры
             gp.startNewGame();
             gp.state = GamePanel.GameState.Game;
         }
