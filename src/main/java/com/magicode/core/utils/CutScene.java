@@ -83,8 +83,19 @@ public class CutScene {
                     String[] command = sequenceOfCommands[numberCurrentCommands].split("_");
 
                     if(command[0].equals("portal")) {
-                        gp.sceneChanger.setNumberActiveScene(gp.sceneChanger.getNumberActiveScene() + 1);
-                        gp.changeMusic();
+                        try {
+                            int nextScene = gp.sceneChanger.getNumberActiveScene() + 1;
+                            if(nextScene < gp.sceneChanger.getSceneCount()) {
+                                gp.sceneChanger.setNumberActiveScene(nextScene);
+                                gp.changeMusic();
+                            } else {
+                                System.out.println("Это последняя сцена");
+                            }
+                        } catch (Exception e) {
+                            System.err.println("Ошибка перехода между сценами: " + e.getMessage());
+                        }
+                        numberCurrentCommands++;
+                        return;
                     }
 
                     if(command[0].equals("dark")) {

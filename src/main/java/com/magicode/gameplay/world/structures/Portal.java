@@ -52,4 +52,9 @@ public class Portal extends Structure { // Класс отвечающий за 
         }
 
     }
+
+    public void interact() {
+        gp.sceneChanger.setNumberActiveScene(gp.sceneChanger.getNumberActiveScene() + 1);
+        gp.changeMusic();
+    }
 }
