@@ -231,10 +231,12 @@ public class Player extends Entity implements Serializable { // Класс от�
 
         if(name.equals("wrench")) {
             spells[countSpells++] = new WrenchSpell(gp, parts);
+            gp.sceneLoader.events.checkTrigger(new WrenchSpell(gp, parts));
         }
 
         if(name.equals("gun")) {
             spells[countSpells++] = new GunSpell(gp,parts);
+            gp.sceneLoader.events.checkTrigger(new GunSpell(gp, parts));
         }
     }
 

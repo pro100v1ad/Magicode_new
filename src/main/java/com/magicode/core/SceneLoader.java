@@ -42,7 +42,7 @@ public class SceneLoader { // Класс отвечающий за саму сц
     private Enemy[] enemies;
     private Board board;
     private Hints hints;
-    private Events events;
+    public Events events;
 
     public SceneLoader(GamePanel gp, boolean isStart, String backgroundPath,
                        String structurePath, String objectPath, String enemiesPath, String spellsPath) {
@@ -64,7 +64,7 @@ public class SceneLoader { // Класс отвечающий за саму сц
         cooldown = 0;
         isCooldown = false;
         hints = new Hints("Нажмите F для взаимодействия");
-        events = new Events(gp);
+        events = new Events();
     }
 
     private void loadSaveEnemies(String enemiesPath) {
@@ -720,6 +720,7 @@ public class SceneLoader { // Класс отвечающий за саму сц
                                         objects[i] = null;
                                         gp.directory.addInfo();
                                         gp.player.setCountBook(gp.player.getCountBook() + 1);
+                                        events.checkTrigger(objects[i]);
                                         break;
                                     }
                                 }
