@@ -31,6 +31,7 @@ public class Events {
         chestTriggers.put(1002, "Перейдите на следующую локацию.");
         chestTriggers.put(1003, "Откройте сундук.");
         chestTriggers.put(1004, "Закончите обучения, перейдя на следующую локацию.");
+        chestTriggers.put(1005, "Закончите обучения, перейдя на следующую локацию.");
     }
 
     public void checkTrigger(Structure structure) {
