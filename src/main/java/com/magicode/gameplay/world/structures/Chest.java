@@ -162,6 +162,12 @@ public class Chest extends Structure { // Класс отвечающий за �
         if(condition.equals("arg4 && (arg1 - arg2 > arg1)")) { // 14
             return fourth && (first - second > first);
         }
+        if(condition.equals("arg1 + arg2 == 11")) { // 0
+            return first + second == 11;
+        }
+        if(condition.equals("arg1 * arg2 == 25")) { // -1
+            return first * second == 25;
+        }
 
         return false;
     }

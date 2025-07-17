@@ -28,7 +28,9 @@ public class Events {
     private void initializeTriggers() {
         // Пример: сундук с id 1 показывает сообщение при открытии
         chestTriggers.put(1001, "Попробуйте открыть следующую дверь, используя планшет.");
-        chestTriggers.put(1002, "Откройте сундук");
+        chestTriggers.put(1002, "Перейдите на следующую локацию.");
+        chestTriggers.put(1003, "Откройте сундук.");
+        chestTriggers.put(1004, "Закончите обучения, перейдя на следующую локацию.");
     }
 
     public void checkTrigger(Structure structure) {

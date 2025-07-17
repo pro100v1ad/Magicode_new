@@ -314,6 +314,13 @@ public class GamePanel extends JComponent { // Класс отвечающий �
         player = new Player(this, null, null);
         menuInGame = new MenuInGame(this);
         changeMusic();
+
+        // TEMP
+        player.setVisibleSpells(true);
+        player.setVisibleHealthBar(true);
+        player.setVisibleManaBar(true);
+        menuInGame.setVisibleDirectory(true);
+        menuInGame.setVisibleTablet(true);
     }
 
     public void continueGame() {

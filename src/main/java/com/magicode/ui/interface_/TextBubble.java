@@ -48,7 +48,7 @@ public class TextBubble extends GUI {
 
         // Позиционирование по центру снизу экрана
         int posX = (GamePanel.WIDTH - boxWidth) / 2;  // Центр по горизонтали
-        int posY = GamePanel.HEIGHT - 40;             // Отступ снизу (можно регулировать)
+        int posY = GamePanel.HEIGHT - 140;             // Отступ снизу (можно регулировать)
 
         // Рисуем черный прямоугольник (фон) с закругленными углами (если нужно)
         g.setColor(new Color(0, 0, 0, 200));  // Полупрозрачный черный
