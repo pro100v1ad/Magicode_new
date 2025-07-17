@@ -25,16 +25,11 @@ public class CutScene {
     private int darkeningScreenPeak; // Пиковая прозрачность (0-255)
 
     public CutScene(GamePanel gp, String filePath) {
-
         this.gp = gp;
-
         loadCommands(filePath);
         isStart = false;
         numberCurrentCommands = 0;
         currentTime = 0;
-
-
-
     }
 
     private void loadCommands(String filePath) {

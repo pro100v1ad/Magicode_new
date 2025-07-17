@@ -15,31 +15,22 @@ public class Hints extends GUI {
         this.isVisible = false;
     }
 
-    public void update() {
-        // Логика обновления (если нужна)
-    }
-
     public void draw(Graphics2D g) {
         if (!isVisible) return;
-
-        // Устанавливаем шрифт и получаем его метрики
         Font font = my_font.deriveFont(16f);
         g.setFont(font);
         FontMetrics fm = g.getFontMetrics();
 
-        // Рассчитываем размеры текста
         int textWidth = fm.stringWidth(text);
         int textHeight = fm.getHeight();
 
-        // Отступы внутри рамки
+
         int paddingX = 20;
         int paddingY = 12;
 
-        // Размеры рамки
         int boxWidth = textWidth + 2 * paddingX;
         int boxHeight = textHeight + 2 * paddingY;
 
-        // Позиционирование в правом нижнем углу с отступами
         int posX = GamePanel.WIDTH - boxWidth - 20;  // 20px от правого края
         int posY = GamePanel.HEIGHT - boxHeight - 20; // 20px от нижнего края
 

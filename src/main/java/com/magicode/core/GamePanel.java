@@ -305,8 +305,8 @@ public class GamePanel extends JComponent { // Класс отвечающий �
 
     public void startNewGame() {
 
-        startCutScene = new CutScene(this, "/resources/cutscenes/startGame.txt");
-        startCutScene.setStart(true);
+//        startCutScene = new CutScene(this, "/resources/cutscenes/startGame.txt");
+//        startCutScene.setStart(true);
 
         sceneChanger = new SceneChanger(this, true, null);
         tablet = new Tablet(this, null);

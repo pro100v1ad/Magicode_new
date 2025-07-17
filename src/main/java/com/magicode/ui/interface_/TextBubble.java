@@ -19,14 +19,10 @@ public class TextBubble extends GUI {
         this.isVisible = false;
     }
 
-    public void update() {
-        // Логика обновления (если нужна)
-    }
 
     public void draw(Graphics2D g) {
         if (!isVisible) return;
 
-        // Обновление таймера видимости
         if (currentTime == time) {
             currentTime = 0;
             isVisible = false;
@@ -35,12 +31,10 @@ public class TextBubble extends GUI {
             currentTime++;
         }
 
-        // Устанавливаем шрифт и получаем его метрики
         Font font = my_font.deriveFont(24f);
         g.setFont(font);
         FontMetrics fm = g.getFontMetrics();
 
-        // Рассчитываем размеры текста
         int textWidth = fm.stringWidth(text);
         int textHeight = fm.getHeight();
 
@@ -74,6 +68,10 @@ public class TextBubble extends GUI {
         if (isVisible) {
             currentTime = 0;  // Сброс таймера при показе
         }
+    }
+
+    public boolean isVisible() {
+        return isVisible;
     }
 
     public void setText(String text) {

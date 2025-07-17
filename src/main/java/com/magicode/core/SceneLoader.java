@@ -2,6 +2,7 @@ package main.java.com.magicode.core;
 
 import main.java.com.magicode.core.utils.Collision;
 import main.java.com.magicode.core.utils.AutoMove;
+import main.java.com.magicode.core.utils.Events;
 import main.java.com.magicode.core.utils.Interaction;
 import main.java.com.magicode.gameplay.entity.Boss;
 import main.java.com.magicode.gameplay.entity.Enemy;
@@ -41,6 +42,7 @@ public class SceneLoader { // Класс отвечающий за саму сц
     private Enemy[] enemies;
     private Board board;
     private Hints hints;
+    private Events events;
 
     public SceneLoader(GamePanel gp, boolean isStart, String backgroundPath,
                        String structurePath, String objectPath, String enemiesPath, String spellsPath) {
@@ -62,6 +64,7 @@ public class SceneLoader { // Класс отвечающий за саму сц
         cooldown = 0;
         isCooldown = false;
         hints = new Hints("Нажмите F для взаимодействия");
+        events = new Events(gp);
     }
 
     private void loadSaveEnemies(String enemiesPath) {
@@ -540,15 +543,22 @@ public class SceneLoader { // Класс отвечающий за саму сц
         }
 
 
-        if(cooldown == 20) {
+        if(cooldown == 40) {
             cooldown = 0;
             isCooldown = false;
         }
         if(isCooldown) cooldown++;
 
+        Structure structure = interaction.isPlayerInInteractionZone(structures);
+        GameObject object = interaction.isPlayerInInteractionZone(objects);
+        if(structure == null && object == null) {
+            hints.setVisible(false);
+        }
+
         if(cooldown == 0) {
-            Structure structure = interaction.isPlayerInInteractionZone(structures);
+
             if(structure != null) {
+                hints.setText("Нажмите F, для взаимодействия");
                 hints.setVisible(true);
                 if(GamePanel.keys[5]) {
 
@@ -557,6 +567,8 @@ public class SceneLoader { // Класс отвечающий за саму сц
                         if(structure.getState()) {
                             Door door = (Door) structure;
                             door.changeLock();
+                            events.checkTrigger(door);
+
                         } else {
                             Door door = (Door) structure;
                             board = new Board(gp, 175, 150, door.getFilePath());
@@ -566,6 +578,7 @@ public class SceneLoader { // Класс отвечающий за саму сц
                         Hatch hatch = (Hatch) structure;
                         scene = new AutoMove(gp, hatch.getRoute());
                         isCutScene = true;
+                        events.checkTrigger(hatch);
                     } else if(structure.getName().equals("chest")) {
                         if(structure.getState()) {
                             int index = 0;
@@ -577,6 +590,7 @@ public class SceneLoader { // Класс отвечающий за саму сц
                             }
                             Chest chest = (Chest) structure;
                             objects[index] = chest.openChest(objects[index]);
+                            events.checkTrigger(chest);
                         } else {
                             Chest chest = (Chest) structure;
                             board = new Board(gp, 175, 150, chest.getFilePath());
@@ -585,11 +599,13 @@ public class SceneLoader { // Класс отвечающий за саму сц
                     } else if(structure.getName().equals("portal")) {
                         gp.sceneChanger.setNumberActiveScene(gp.sceneChanger.getNumberActiveScene() + 1);
                         gp.changeMusic();
+                        events.checkTrigger(structure);
                     } else if(structure.getName().equals("bridge")) {
                         Bridge bridge = (Bridge) structure;
                         if(bridge.getBreak()) {
                             board = new Board(gp, 175, 150, bridge.getFilePath());
                             gp.state = GamePanel.GameState.GameOpenBoard;
+                            events.checkTrigger(bridge);
                         }
 
                     }
@@ -675,12 +691,14 @@ public class SceneLoader { // Класс отвечающий за саму сц
                 }
 
             } else {
-                hints.setVisible(false);
+
             }
 
             if(!isCooldown) {
-                GameObject object = interaction.isPlayerInInteractionZone(objects);
+
                 if (object != null) {
+                    hints.setText("Нажмите F, чтобы подобрать");
+                    hints.setVisible(true);
                     if (GamePanel.keys[5]) { // Если открыть-закрыть дверь
 
                         isCooldown = true;
@@ -763,6 +781,8 @@ public class SceneLoader { // Класс отвечающий за саму сц
 
                         interaction.reloadMap(structures, objects);
                     }
+                } else {
+
                 }
 
             }
@@ -814,10 +834,6 @@ public class SceneLoader { // Класс отвечающий за саму сц
                     spell.recharge();
                 }
             }
-        }
-
-        if(hints != null) {
-            hints.update();
         }
 
     }
@@ -911,6 +927,10 @@ public class SceneLoader { // Класс отвечающий за саму сц
 
         if(hints != null) {
             hints.draw(g);
+        }
+
+        if(events != null) {
+            events.draw(g);
         }
     }
 
